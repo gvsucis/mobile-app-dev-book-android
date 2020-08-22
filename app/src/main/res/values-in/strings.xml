@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Traxy</string>
+    <string name="welcome_to">Selamant Datang</string>
+    <string name="enter_email">Ketikan Email</string>
+    <string name="traxy_logo">Logo Traxy</string>
+    <string name="enter_password">Ketikan Katasandi</string>
+    <string name="sign_in">Masuk</string>
+    <string name="email_requirred">Wajib ketikan email</string>
+    <string name="invalid_email">Alamat email tidak sah</string>
+    <string name="login_verified">Wajib ketikan nama login</string>
+</resources>
