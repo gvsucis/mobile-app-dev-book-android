@@ -1,5 +1,6 @@
 package edu.gvsu.cis.traxy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
@@ -17,8 +18,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val email = findViewById<EditText>(R.id.email)
-        val password = findViewById<EditText>(R.id.password)
         signin.setOnClickListener { v ->
             val emailStr = email.text.toString()
             val passStr = password.text.toString()
@@ -34,14 +33,18 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                 !passStr.contains("traxy") ->
                     signin.startAnimation(shake)
-//                    Snackbar
-//                            .make(password, "Incorrrect Password", Snackbar.LENGTH_LONG)
-//                            .show()
 
-                else ->
-                    Snackbar.make(signin, getString(R.string.login_verified), Snackbar.LENGTH_LONG)
-                            .show()
+                else -> {
+                    val nextPlz = Intent(this@LoginActivity, MainActivity::class.java)
+                    nextPlz.putExtra("USER_EMAIL", emailStr);
+                    startActivity(nextPlz)
+                }
             }
+        }
+
+        register.setOnClickListener { v ->
+            val toRegister = Intent(this@LoginActivity, SignUpActivity::class.java)
+            startActivity(toRegister)
         }
     }
 }
