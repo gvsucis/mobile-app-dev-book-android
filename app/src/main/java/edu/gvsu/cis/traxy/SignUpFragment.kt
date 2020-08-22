@@ -1,57 +1,65 @@
 package edu.gvsu.cis.traxy
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.email
 import java.util.regex.Pattern
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
-        setSupportActionBar(findViewById(R.id.toolbar))
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         fab.setOnClickListener { view ->
             val emailStr = email.text.toString()
-            val pass1Str = password1.text.toString()
-            val pass2Str = password2.text.toString()
+            val pass1 = password1.text.toString()
+            val pass2 = password2.text.toString()
 
             when {
                 emailStr.length == 0 ->
                     Snackbar
                         .make(email, getString(R.string.email_requirred), Snackbar.LENGTH_LONG)
                         .show()
-                !EMAIL_REGEX.matcher(emailStr).find() -> 
+                !EMAIL_REGEX.matcher(emailStr).find() ->
                     Snackbar
                         .make(email, getString(R.string.invalid_email), Snackbar.LENGTH_LONG)
                         .show()
-                pass1Str.length == 0 || pass2Str.length == 0 ->
+                pass1.length == 0 || pass2.length == 0 ->
                     Snackbar
                         .make(email, getString(R.string.empty_password), Snackbar.LENGTH_LONG)
                         .show()
-                !pass1Str.equals(pass2Str) ->
+                !pass1.equals(pass2) ->
                     Snackbar
                         .make(email, getString(R.string.unmatch_password), Snackbar.LENGTH_LONG)
                         .show()
 
-                !pass1Str.contains("traxy") ->
+                !pass1.contains("traxy") ->
                     Snackbar
-                            .make(password1, getString(R.string.incorrect_password), Snackbar.LENGTH_LONG)
-                            .show()
+                        .make(password1, getString(R.string.incorrect_password), Snackbar.LENGTH_LONG)
+                        .show()
 
                 else -> {
-                    val nextPlz = Intent(this@SignUpActivity, MainActivity::class.java)
-                    nextPlz.putExtra("USER_EMAIL", emailStr);
-                    finish()    // Teerminate this activity and remove it from the Activity stack
-                    startActivity(nextPlz)
+                    findNavController().navigate(R.id.action_signup2main,
+                        bundleOf("userEmail" to emailStr))
                 }
             }
         }
