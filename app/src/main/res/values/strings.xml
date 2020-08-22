@@ -1,11 +1,25 @@
 <resources>
-  <string name="app_name">Traxy</string>
+    <string name="app_name">Traxy</string>
     <string name="welcome_to">Welcome to</string>
-  <string name="enter_email">Enter email</string>
-  <string name="traxy_logo">Traxy Logo</string>
-  <string name="enter_password">Enter password</string>
-  <string name="sign_in">Sign In</string>
-  <string name="email_requirred">Email requierd</string>
-  <string name="invalid_email">Invalid Email</string>
-  <string name="login_verified">Login Verified</string>
+    <string name="enter_email">Enter email</string>
+    <string name="traxy_logo">Traxy Logo</string>
+    <string name="enter_password">Enter password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_requirred">Email requierd</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="login_verified">Login Verified</string>
+    <string name="register">Register</string>
+    <string name="no_account">Don\'t haee an account?</string>
+    <string name="title_activity_sign_up">Create Account</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="verify_password">Verify Password</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="logout">Logout</string>
 </resources>

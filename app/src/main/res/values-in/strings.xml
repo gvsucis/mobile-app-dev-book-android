@@ -9,4 +9,8 @@
     <string name="email_requirred">Wajib ketikan email</string>
     <string name="invalid_email">Alamat email tidak sah</string>
     <string name="login_verified">Wajib ketikan nama login</string>
+    <string name="register">Daftar</string>
+    <string name="no_account">Tidak punya akun?</string>
+    <string name="verify_password">Verify Password</string>
+    <string name="logout">Logout</string>
 </resources>
