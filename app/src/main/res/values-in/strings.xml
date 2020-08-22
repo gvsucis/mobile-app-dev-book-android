@@ -13,4 +13,15 @@
     <string name="no_account">Tidak punya akun?</string>
     <string name="verify_password">Verify Password</string>
     <string name="logout">Logout</string>
+    <string name="incorrect_password">Kata sandi tidak sah</string>
+    <string name="title_activity_sign_up">Buat Akun</string>
+    <string name="first_fragment_label">unused?</string>
+    <string name="second_fragment_label">unused?</string>
+    <string name="next">Berikut</string>
+    <string name="previous">Sebelum</string>
+    <string name="hello_first_fragment">unused?</string>
+    <string name="hello_second_fragment">unused?</string>
+    <string name="title_activity_main">Laman Utama</string>
+    <string name="empty_password">Wajib ketikkan kata sandi</string>
+    <string name="unmatch_password">Kata sandi haru sama</string>
 </resources>

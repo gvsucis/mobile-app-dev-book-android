@@ -22,4 +22,7 @@
     <string name="verify_password">Verify Password</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="logout">Logout</string>
+    <string name="empty_password">Password is required</string>
+    <string name="unmatch_password">Passwords must match</string>
+    <string name="incorrect_password">Incorrrect Password</string>
 </resources>
