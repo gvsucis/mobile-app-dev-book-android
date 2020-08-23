@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sign_up.*
@@ -17,6 +17,7 @@ class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
+    lateinit var viewModel:UserDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +25,11 @@ class SignUpFragment : Fragment() {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,8 +64,8 @@ class SignUpFragment : Fragment() {
                         .show()
 
                 else -> {
-                    findNavController().navigate(R.id.action_signup2main,
-                        bundleOf("userEmail" to emailStr))
+                    viewModel.userId.value = emailStr
+                    findNavController().navigate(R.id.action_signup2main)
                 }
             }
         }
