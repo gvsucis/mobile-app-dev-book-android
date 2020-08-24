@@ -9,7 +9,7 @@
     <string name="invalid_email">Invalid Email</string>
     <string name="login_verified">Login Verified</string>
     <string name="register">Register</string>
-    <string name="no_account">Don\'t haee an account?</string>
+    <string name="no_account">Don\'t have an account?</string>
     <string name="title_activity_sign_up">Create Account</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
