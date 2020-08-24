@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainFragment : Fragment() {
     // "lateinit" is required when the variable is not initialized
     // inside a constructor
-
-     lateinit var viewModel: UserDataViewModel
-
+    lateinit var viewModel: UserDataViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

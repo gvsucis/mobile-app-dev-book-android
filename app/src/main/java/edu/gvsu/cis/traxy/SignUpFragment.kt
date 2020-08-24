@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +18,7 @@ class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
-    lateinit var viewModel:UserDataViewModel
+    lateinit var viewModel: UserDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
