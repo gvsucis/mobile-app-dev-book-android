@@ -29,6 +29,9 @@ class LoginFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Just for quicl test of the app
+        email.text.insert(0,"user@test.com")
+        password.text.insert(0, "traxy1")
         signin.setOnClickListener { v ->
             val emailStr = email.text.toString()
             val passStr = password.text.toString()
