@@ -18,6 +18,9 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     public fun bindTo(d: Journal) {
         name.text = d.name;
-        location.text = d.location
+        location.text = d.location + " (" +
+                d.startDate.toLocalDate().toString() +
+                " to " +
+                d.endDate.toLocalDate().toString() + ")"
     }
 }

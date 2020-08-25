@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
+import org.joda.time.DateTime
+import kotlin.random.Random
 
 class MainFragment : Fragment() {
     // "lateinit" is required when the variable is not initialized
@@ -30,10 +33,17 @@ class MainFragment : Fragment() {
         adapter = JournalAdapter()
         with(view) {
             journal_list.adapter = adapter
-            journal_list.layoutManager = LinearLayoutManager(requireContext())
+            val layoutMgr = LinearLayoutManager(context)
+            journal_list.layoutManager = layoutMgr
+            journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
+        val today = DateTime.now()
+        val rand = Random(0)
+
         adapter.submitList(List(100) {
-            Journal("key-$it", "Name $it", "Location $it")
+            val startOn = today.plusDays(rand.nextInt(-100,100))
+            val endOn = startOn.plusDays(1 + rand.nextInt(7))
+            Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
         })
     }
 
