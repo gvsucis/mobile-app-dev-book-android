@@ -40,11 +40,25 @@ class MainFragment : Fragment() {
         val today = DateTime.now()
         val rand = Random(0)
 
-        adapter.submitList(List(100) {
-            val startOn = today.plusDays(rand.nextInt(-100,100))
+        val journalData = List(50) {
+            val startOn = today.plusDays(rand.nextInt(-100, 100))
             val endOn = startOn.plusDays(1 + rand.nextInt(7))
             Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
-        })
+        }
+        val partitioned = journalData
+            .map {
+                when {
+                    it.endDate.isBeforeNow() -> "Past" to it
+                    it.startDate.isAfterNow() -> "Future" to it
+                    else -> "Current" to it
+                }
+            }.sortedBy { it.first }
+            .groupBy({ it.first }, { it.second })
+            .flatMap {
+                println("Flatmap by ${it.key}")
+                listOf(Header(it.key)) + it.value
+            }
+        adapter.submitList(partitioned)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

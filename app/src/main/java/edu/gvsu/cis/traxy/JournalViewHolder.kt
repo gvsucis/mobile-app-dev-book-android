@@ -24,3 +24,14 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 d.endDate.toLocalDate().toString() + ")"
     }
 }
+
+class TitleViewHolder(v:View): RecyclerView.ViewHolder(v) {
+    val title:TextView
+    init {
+        title = v.findViewById(R.id.section_header)
+    }
+
+    public fun bindTo(h:Header) {
+        title.text = h.title
+    }
+}

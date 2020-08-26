@@ -3,16 +3,42 @@ package edu.gvsu.cis.traxy
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 
-class JournalAdapter: ListAdapter<Journal, JournalViewHolder>(JournalDiffUtil()) {
+class JournalAdapter: ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.journal_row, parent, false)
-        return JournalViewHolder(view)
+    private val JOURNAL_TYPE = 1
+    private val HEADER_TYPE = 2
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        when(viewType) {
+            JOURNAL_TYPE -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.journal_row, parent, false)
+                return JournalViewHolder(view)
+
+            }
+            HEADER_TYPE -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.journal_header_row, parent, false)
+                return TitleViewHolder(view)
+            }
+            else -> throw IllegalArgumentException("Unknown type")
+        }
     }
 
-    override fun onBindViewHolder(holder: JournalViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(getItemViewType(position)) {
+            JOURNAL_TYPE -> (holder as JournalViewHolder).bindTo((getItem(position) as Journal))
+            HEADER_TYPE -> (holder as TitleViewHolder).bindTo(getItem(position) as Header)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when(getItem(position)) {
+            is Journal -> JOURNAL_TYPE
+            is Header -> HEADER_TYPE
+            else -> 0
+        }
     }
 }
