@@ -3,6 +3,7 @@ package edu.gvsu.cis.traxy
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,7 +33,8 @@ class MainFragment : Fragment() {
         adapter = JournalAdapter {
 
             Log.d("Traxy", "onViewCreated: item selected has key $it")
-
+            findNavController().navigate(R.id.journal_details,
+                bundleOf("JOURNAL_KEY" to it))
         }
         with(view) {
             journal_list.adapter = adapter

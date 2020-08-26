@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="edu.gvsu.cis.traxy.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment" tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login2signup"
             app:destination="@id/signUpFragment" />
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="edu.gvsu.cis.traxy.SignUpFragment"
-        android:label="SignUpFragment" >
+        android:label="SignUpFragment" tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signup2main"
             app:destination="@id/mainFragment"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="edu.gvsu.cis.traxy.MainFragment"
-        android:label="MainFragment" >
+        android:label="MainFragment" tools:layout="@layout/fragment_main">
         <argument
             android:name="userEmail"
             app:argType="string" />
@@ -37,5 +37,17 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/journal_details"
+            app:destination="@id/journalDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/journalDetailsFragment"
+        android:name="edu.gvsu.cis.traxy.JournalDetailsFragment"
+        android:label="journal_details_fragment"
+        tools:layout="@layout/journal_details_fragment" >
+        <argument
+            android:name="JOURNAL_KEY"
+            app:argType="string" />
     </fragment>
 </navigation>

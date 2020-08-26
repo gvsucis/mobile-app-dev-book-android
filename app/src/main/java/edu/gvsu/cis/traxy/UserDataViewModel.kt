@@ -19,8 +19,15 @@ class UserDataViewModel : ViewModel() {
         _journals.value = current
     }
 
-    fun addJoourn(z:Journal) {
+    fun addJournal(z:Journal) {
         addJournals(listOf(z))
     }
+
+    fun getJournalByKey(key:String):Journal? =
+        _journals.value?.firstOrNull {
+            print("Where are we ${it.key}")
+            it.key == key
+        }
+
 
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    tools:context=".JournalDetailsFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="16dp"
+        app:contentPadding="24dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.4" />
+
+            <TextView
+                android:id="@+id/key_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Key"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/key_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/key_label"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                tools:text="Key goes here" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guidelinr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
+
+            <TextView
+                android:id="@+id/name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Name"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
+                app:layout_constraintTop_toBottomOf="@+id/key_label" />
+
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Location"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
+                app:layout_constraintTop_toBottomOf="@+id/name_label" />
+
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/name_label"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                tools:text="Name goes here" />
+
+            <TextView
+                android:id="@+id/location_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/location_label"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                tools:text="Location goes here" />
+
+            <TextView
+                android:id="@+id/start_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Start date"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
+                app:layout_constraintTop_toBottomOf="@+id/location_label" />
+
+            <TextView
+                android:id="@+id/start_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/start_date_label"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                tools:text="Start date goes here" />
+
+            <TextView
+                android:id="@+id/end_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="End date"
+                app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
+                app:layout_constraintTop_toBottomOf="@+id/start_date_label" />
+
+            <TextView
+                android:id="@+id/end_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/end_date_label"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                tools:text="End date goes here" />
+
+            <Button
+                android:id="@+id/hide_ne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Hide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/end_date_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
