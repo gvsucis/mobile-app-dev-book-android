@@ -1,7 +1,6 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -9,7 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 import org.joda.time.DateTime
 import kotlin.random.Random
@@ -18,8 +16,8 @@ class MainFragment : Fragment() {
     // "lateinit" is required when the variable is not initialized
     // inside a constructor
 
-    lateinit var viewModel: UserDataViewModel
-    lateinit var adapter: JournalAdapter
+    private lateinit var viewModel: UserDataViewModel
+    private lateinit var adapter: JournalAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +35,27 @@ class MainFragment : Fragment() {
             journal_list.layoutManager = layoutMgr
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
+        viewModel.journals.observe(this.viewLifecycleOwner, Observer {
+            val partitioned = it
+                .map {
+                    when {
+                        it.endDate.isBeforeNow -> "Past" to it
+                        it.startDate.isAfterNow -> "Future" to it
+                        else -> "Current" to it
+                    }
+                }.sortedBy { it.first }
+                .groupBy({ it.first }, { it.second })
+                .flatMap {
+                    listOf(Header(it.key)) + it.value
+                }
+            adapter.submitList(partitioned)
+        })
         val today = DateTime.now()
         val rand = Random(0)
 
@@ -45,28 +64,7 @@ class MainFragment : Fragment() {
             val endOn = startOn.plusDays(1 + rand.nextInt(7))
             Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
         }
-        val partitioned = journalData
-            .map {
-                when {
-                    it.endDate.isBeforeNow() -> "Past" to it
-                    it.startDate.isAfterNow() -> "Future" to it
-                    else -> "Current" to it
-                }
-            }.sortedBy { it.first }
-            .groupBy({ it.first }, { it.second })
-            .flatMap {
-                println("Flatmap by ${it.key}")
-                listOf(Header(it.key)) + it.value
-            }
-        adapter.submitList(partitioned)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
-        viewModel.userId.observe(this.viewLifecycleOwner, Observer { z ->
-//            userEmail.text = z
-        })
+        viewModel.addJournals(journalData)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
