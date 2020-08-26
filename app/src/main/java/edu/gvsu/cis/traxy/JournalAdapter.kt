@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class JournalAdapter: ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
+class JournalAdapter(val listener: ((String) -> Unit)? = null) :
+    ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
 
     private val JOURNAL_TYPE = 1
     private val HEADER_TYPE = 2
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        when(viewType) {
+        when (viewType) {
             JOURNAL_TYPE -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.journal_row, parent, false)
@@ -28,14 +29,16 @@ class JournalAdapter: ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiff
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(getItemViewType(position)) {
-            JOURNAL_TYPE -> (holder as JournalViewHolder).bindTo((getItem(position) as Journal))
+        when (getItemViewType(position)) {
+            JOURNAL_TYPE -> {
+                (holder as JournalViewHolder).bindTo((getItem(position) as Journal), listener)
+            }
             HEADER_TYPE -> (holder as TitleViewHolder).bindTo(getItem(position) as Header)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(getItem(position)) {
+        return when (getItem(position)) {
             is Journal -> JOURNAL_TYPE
             is Header -> HEADER_TYPE
             else -> 0

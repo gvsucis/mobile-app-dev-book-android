@@ -1,6 +1,7 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,7 +29,11 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter()
+        adapter = JournalAdapter {
+
+            Log.d("Traxy", "onViewCreated: item selected has key $it")
+
+        }
         with(view) {
             journal_list.adapter = adapter
             val layoutMgr = LinearLayoutManager(context)
