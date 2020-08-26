@@ -63,15 +63,15 @@ class MainFragment : Fragment() {
                 }
             adapter.submitList(partitioned)
         })
-        val today = DateTime.now()
-        val rand = Random(0)
-
-        val journalData = List(50) {
-            val startOn = today.plusDays(rand.nextInt(-100, 100))
-            val endOn = startOn.plusDays(1 + rand.nextInt(7))
-            Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
-        }
-        viewModel.addJournals(journalData)
+//        val today = DateTime.now()
+//        val rand = Random(0)
+//
+//        val journalData = List(50) {
+//            val startOn = today.plusDays(rand.nextInt(-100, 100))
+//            val endOn = startOn.plusDays(1 + rand.nextInt(7))
+//            Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
+//        }
+//        viewModel.addJournals(journalData)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
