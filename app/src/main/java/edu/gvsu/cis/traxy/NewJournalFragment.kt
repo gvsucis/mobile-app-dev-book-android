@@ -25,7 +25,7 @@ import org.joda.time.format.DateTimeFormatter
  * Use the [NewJournalFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NewJournalFragment : Fragment() /*, View.OnFocusChangeListener*/ {
+class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
     companion object {
         val PLACE_REQUEST_CODE = 0xACE0
     }
@@ -78,8 +78,8 @@ class NewJournalFragment : Fragment() /*, View.OnFocusChangeListener*/ {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        trip_name.setOnFocusChangeListener(this)
-//        trip_location.setOnFocusChangeListener(this)
+        trip_name.setOnFocusChangeListener(this)
+        trip_location.setOnFocusChangeListener(this)
 
         trip_location.setOnClickListener {
             val placeIntent = Autocomplete.IntentBuilder(
@@ -104,7 +104,7 @@ class NewJournalFragment : Fragment() /*, View.OnFocusChangeListener*/ {
                     isChoosingStartDate = !isChoosingStartDate
                 }
             }
-//            this.onFocusChange(null, false)
+            this.onFocusChange(null, false)
             trip_duration.text = dateRange()
         }
         add_button.setOnClickListener {
@@ -121,10 +121,11 @@ class NewJournalFragment : Fragment() /*, View.OnFocusChangeListener*/ {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
-//    override fun onFocusChange(p0: View?, p1: Boolean) {
-//        add_button.isEnabled = trip_name.text.length > 0 &&
-//                trip_location.text.length > 0 &&
-//                startDate.length > 0 && endDate.length > 0
-//    }
+
+    override fun onFocusChange(p0: View?, p1: Boolean) {
+        add_button.isEnabled = trip_name.text.length > 0 &&
+                trip_location.text.length > 0 &&
+                startDate != null && endDate != null
+    }
 
 }
