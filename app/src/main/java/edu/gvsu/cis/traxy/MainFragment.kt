@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.libraries.places.api.Places
 import kotlinx.android.synthetic.main.content_main.view.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import org.joda.time.DateTime
 import kotlin.random.Random
 
@@ -20,6 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: UserDataViewModel
     private lateinit var adapter: JournalAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +35,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter {
 
-            Log.d("Traxy", "onViewCreated: item selected has key $it")
             findNavController().navigate(R.id.journal_details,
                 bundleOf("JOURNAL_KEY" to it))
         }
@@ -42,7 +44,9 @@ class MainFragment : Fragment() {
             journal_list.layoutManager = layoutMgr
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
-
+        fab_add.setOnClickListener {
+            findNavController().navigate(R.id.action_new_journal)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -63,6 +67,7 @@ class MainFragment : Fragment() {
                 }
             adapter.submitList(partitioned)
         })
+
 //        val today = DateTime.now()
 //        val rand = Random(0)
 //

@@ -40,6 +40,9 @@
         <action
             android:id="@+id/journal_details"
             app:destination="@id/journalDetailsFragment" />
+        <action
+            android:id="@+id/action_new_journal"
+            app:destination="@id/newJournalFragment" />
     </fragment>
     <fragment
         android:id="@+id/journalDetailsFragment"
@@ -50,4 +53,9 @@
             android:name="JOURNAL_KEY"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/newJournalFragment"
+        android:name="edu.gvsu.cis.traxy.NewJournalFragment"
+        android:label="fragment_new_journal"
+        tools:layout="@layout/fragment_new_journal" />
 </navigation>

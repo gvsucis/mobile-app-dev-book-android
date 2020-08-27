@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def secretFile = rootProject.file("secret.properties")
+def secretProp = new Properties()
+secretProp.load(new FileInputStream(secretFile))
+
 android {
     compileSdkVersion 29
 
@@ -11,8 +15,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'MY_API_KEY', secretProp["API_KEY"]
     }
 
     buildTypes {
@@ -45,6 +49,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.6.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'io.github.serpro69:kotlin-faker:1.4.1'
+    implementation 'com.google.android.libraries.places:places:2.3.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
