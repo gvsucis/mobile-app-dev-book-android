@@ -63,7 +63,7 @@ class MainFragment : Fragment() {
                 }.sortedBy { it.first }
                 .groupBy({ it.first }, { it.second })
                 .flatMap {
-                    listOf(Header(it.key)) + it.value
+                    listOf(Header(it.key)) + it.value.sortedBy { it.startDate }
                 }
             adapter.submitList(partitioned)
         })
