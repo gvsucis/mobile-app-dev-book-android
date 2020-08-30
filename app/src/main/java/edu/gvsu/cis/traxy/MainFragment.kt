@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.joda.time.DateTime
@@ -22,7 +25,20 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: UserDataViewModel
     private lateinit var adapter: JournalAdapter
+    private lateinit var  mAuth: FirebaseAuth
+    private lateinit var topRef: DatabaseReference
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        val dbRef = FirebaseDatabase.getInstance()
+        mAuth.currentUser?.let {
+            topRef = dbRef?.getReference(it.uid)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,6 +102,7 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_logout) {
+            mAuth.signOut()
             findNavController().navigate(R.id.action_logout)
             return true
         }

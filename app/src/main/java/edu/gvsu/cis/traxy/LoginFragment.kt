@@ -5,19 +5,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.regex.Pattern
 
-class LoginFragment:Fragment() {
+class LoginFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
-        Pattern.CASE_INSENSITIVE)
+        Pattern.CASE_INSENSITIVE
+    )
     lateinit var viewModel: UserDataViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel?.userId.observe(viewLifecycleOwner) { uid ->
+            uid?.let {
+                findNavController().navigate(R.id.action_login2main)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,8 +45,9 @@ class LoginFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Just for quicl test of the app
-        email.text.insert(0,"user@test.com")
+        email.text.insert(0, "user@test.com")
         password.text.insert(0, "traxy1")
+
         signin.setOnClickListener { v ->
             val emailStr = email.text.toString()
             val passStr = password.text.toString()
@@ -45,12 +61,18 @@ class LoginFragment:Fragment() {
                     Snackbar
                         .make(email, getString(R.string.invalid_email), Snackbar.LENGTH_LONG)
                         .show()
-                !passStr.contains("traxy") ->
-                    signin.startAnimation(shake)
 
                 else -> {
-                    viewModel.userId.value = emailStr
-                    findNavController().navigate(R.id.action_login2main)
+                    viewModel.signInWithEmailAndPassword(emailStr, passStr)
+                    viewModel.userId.observe(viewLifecycleOwner) { uid ->
+                        if (uid != null) {
+                            findNavController().navigate(R.id.action_login2main)
+
+                        } else {
+                            signin.startAnimation(shake)
+
+                        }
+                    }
                 }
             }
         }

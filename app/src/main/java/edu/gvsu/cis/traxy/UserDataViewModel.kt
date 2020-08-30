@@ -1,6 +1,5 @@
 package edu.gvsu.cis.traxy
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.github.serpro69.kfaker.Faker
@@ -8,9 +7,9 @@ import org.joda.time.DateTime
 import kotlin.random.Random
 
 class UserDataViewModel : ViewModel() {
-    var _usr = MutableLiveData<String>()
+    lateinit var userId : MutableLiveData<String?>
     var _journals = MutableLiveData<MutableList<Journal>>()
-
+    val repo = TraxyRepository()
     init {
         val dataGen = Faker()
         val today = DateTime.now()
@@ -29,10 +28,14 @@ class UserDataViewModel : ViewModel() {
         }
     }
 
-    val userId
-        get() = _usr
+//    val userId
+//        get() = _usr
 
     val journals get() = _journals
+
+    fun signInWithEmailAndPassword(email:String, password:String) {
+        userId = repo.firebaseSignInWithEmail(email, password)
+    }
 
     fun addJournals(newData: List<Journal>) {
         // Create a new list when the current one is null

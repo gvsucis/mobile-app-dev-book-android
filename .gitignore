@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 secret.properties
+app/google-services.json

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.email
@@ -18,7 +19,12 @@ class SignUpFragment : Fragment() {
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
     lateinit var viewModel: UserDataViewModel
+    private lateinit var mAuth: FirebaseAuth
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,15 +63,19 @@ class SignUpFragment : Fragment() {
                     Snackbar
                         .make(email, getString(R.string.unmatch_password), Snackbar.LENGTH_LONG)
                         .show()
-
-                !pass1.contains("traxy") ->
-                    Snackbar
-                        .make(password1, getString(R.string.incorrect_password), Snackbar.LENGTH_LONG)
-                        .show()
-
                 else -> {
-                    viewModel.userId.value = emailStr
-                    findNavController().navigate(R.id.action_signup2main)
+                    mAuth.createUserWithEmailAndPassword(emailStr, pass1)
+                        .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+//                            viewModel.userId.value = emailStr
+                            findNavController().navigate(R.id.action_signup2main)
+                        } else {
+                            Snackbar
+                                .make(email, task.exception?.message.toString(),
+                                    Snackbar.LENGTH_LONG)
+                                .show()
+                        }
+                    }
                 }
             }
         }
