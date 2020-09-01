@@ -19,12 +19,7 @@ class SignUpFragment : Fragment() {
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
     lateinit var viewModel: UserDataViewModel
-    private lateinit var mAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,17 +59,15 @@ class SignUpFragment : Fragment() {
                         .make(email, getString(R.string.unmatch_password), Snackbar.LENGTH_LONG)
                         .show()
                 else -> {
-                    mAuth.createUserWithEmailAndPassword(emailStr, pass1)
-                        .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-//                            viewModel.userId.value = emailStr
+                    viewModel.signUpWithEmailAndPassword(emailStr, pass1)
+                    viewModel.userId.observe(viewLifecycleOwner) { uid ->
+                        if (uid != null)
                             findNavController().navigate(R.id.action_signup2main)
-                        } else {
+                        else
                             Snackbar
-                                .make(email, task.exception?.message.toString(),
+                                .make(email, "Unable to create account",
                                     Snackbar.LENGTH_LONG)
                                 .show()
-                        }
                     }
                 }
             }

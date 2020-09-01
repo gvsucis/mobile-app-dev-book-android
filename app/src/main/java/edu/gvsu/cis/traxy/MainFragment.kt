@@ -25,20 +25,11 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: UserDataViewModel
     private lateinit var adapter: JournalAdapter
-    private lateinit var  mAuth: FirebaseAuth
-    private lateinit var topRef: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
     }
 
-    override fun onResume() {
-        super.onResume()
-        val dbRef = FirebaseDatabase.getInstance()
-        mAuth.currentUser?.let {
-            topRef = dbRef?.getReference(it.uid)
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -102,7 +93,7 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_logout) {
-            mAuth.signOut()
+            viewModel.signOut()
             findNavController().navigate(R.id.action_logout)
             return true
         }

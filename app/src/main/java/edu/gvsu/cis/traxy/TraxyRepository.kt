@@ -18,4 +18,20 @@ class TraxyRepository {
         }
         return uidResponse
     }
+
+    fun firebaseSignUpWithEmail(email: String, password:String):MutableLiveData<String?> {
+        val uidResponse = MutableLiveData<String?>()
+        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                uidResponse.value = auth.currentUser?.uid
+            } else {
+                uidResponse.value = null
+            }
+        }
+        return uidResponse
+    }
+
+    fun firebaseSignOut() {
+        auth.signOut()
+    }
 }

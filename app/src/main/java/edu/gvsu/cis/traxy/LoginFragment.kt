@@ -26,12 +26,13 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel?.userId.observe(viewLifecycleOwner) { uid ->
-            uid?.let {
+        if (viewModel?.isUserIdInitalized()) {
+            viewModel?.userId.value.let {
                 findNavController().navigate(R.id.action_login2main)
             }
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

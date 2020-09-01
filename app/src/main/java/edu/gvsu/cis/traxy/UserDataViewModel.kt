@@ -28,13 +28,20 @@ class UserDataViewModel : ViewModel() {
         }
     }
 
-//    val userId
-//        get() = _usr
-
     val journals get() = _journals
 
+    fun isUserIdInitalized() = ::userId.isInitialized
     fun signInWithEmailAndPassword(email:String, password:String) {
         userId = repo.firebaseSignInWithEmail(email, password)
+    }
+
+    fun signUpWithEmailAndPassword(email:String, password:String) {
+        userId = repo.firebaseSignUpWithEmail(email, password)
+    }
+
+    fun signOut() {
+        repo.firebaseSignOut()
+        userId.value = null
     }
 
     fun addJournals(newData: List<Journal>) {
