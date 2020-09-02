@@ -111,8 +111,8 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
             viewModel.addJournal(Journal("key-???",
                 trip_name.text.toString(),
                 trip_location.text.toString(),
-                startDate!!,
-                endDate!!))
+                startDate?.toString()!!,
+                endDate?.toString()!!))
             findNavController().popBackStack()
         }
     }

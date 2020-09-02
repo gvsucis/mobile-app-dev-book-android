@@ -26,9 +26,9 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: UserDataViewModel
     private lateinit var adapter: JournalAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,9 +62,10 @@ class MainFragment : Fragment() {
         viewModel.journals.observe(this.viewLifecycleOwner, Observer {
             val partitioned = it
                 .map {
+                    val now = DateTime.now().toString()
                     when {
-                        it.endDate.isBeforeNow -> "Past" to it
-                        it.startDate.isAfterNow -> "Future" to it
+                        it.endDate < now  -> "Past" to it
+                        it.startDate > now -> "Future" to it
                         else -> "Current" to it
                     }
                 }.sortedBy { it.first }

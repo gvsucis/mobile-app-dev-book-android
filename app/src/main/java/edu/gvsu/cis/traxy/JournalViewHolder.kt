@@ -25,9 +25,9 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
             }
         name.text = d.name;
         location.text = d.location + " (" +
-                d.startDate.toLocalDate().toString() +
+                d.startDate.substring(0,10) +
                 " to " +
-                d.endDate.toLocalDate().toString() + ")"
+                d.endDate.substring(0,10) + ")"
     }
 }
 
