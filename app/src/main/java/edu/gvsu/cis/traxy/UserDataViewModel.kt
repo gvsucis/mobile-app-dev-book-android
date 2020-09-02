@@ -46,13 +46,13 @@ class UserDataViewModel : ViewModel() {
 
     fun addJournals(newData: List<Journal>) {
         // Create a new list when the current one is null
-        val current = _journals.value ?: mutableListOf<Journal>()
-        current.addAll(newData)
-        _journals.value = current
+//        val current = _journals.value ?: mutableListOf<Journal>()
+//        current.addAll(newData)
+//        _journals.value = current
     }
 
     fun addJournal(z: Journal) {
-        addJournals(listOf(z))
+        repo.firebaseAddJournal(z)
     }
 
     fun getJournalByKey(key: String): Journal? =
