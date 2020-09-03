@@ -28,7 +28,8 @@ class LoginFragment : Fragment() {
         super.onResume()
         if (viewModel?.isUserIdInitalized()) {
             viewModel?.userId.value.let {
-                findNavController().navigate(R.id.action_login2main)
+                if (it != null)
+                    findNavController().navigate(R.id.action_login2main)
             }
         }
     }
