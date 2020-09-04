@@ -8,12 +8,13 @@ import kotlin.random.Random
 
 class UserDataViewModel : ViewModel() {
     lateinit var userId : MutableLiveData<String?>
-    val journals = MutableLiveData<ArrayList<Journal>>()
+    lateinit var journals : FirebaseJournalLiveData
     val repo = TraxyRepository()
 
     fun isUserIdInitalized() = ::userId.isInitialized
     fun signInWithEmailAndPassword(email:String, password:String) {
-        userId = repo.firebaseSignInWithEmail(email, password, journals)
+        userId = repo.firebaseSignInWithEmail(email, password)
+        journals = repo.journalLiveData
     }
 
     fun signUpWithEmailAndPassword(email:String, password:String) {
