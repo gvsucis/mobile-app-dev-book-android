@@ -1,10 +1,10 @@
 package edu.gvsu.cis.traxy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 
-class FirebaseJournalLiveData(val topRef:DatabaseReference): LiveData<List<Journal>>() {
+class FirebaseJournalLiveData(val topRef: DatabaseReference) : LiveData<List<Journal>>() {
 
     override fun onActive() {
         topRef.addValueEventListener(valueListener)
@@ -18,8 +18,9 @@ class FirebaseJournalLiveData(val topRef:DatabaseReference): LiveData<List<Journ
         override fun onDataChange(snapshot: DataSnapshot) {
             val allJournals = ArrayList<Journal>()
             snapshot.children.forEach {
-                val jData = it.getValue(Journal::class.java) as Journal
-                allJournals.add(jData)
+                it.getValue<Journal>()?.let {
+                    allJournals.add(it)
+                }
             }
             value = allJournals
         }

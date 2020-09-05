@@ -2,12 +2,15 @@ package edu.gvsu.cis.traxy
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class TraxyRepository {
-    private val auth = FirebaseAuth.getInstance()
-    private val dbRef = FirebaseDatabase.getInstance()
+    private val auth = Firebase.auth
+    private val dbRef = Firebase.database
     private var topRef: DatabaseReference? = null
 
     val journalLiveData by lazy {
