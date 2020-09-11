@@ -1,24 +1,22 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.*
-import kotlinx.android.synthetic.main.content_sign_up.email
+import kotlinx.android.synthetic.main.fragment_sign_up.*
 import java.util.regex.Pattern
 
 class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
-    lateinit var viewModel: UserDataViewModel
+     val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,15 +26,10 @@ class SignUpFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fab_add.setOnClickListener { view ->
+        fab_add.setOnClickListener { _ ->
             val emailStr = email.text.toString()
             val pass1 = password1.text.toString()
             val pass2 = password2.text.toString()
@@ -60,7 +53,7 @@ class SignUpFragment : Fragment() {
                         .show()
                 else -> {
                     viewModel.signUpWithEmailAndPassword(emailStr, pass1)
-                    viewModel.userId.observe(viewLifecycleOwner) { uid ->
+                    viewModel.userId.observe(this.viewLifecycleOwner) { uid ->
                         if (uid != null)
                             findNavController().navigate(R.id.action_signup2main)
                         else

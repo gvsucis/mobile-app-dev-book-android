@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'net.danlew:android.joda:2.10.6.1'
+    implementation 'net.danlew:android.joda:2.10.6'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'io.github.serpro69:kotlin-faker:1.4.1'
     implementation 'com.google.android.libraries.places:places:2.3.0'

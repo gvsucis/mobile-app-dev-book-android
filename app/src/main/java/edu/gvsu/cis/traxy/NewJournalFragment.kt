@@ -3,12 +3,11 @@ package edu.gvsu.cis.traxy
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
@@ -35,7 +34,7 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
     private var isChoosingStartDate = true
     private lateinit var inputFormatter: DateTimeFormatter
     private lateinit var outputFormatter: DateTimeFormatter
-    private lateinit var viewModel: UserDataViewModel
+    private val viewModel: UserDataViewModel by activityViewModels<UserDataViewModel>()
 
     private fun dateRange(): String {
         if (startDate == null) return ""
@@ -92,7 +91,7 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
 
         }
 
-        trip_calendar.setOnDateChangeListener { calendarView, yr, mo, dy ->
+        trip_calendar.setOnDateChangeListener { _, yr, mo, dy ->
             val d:DateTime = inputFormatter.parseDateTime("$yr/${mo + 1}/$dy")
             trip_calendar.date = d.toDate().time
             if (isChoosingStartDate) {
@@ -115,11 +114,6 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
                 endDate?.toString()!!))
             findNavController().popBackStack()
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
 
     override fun onFocusChange(p0: View?, p1: Boolean) {

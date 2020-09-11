@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.regex.Pattern
 
@@ -18,7 +17,7 @@ class LoginFragment : Fragment() {
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE
     )
-    lateinit var viewModel: UserDataViewModel
+     val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +25,8 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel?.isUserIdInitalized()) {
-            viewModel?.userId.value.let {
+        if (viewModel.isUserIdInitalized()) {
+            viewModel.userId.value.let {
                 if (it != null)
                     findNavController().navigate(R.id.action_login2main)
             }
@@ -50,7 +49,7 @@ class LoginFragment : Fragment() {
         email.text.insert(0, "user@test.com")
         password.text.insert(0, "traxy1")
 
-        signin.setOnClickListener { v ->
+        signin.setOnClickListener {
             val emailStr = email.text.toString()
             val passStr = password.text.toString()
             val shake = AnimationUtils.loadAnimation(this.context, R.anim.shake)
@@ -81,10 +80,5 @@ class LoginFragment : Fragment() {
         register.setOnClickListener {
             findNavController().navigate(R.id.action_login2signup)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
 }
