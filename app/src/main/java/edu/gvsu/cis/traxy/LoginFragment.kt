@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.regex.Pattern
 
-class LoginFragment:Fragment() {
+class LoginFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
-        Pattern.CASE_INSENSITIVE)
-    lateinit var viewModel: UserDataViewModel
+        Pattern.CASE_INSENSITIVE
+    )
+    val viewModel by activityViewModels<UserDataViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,7 +30,7 @@ class LoginFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Just for quicl test of the app
-        email.text.insert(0,"user@test.com")
+        email.text.insert(0, "user@test.com")
         password.text.insert(0, "traxy1")
         signin.setOnClickListener { v ->
             val emailStr = email.text.toString()
@@ -59,8 +59,4 @@ class LoginFragment:Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
-    }
 }

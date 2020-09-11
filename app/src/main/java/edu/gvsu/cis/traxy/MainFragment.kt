@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +18,7 @@ class MainFragment : Fragment() {
     // "lateinit" is required when the variable is not initialized
     // inside a constructor
 
-    private lateinit var viewModel: UserDataViewModel
+    private val viewModel by activityViewModels<UserDataViewModel>()
     private lateinit var adapter: JournalAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +47,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
         viewModel.journals.observe(this.viewLifecycleOwner, Observer {
             val partitioned = it
                 .map {
