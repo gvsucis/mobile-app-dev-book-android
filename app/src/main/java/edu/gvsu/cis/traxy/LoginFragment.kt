@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -16,7 +17,7 @@ class LoginFragment:Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE)
-    lateinit var viewModel: UserDataViewModel
+     val viewModel by activityViewModels< UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,10 +55,5 @@ class LoginFragment:Fragment() {
         register.setOnClickListener {
             findNavController().navigate(R.id.action_login2signup)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
 }

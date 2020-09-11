@@ -1,23 +1,23 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.content_sign_up.*
-import kotlinx.android.synthetic.main.content_sign_up.email
+import kotlinx.android.synthetic.main.fragment_sign_up.*
 import java.util.regex.Pattern
 
 class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
-        Pattern.CASE_INSENSITIVE)
-    lateinit var viewModel:UserDataViewModel
+        Pattern.CASE_INSENSITIVE
+    )
+    val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,11 +25,6 @@ class SignUpFragment : Fragment() {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +55,11 @@ class SignUpFragment : Fragment() {
 
                 !pass1.contains("traxy") ->
                     Snackbar
-                        .make(password1, getString(R.string.incorrect_password), Snackbar.LENGTH_LONG)
+                        .make(
+                            password1,
+                            getString(R.string.incorrect_password),
+                            Snackbar.LENGTH_LONG
+                        )
                         .show()
 
                 else -> {
