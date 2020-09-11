@@ -1,7 +1,6 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -10,14 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.libraries.places.api.Places
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.joda.time.DateTime
-import kotlin.random.Random
 
 class MainFragment : Fragment() {
     // "lateinit" is required when the variable is not initialized
@@ -25,10 +19,6 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: UserDataViewModel
     private lateinit var adapter: JournalAdapter
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +32,10 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter {
 
-            findNavController().navigate(R.id.journal_details,
-                bundleOf("JOURNAL_KEY" to it))
+            findNavController().navigate(
+                R.id.journal_details,
+                bundleOf("JOURNAL_KEY" to it)
+            )
         }
         with(view) {
             journal_list.adapter = adapter
@@ -64,7 +56,7 @@ class MainFragment : Fragment() {
                 .map {
                     val now = DateTime.now().toString()
                     when {
-                        it.endDate < now  -> "Past" to it
+                        it.endDate < now -> "Past" to it
                         it.startDate > now -> "Future" to it
                         else -> "Current" to it
                     }

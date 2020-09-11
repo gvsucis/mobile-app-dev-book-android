@@ -1,22 +1,47 @@
 package edu.gvsu.cis.traxy
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import io.github.serpro69.kfaker.Faker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import kotlin.random.Random
 
-//import io.github.serpro69.kfaker.Faker
-//import org.joda.time.DateTime
-//import kotlin.random.Random
-
-class UserDataViewModel : ViewModel() {
+class UserDataViewModel(app: Application) : AndroidViewModel(app) {
     lateinit var userId: MutableLiveData<String?>
-    lateinit var journals: FirebaseJournalLiveData
-    val repo = TraxyRepository()
+    val repo : TraxyRepository
 
+    val journals: LiveData<List<Journal>>
+    init {
+        val dao = TraxyDB.getInstance(app).traxyDao()
+        val dataGen = Faker()
+        val today = DateTime.now()
+        val rand = Random(System.currentTimeMillis())
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.deleteAll()
+            repeat(10)  {
+                val startOn = today.plusDays(rand.nextInt(-100, 100))
+                val randomName = generateSequence { dataGen.lorem.words() }
+                    .take(7)
+                    .joinToString(" ")
+                val d = Journal(
+                    "key-$it",
+                    randomName,
+                    dataGen.address.cityWithState(),
+                    startOn.toString(),
+                    startOn.plusDays(rand.nextInt(10)).toString()
+                )
+                dao.insertJournal(d)
+            }
+        }
+        repo = TraxyRepository(dao)
+        journals = repo.journalLiveData
+    }
     fun isUserIdInitalized() = ::userId.isInitialized
     fun signInWithEmailAndPassword(email: String, password: String) {
         userId = repo.firebaseSignInWithEmail(email, password)
-        journals = repo.journalLiveData
     }
 
     fun signUpWithEmailAndPassword(email: String, password: String) {
@@ -28,16 +53,11 @@ class UserDataViewModel : ViewModel() {
         userId.value = null
     }
 
-    fun addJournals(newData: List<Journal>) {
-        // Create a new list when the current one is null
-//        val current = _journals.value ?: mutableListOf<Journal>()
-//        current.addAll(newData)
-//        _journals.value = current
+    fun addJournal(z:Journal) = viewModelScope.launch(Dispatchers.IO) {
+        repo.addJournal(z)
     }
 
-    fun addJournal(z: Journal) {
-        repo.firebaseAddJournal(z)
-    }
+
 
     fun getJournalByKey(key: String): Journal? =
         journals.value?.firstOrNull {

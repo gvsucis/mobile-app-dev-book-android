@@ -1,22 +1,14 @@
 package edu.gvsu.cis.traxy
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
-class TraxyRepository {
+class TraxyRepository(private val dao:TraxyDao) {
     private val auth = Firebase.auth
-    private val dbRef = Firebase.database
-    private var topRef: DatabaseReference? = null
 
-    val journalLiveData by lazy {
-        val userId = auth.currentUser?.uid ?: "NONE"
-        FirebaseJournalLiveData(dbRef.getReference(userId))
-    }
+    val journalLiveData = dao.getAllJournals()
 
     fun firebaseSignInWithEmail(email: String, password: String): MutableLiveData<String?> {
         val uidResponse = MutableLiveData<String?>()
@@ -24,7 +16,6 @@ class TraxyRepository {
             if (task.isSuccessful) {
                 auth.currentUser?.let {
                     uidResponse.value = it.uid
-                    topRef = dbRef.getReference(it.uid)
                 }
             } else {
                 uidResponse.value = null
@@ -51,8 +42,7 @@ class TraxyRepository {
         auth.signOut()
     }
 
-    fun firebaseAddJournal(d: Journal) {
-        topRef?.push()?.setValue(d)
+   suspend fun addJournal(d: Journal) {
+        dao.insertJournal(d)
     }
-
 }

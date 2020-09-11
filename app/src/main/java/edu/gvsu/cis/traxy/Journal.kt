@@ -1,12 +1,17 @@
 package edu.gvsu.cis.traxy
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import org.joda.time.DateTime
 import java.util.*
 
 open class ListItem() {}
 
+@Entity
 data class Journal(
-    val key: String = "", val name: String = "", val location: String = "",
+    @PrimaryKey
+    val key: String = "",
+    val name: String = "", val location: String = "",
     val startDate:String = "", val endDate: String = ""
 ) : ListItem() {}
 
