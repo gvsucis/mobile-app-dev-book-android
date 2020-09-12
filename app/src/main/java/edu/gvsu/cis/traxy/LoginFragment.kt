@@ -10,6 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
@@ -17,7 +21,7 @@ class LoginFragment : Fragment() {
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
         Pattern.CASE_INSENSITIVE
     )
-     val viewModel by activityViewModels<UserDataViewModel>()
+    val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +29,12 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.isUserIdInitalized()) {
-            viewModel.userId.value.let {
-                if (it != null)
-                    findNavController().navigate(R.id.action_login2main)
-            }
+//        if (viewModel.isUserIdInitalized()) {
+        viewModel.userId?.let {
+            if (it != null)
+                findNavController().navigate(R.id.action_login2main)
         }
+//        }
     }
 
 
@@ -64,13 +68,14 @@ class LoginFragment : Fragment() {
                         .show()
 
                 else -> {
-                    viewModel.signInWithEmailAndPassword(emailStr, passStr)
-                    viewModel.userId.observe(viewLifecycleOwner) { uid ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val uid = viewModel.signInWithEmailAndPassword(emailStr, passStr)
                         if (uid != null) {
                             findNavController().navigate(R.id.action_login2main)
-
                         } else {
-                            signin.startAnimation(shake)
+                            launch(Dispatchers.Main) {
+                                signin.startAnimation(shake)
+                            }
 
                         }
                     }

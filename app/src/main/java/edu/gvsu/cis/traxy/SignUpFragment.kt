@@ -10,13 +10,17 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.content_sign_up.*
 import kotlinx.android.synthetic.main.fragment_sign_up.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
-        Pattern.CASE_INSENSITIVE)
-     val viewModel by activityViewModels<UserDataViewModel>()
+        Pattern.CASE_INSENSITIVE
+    )
+    val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,15 +56,19 @@ class SignUpFragment : Fragment() {
                         .make(email, getString(R.string.unmatch_password), Snackbar.LENGTH_LONG)
                         .show()
                 else -> {
-                    viewModel.signUpWithEmailAndPassword(emailStr, pass1)
-                    viewModel.userId.observe(this.viewLifecycleOwner) { uid ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val uid = viewModel.signUpWithEmailAndPassword(emailStr, pass1)
                         if (uid != null)
                             findNavController().navigate(R.id.action_signup2main)
-                        else
+                        else launch(Dispatchers.Main) {
                             Snackbar
-                                .make(email, "Unable to create account",
-                                    Snackbar.LENGTH_LONG)
+                                .make(
+                                    email, "Unable to create account",
+                                    Snackbar.LENGTH_LONG
+                                )
                                 .show()
+                        }
+
                     }
                 }
             }

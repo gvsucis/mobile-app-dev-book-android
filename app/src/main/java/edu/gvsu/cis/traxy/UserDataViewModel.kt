@@ -13,7 +13,7 @@ import org.joda.time.DateTime
 import kotlin.random.Random
 
 class UserDataViewModel(app: Application) : AndroidViewModel(app) {
-    lateinit var userId: MutableLiveData<String?>
+    var userId: String? = null
     val repo : TraxyRepository
 
     val journals: LiveData<List<Journal>>
@@ -42,18 +42,20 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
         repo = TraxyRepository(dao)
         journals = repo.journalLiveData
     }
-    fun isUserIdInitalized() = ::userId.isInitialized
-    fun signInWithEmailAndPassword(email: String, password: String) {
+//    fun isUserIdInitalized() = ::userId.isInitialized
+    suspend fun signInWithEmailAndPassword(email: String, password: String): String? {
         userId = repo.firebaseSignInWithEmail(email, password)
+        return userId
     }
 
-    fun signUpWithEmailAndPassword(email: String, password: String) {
+    suspend fun signUpWithEmailAndPassword(email: String, password: String):String? {
         userId = repo.firebaseSignUpWithEmail(email, password)
+        return userId
     }
 
     fun signOut() {
         repo.firebaseSignOut()
-        userId.value = null
+        userId = null
     }
 
     fun addJournal(z:Journal) = viewModelScope.launch(Dispatchers.IO) {

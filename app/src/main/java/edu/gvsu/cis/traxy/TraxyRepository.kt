@@ -3,6 +3,8 @@ package edu.gvsu.cis.traxy
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 
 class TraxyRepository(private val dao:TraxyDao) {
@@ -10,31 +12,19 @@ class TraxyRepository(private val dao:TraxyDao) {
 
     val journalLiveData = dao.getAllJournals()
 
-    fun firebaseSignInWithEmail(email: String, password: String): MutableLiveData<String?> {
-        val uidResponse = MutableLiveData<String?>()
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                auth.currentUser?.let {
-                    uidResponse.value = it.uid
-                }
-            } else {
-                uidResponse.value = null
-            }
+    suspend fun firebaseSignInWithEmail(email: String, password: String): String? {
+        try {
+            val z = auth.signInWithEmailAndPassword(email, password).await()
+            return z.user?.uid
+
+        } catch (e: Exception) {
+            return null
         }
-        return uidResponse
     }
 
-    fun firebaseSignUpWithEmail(email: String, password: String): MutableLiveData<String?> {
-        val uidResponse = MutableLiveData<String?>()
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            uidResponse.value = null
-            if (task.isSuccessful) {
-                auth.currentUser?.let {
-                    uidResponse.value = it.uid
-                }
-            }
-        }
-        return uidResponse
+    suspend fun firebaseSignUpWithEmail(email: String, password: String): String? {
+        val z = auth.createUserWithEmailAndPassword(email, password).await()
+        return z.user?.uid
     }
 
 
