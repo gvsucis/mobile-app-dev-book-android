@@ -51,7 +51,7 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 //        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
-        viewModel.journals.observe(this.viewLifecycleOwner, Observer {
+        viewModel.remoteJournals.observe(this.viewLifecycleOwner, Observer {
             val partitioned = it
                 .map {
                     val now = DateTime.now().toString()

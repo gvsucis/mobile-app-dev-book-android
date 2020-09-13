@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
@@ -29,12 +28,10 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        if (viewModel.isUserIdInitalized()) {
         viewModel.userId?.let {
             if (it != null)
                 findNavController().navigate(R.id.action_login2main)
         }
-//        }
     }
 
 
@@ -78,6 +75,7 @@ class LoginFragment : Fragment() {
                             }
 
                         }
+
                     }
                 }
             }

@@ -18,13 +18,12 @@ import java.util.regex.Pattern
 class SignUpFragment : Fragment() {
     val EMAIL_REGEX = Pattern.compile(
         "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}",
-        Pattern.CASE_INSENSITIVE
-    )
+        Pattern.CASE_INSENSITIVE)
     val viewModel by activityViewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
 
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
@@ -67,8 +66,8 @@ class SignUpFragment : Fragment() {
                                     Snackbar.LENGTH_LONG
                                 )
                                 .show()
-                        }
 
+                        }
                     }
                 }
             }

@@ -1,33 +1,46 @@
 package edu.gvsu.cis.traxy
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
+import com.google.firebase.firestore.*
+import com.google.firebase.firestore.EventListener
 
-class FirebaseJournalLiveData(val topRef: DatabaseReference) : LiveData<List<Journal>>() {
+class FirebaseJournalLiveData(val topRef: CollectionReference) : LiveData<List<Journal>>() {
 
+    lateinit var listener: ListenerRegistration
     override fun onActive() {
-        topRef.addValueEventListener(valueListener)
+        listener = topRef.addSnapshotListener(docListener)
+//        topRef.addSnapshotListener { s,e ->
+//            if (e != null)
+//                return@addSnapshotListener
+//            s?.let {
+//                val all = ArrayList<Journal>()
+//                s.documents.forEach {
+//                    it.toObject(Journal::class.java)?.let {
+//                        all.add(it)
+//                    }
+//                }
+//                postValue(all)
+//            }
+//        }
     }
 
     override fun onInactive() {
-        topRef.removeEventListener(valueListener)
+        listener.remove()
     }
 
-    val valueListener = object : ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            val allJournals = ArrayList<Journal>()
-            snapshot.children.forEach {
-                it.getValue<Journal>()?.let {
-                    allJournals.add(it)
-                }
+
+    val docListener = EventListener<QuerySnapshot>() { snapShot, error ->
+        if (error != null) {
+            return@EventListener
+        }
+        snapShot?.let {
+            val all = ArrayList<Journal>()
+            it.documentChanges.forEach {
+                Log.d("Traxy", "${it.type.name} => ${it.document.data}")
+                all.add(it.document.toObject(Journal::class.java))
             }
-            value = allJournals
+            postValue(all)
         }
-
-        override fun onCancelled(error: DatabaseError) {
-            topRef.removeEventListener(this)
-        }
-
     }
 }
