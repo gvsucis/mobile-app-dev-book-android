@@ -37,8 +37,9 @@ class FirebaseJournalLiveData(val topRef: CollectionReference) : LiveData<List<J
         snapShot?.let {
             val all = ArrayList<Journal>()
             it.documentChanges.forEach {
-                Log.d("Traxy", "${it.type.name} => ${it.document.data}")
-                all.add(it.document.toObject(Journal::class.java))
+                val journal = it.document.toObject(Journal::class.java)
+                journal.key = it.document.id
+                all.add(journal)
             }
             postValue(all)
         }

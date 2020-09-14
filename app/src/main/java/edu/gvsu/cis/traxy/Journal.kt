@@ -10,7 +10,7 @@ open class ListItem() {}
 @Entity
 data class Journal(
     @PrimaryKey
-    val key: String = "",
+    var key: String = "",
     val name: String = "", val location: String = "",
     val startDate:String = "", val endDate: String = ""
 ) : ListItem() {}

@@ -29,8 +29,8 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.userId?.let {
-            if (it != null)
-                findNavController().navigate(R.id.action_login2main)
+            val action = LoginFragmentDirections.actionLogin2main("")
+            findNavController().navigate(action)
         }
     }
 
@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
@@ -68,7 +68,8 @@ class LoginFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val uid = viewModel.signInWithEmailAndPassword(emailStr, passStr)
                         if (uid != null) {
-                            findNavController().navigate(R.id.action_login2main)
+                            val action = LoginFragmentDirections.actionLogin2main(uid)
+                            findNavController().navigate(action)
                         } else {
                             launch(Dispatchers.Main) {
                                 signin.startAnimation(shake)
@@ -81,7 +82,8 @@ class LoginFragment : Fragment() {
             }
         }
         register.setOnClickListener {
-            findNavController().navigate(R.id.action_login2signup)
+            val action = LoginFragmentDirections.actionLogin2signup()
+            findNavController().navigate(action)
         }
     }
 }

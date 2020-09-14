@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_main.view.*
@@ -19,6 +20,7 @@ class MainFragment : Fragment() {
 
     private val viewModel by activityViewModels<UserDataViewModel>()
     private lateinit var adapter: JournalAdapter
+    val args by navArgs<MainFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,12 +32,9 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter {
-
-            findNavController().navigate(
-                R.id.journal_details,
-                bundleOf("JOURNAL_KEY" to it)
-            )
+        adapter = JournalAdapter { key,name ->
+            val action = MainFragmentDirections.journalDetails(key, name)
+            findNavController().navigate(action)
         }
         with(view) {
             journal_list.adapter = adapter
@@ -44,7 +43,8 @@ class MainFragment : Fragment() {
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
         fab_add.setOnClickListener {
-            findNavController().navigate(R.id.action_new_journal)
+            val action = MainFragmentDirections.actionLogout()
+            findNavController().navigate(action)
         }
     }
 

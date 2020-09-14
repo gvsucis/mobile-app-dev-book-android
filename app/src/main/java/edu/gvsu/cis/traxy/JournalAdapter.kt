@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class JournalAdapter(val listener: ((String) -> Unit)? = null) :
+class JournalAdapter(val listener: ((String,String) -> Unit)? = null) :
     ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
 
     private val JOURNAL_TYPE = 1

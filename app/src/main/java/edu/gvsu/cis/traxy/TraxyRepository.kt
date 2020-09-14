@@ -14,7 +14,6 @@ class TraxyRepository(private val dao: TraxyDao) {
     val journalLocalLiveData = dao.getAllJournals()
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
-        Log.d("Traxy", ": Where are we?")
         val coll = dbStore.collection("user/$userId/journals")
         FirebaseJournalLiveData(coll)
     }
@@ -23,7 +22,6 @@ class TraxyRepository(private val dao: TraxyDao) {
         try {
             val z = auth.signInWithEmailAndPassword(email, password).await()
             if (z.user != null) {
-//                docRef = dbStore.collection("user").document(z.user!!.uid)
                 docRef = dbStore.document("user/${z.user!!.uid}")
             }
             return z.user?.uid

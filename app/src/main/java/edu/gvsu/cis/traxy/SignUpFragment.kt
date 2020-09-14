@@ -57,8 +57,10 @@ class SignUpFragment : Fragment() {
                 else -> {
                     CoroutineScope(Dispatchers.IO).launch {
                         val uid = viewModel.signUpWithEmailAndPassword(emailStr, pass1)
-                        if (uid != null)
-                            findNavController().navigate(R.id.action_signup2main)
+                        if (uid != null) {
+                            val action = SignUpFragmentDirections.actionSignup2main(uid)
+                            findNavController().navigate(action)
+                        }
                         else launch(Dispatchers.Main) {
                             Snackbar
                                 .make(

@@ -31,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Key"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +39,7 @@
                 android:id="@+id/key_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/key_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 tools:text="Key goes here" />
@@ -47,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.15" />
+                app:layout_constraintGuide_percent="0.05" />
 
             <TextView
                 android:id="@+id/name_label"
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
                 app:layout_constraintTop_toBottomOf="@+id/key_label" />
 
@@ -64,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Location"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
                 app:layout_constraintTop_toBottomOf="@+id/name_label" />
 
@@ -72,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/name_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 tools:text="Name goes here" />
@@ -80,6 +85,7 @@
                 android:id="@+id/location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/location_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 tools:text="Location goes here" />
@@ -90,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Start date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
                 app:layout_constraintTop_toBottomOf="@+id/location_label" />
 
@@ -97,6 +104,7 @@
                 android:id="@+id/start_date_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/start_date_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 tools:text="Start date goes here" />
@@ -107,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="End date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="@+id/left_guidelinr"
                 app:layout_constraintTop_toBottomOf="@+id/start_date_label" />
 
@@ -114,6 +123,7 @@
                 android:id="@+id/end_date_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/end_date_label"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 tools:text="End date goes here" />
