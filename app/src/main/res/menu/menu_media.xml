@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/ic_baseline_mic_24"
+        android:title="@string/audio_icon" />
+    <item
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="@string/video_icon" />
+    <item
+        android:icon="@drawable/ic_baseline_camera_alt_24"
+        android:title="@string/camera_icon" />
+    <item
+        android:icon="@drawable/ic_baseline_photo_album_24"
+        android:title="@string/photo_icon" />
+    <item
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="@string/edit_icon" />
+
+
+</menu>

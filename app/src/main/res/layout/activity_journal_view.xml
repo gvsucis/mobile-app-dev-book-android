@@ -22,12 +22,12 @@
 
     <include layout="@layout/content_journal_view" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fab_fabDrawable="@drawable/ic_baseline_add_24"
+        app:fab_menu="@menu/menu_media"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

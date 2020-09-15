@@ -28,4 +28,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_journal_view">JournalViewActivity</string>
+    <string name="audio_icon">Audio</string>
+    <string name="video_icon">Video</string>
+    <string name="camera_icon">Camera</string>
+    <string name="photo_icon">Photo</string>
+    <string name="edit_icon">Text</string>
 </resources>

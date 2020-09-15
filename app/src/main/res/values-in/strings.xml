@@ -24,4 +24,9 @@
     <string name="title_activity_main">Laman Utama</string>
     <string name="empty_password">Wajib ketikkan kata sandi</string>
     <string name="unmatch_password">Kata sandi haru sama</string>
+    <string name="audio_icon">Audio</string>
+    <string name="video_icon">Video</string>
+    <string name="camera_icon">Camera</string>
+    <string name="photo_icon">Photo</string>
+    <string name="edit_icon">Text</string>
 </resources>
