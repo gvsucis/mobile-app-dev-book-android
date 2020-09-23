@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
+    <item android:id="@+id/add_audio"
         android:icon="@drawable/ic_baseline_mic_24"
         android:title="@string/audio_icon" />
-    <item
+    <item android:id="@+id/add_video"
         android:icon="@drawable/ic_baseline_videocam_24"
         android:title="@string/video_icon" />
-    <item
+    <item android:id="@+id/add_photo_from_camera"
         android:icon="@drawable/ic_baseline_camera_alt_24"
         android:title="@string/camera_icon" />
-    <item
+    <item android:id="@+id/add_photo_from_album"
         android:icon="@drawable/ic_baseline_photo_album_24"
         android:title="@string/photo_icon" />
-    <item
+    <item android:id="@+id/add_text"
         android:icon="@drawable/ic_baseline_edit_24"
         android:title="@string/edit_icon" />
 
