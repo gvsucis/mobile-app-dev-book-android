@@ -2,7 +2,6 @@ package edu.gvsu.cis.traxy
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -22,6 +21,7 @@ import java.io.File
 class JournalViewFragment : Fragment() {
 
     val CAPTURE_PHOTO_REQUEST = 0xC001;
+    val CAPTURE_VIDEO_REQUEST = 0xC002;
     val mediaModel by activityViewModels<MediaViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +44,7 @@ class JournalViewFragment : Fragment() {
                         val photoUri = FileProvider.getUriForFile(requireContext(),
                             "${requireActivity().packageName}.provider", photoFile)
                         capture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                        mediaModel.photoUri.value = photoUri
+                        mediaModel.mediaUri.value = photoUri
                         startActivityForResult(capture, CAPTURE_PHOTO_REQUEST)
                     }
                 }
@@ -53,7 +53,18 @@ class JournalViewFragment : Fragment() {
 //                    findNavController().navigate(R.id.action_to_mediaDetails)
                 }
 
-                R.id.add_video -> println("Add video")
+                R.id.add_video -> {
+                    val capture = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+                    capture.resolveActivity(requireActivity().packageManager)?.let {
+                        val videoFile = createFileName("traxypic", ".mp4")
+                        mediaModel.mediaFile.value = videoFile
+                        val videoUri = FileProvider.getUriForFile(requireContext(),
+                            "${requireActivity().packageName}.provider", videoFile)
+                        capture.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+                        mediaModel.mediaUri.value = videoUri
+                        startActivityForResult(capture, CAPTURE_VIDEO_REQUEST)
+                    }
+                }
                 R.id.add_text -> {
                 }
             }
@@ -62,12 +73,8 @@ class JournalViewFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            CAPTURE_PHOTO_REQUEST -> {
+            CAPTURE_PHOTO_REQUEST, CAPTURE_VIDEO_REQUEST -> {
                 if (resultCode == RESULT_OK) {
-//                    val thumbnail = data?.extras?.get("data") as Bitmap?
-//                    thumbnail?.let {
-//                        photo_view.setImageBitmap(it)
-//                    }
                     findNavController().navigate(R.id.action_to_mediaDetails)
                 }
             }

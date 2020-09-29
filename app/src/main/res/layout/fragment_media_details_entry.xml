@@ -8,8 +8,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:id="@+id/photo_view"
+    <FrameLayout android:id="@+id/media_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="TODO"
@@ -17,7 +16,19 @@
         app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/date_time"
@@ -83,8 +94,8 @@
         android:clickable="true"
         android:src="@drawable/ic_baseline_done_24"
         app:fabSize="auto"
-        app:layout_constraintBottom_toBottomOf="@+id/photo_view"
+        app:layout_constraintBottom_toBottomOf="@+id/media_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photo_view" />
+        app:layout_constraintTop_toBottomOf="@+id/media_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

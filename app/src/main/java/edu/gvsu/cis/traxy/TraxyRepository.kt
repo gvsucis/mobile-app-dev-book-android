@@ -1,5 +1,6 @@
 package edu.gvsu.cis.traxy
 
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
@@ -11,7 +12,9 @@ import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.InputStream
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -76,18 +79,28 @@ object TraxyRepository {
 
     suspend fun uploadMediaFile(mediaUri: Uri, mediaFile:File): String? {
         userMediaStore?.let {
-            val fileName = mediaUri.lastPathSegment
-            val ref = it.child("photos/")
-                .child(fileName!!)
-            val mediaTask = it.child("photos/" + mediaUri.lastPathSegment)
-                .putFile(mediaUri)
+            val fileName = mediaUri.lastPathSegment!!
+            val dirName = if (fileName.endsWith(".mp4")) "videos/" else "photos/"
+            val mediaRef = it.child(dirName).child(fileName)
+            Log.d("Hans-Traxy", "uploadMediaFile: Uploading media as ${mediaRef.path}")
+            val mediaTask = mediaRef.putFile(mediaUri)
             mediaTask.await()
             mediaFile.delete()
-            return ref.downloadUrl.await().path
+            return mediaRef.downloadUrl.await().path
         }
         return null
     }
 
+    suspend fun uploadMediaContent(media:ByteArray, pathName:String): String? {
+        userMediaStore?.let {
+            val mediaRef =it.child(pathName)
+            val mediaTask = mediaRef.putBytes(media)
+            mediaTask.await()
+            return mediaRef.downloadUrl.await().path
+        }
+        return null
+    }
+    
     fun addMediaEntry(key: String, m: JournalMedia) {
         docRef?.let {
             val mediaData = hashMapOf(

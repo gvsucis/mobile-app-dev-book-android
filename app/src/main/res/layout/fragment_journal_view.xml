@@ -7,16 +7,27 @@
     tools:context=".JournalViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/temporary_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="List of Media Entries Here"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/photo_view"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/traxy_logo"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toBottomOf="@+id/temporary_text"
+        tools:srcCompat="@drawable/traxy_logo" />
 
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial
         android:id="@+id/media_fab"
