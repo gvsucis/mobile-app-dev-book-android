@@ -100,7 +100,7 @@ object TraxyRepository {
         }
         return null
     }
-    
+
     fun addMediaEntry(key: String, m: JournalMedia) {
         docRef?.let {
             val mediaData = hashMapOf(

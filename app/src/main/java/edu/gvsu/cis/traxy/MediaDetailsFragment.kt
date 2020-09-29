@@ -62,6 +62,8 @@ class MediaDetailsFragment : Fragment() {
         }
         confirm_fab.setOnClickListener {
             mediaModel.mediaCaption.value = caption.text.toString()
+            upload_progress.visibility = View.VISIBLE
+            upload_progress.animate()
             CoroutineScope(Dispatchers.IO).launch {
                 val mediaObj = JournalMedia(
                     caption = caption.text.toString(),
@@ -70,6 +72,7 @@ class MediaDetailsFragment : Fragment() {
                     lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0,
                     lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
+                upload_progress.visibility = View.INVISIBLE
                 Snackbar.make(confirm_fab, "Media uploaded...", Snackbar.LENGTH_LONG ).show()
 //                findNavController().popBackStack()
             }
