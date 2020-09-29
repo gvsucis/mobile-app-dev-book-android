@@ -12,18 +12,15 @@ import kotlin.random.Random
 
 class UserDataViewModel(app: Application) : AndroidViewModel(app) {
     var userId: String? = null
-    val repo : TraxyRepository
+    val repo = TraxyRepository()
     lateinit var remoteJournals: LiveData<List<Journal>>
-    val localJournals: LiveData<List<Journal>>
 
     init {
-        val dao = TraxyDB.getInstance(app).traxyDao()
         val dataGen = Faker()
         val today = DateTime.now()
         val rand = Random(System.currentTimeMillis())
 //        CoroutineScope(Dispatchers.IO).launch {
 //            dao.deleteAll()
-        repo = TraxyRepository(dao)
         repeat(10) {
             val startOn = today.plusDays(rand.nextInt(-100, 100))
             val randomName = generateSequence { dataGen.lorem.words() }
@@ -40,7 +37,6 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
             repo.addJournal(d)
         }
 //        }
-        localJournals = repo.journalLocalLiveData
     }
 
     suspend fun signInWithEmailAndPassword(email: String, password: String): String? {
@@ -66,7 +62,7 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
 
 
     fun getJournalByKey(key: String): Journal? =
-        localJournals.value?.firstOrNull {
+        remoteJournals.value?.firstOrNull {
             print("Where are we ${it.key}")
             it.key == key
         }

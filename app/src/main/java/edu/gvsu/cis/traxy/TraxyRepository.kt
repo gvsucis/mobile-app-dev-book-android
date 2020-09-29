@@ -7,11 +7,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class TraxyRepository(private val dao: TraxyDao) {
+class TraxyRepository() {
     private val auth = Firebase.auth
     private val dbStore = Firebase.firestore
     private var docRef: DocumentReference? = null
-    val journalLocalLiveData = dao.getAllJournals()
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")

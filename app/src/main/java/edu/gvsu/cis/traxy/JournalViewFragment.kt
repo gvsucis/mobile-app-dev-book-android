@@ -4,17 +4,25 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_journal_view.*
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import java.io.File
 
 
 class JournalViewFragment : Fragment() {
 
     val CAPTURE_PHOTO_REQUEST = 0xC001;
+    val mediaModel by activityViewModels<MediaViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -29,18 +37,24 @@ class JournalViewFragment : Fragment() {
             when (itemId) {
                 R.id.add_audio -> println("Add audio")
                 R.id.add_photo_from_camera -> {
-                    println("Add photo from camera")
                     val capture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     capture.resolveActivity(requireActivity().packageManager)?.let {
+                        val photoFile = createFileName("traxypic", ".jpg")
+                        val photoUri = FileProvider.getUriForFile(requireContext(),
+                            "${requireActivity().packageName}.provider", photoFile)
+                        capture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                        mediaModel.photoUri.value = photoUri
                         startActivityForResult(capture, CAPTURE_PHOTO_REQUEST)
                     }
                 }
-                R.id.add_photo_from_album -> println("Add photo from album")
+                R.id.add_photo_from_album -> {
+                    println("Add photo from album")
+//                    findNavController().navigate(R.id.action_to_mediaDetails)
+                }
+
                 R.id.add_video -> println("Add video")
                 R.id.add_text -> {
                 }
-
-
             }
         }
     }
@@ -49,15 +63,25 @@ class JournalViewFragment : Fragment() {
         when (requestCode) {
             CAPTURE_PHOTO_REQUEST -> {
                 if (resultCode == RESULT_OK) {
-                    val thumbnail = data?.extras?.get("data") as Bitmap?
-                    thumbnail?.let {
-                        photo_view.setImageBitmap(it)
-                    }
+//                    val thumbnail = data?.extras?.get("data") as Bitmap?
+//                    thumbnail?.let {
+//                        photo_view.setImageBitmap(it)
+//                    }
+                    findNavController().navigate(R.id.action_to_mediaDetails)
                 }
             }
             else -> {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
+    }
+
+    private fun createFileName(prefix: String, ext: String): File {
+        val now = DateTime.now()
+        val fmt = DateTimeFormat.forPattern("yyyyMMdd-HHmmss")
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val media = File.createTempFile("${prefix}-" + fmt.print(now),
+            ext, storageDir)
+        return media
     }
 }
