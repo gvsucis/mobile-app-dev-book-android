@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 class UserDataViewModel(app: Application) : AndroidViewModel(app) {
     var userId: String? = null
-    val repo = TraxyRepository()
+
     lateinit var remoteJournals: LiveData<List<Journal>>
 
     init {
@@ -34,30 +34,30 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
                 startOn.plusDays(rand.nextInt(10)).toString()
             )
 //                dao.insertJournal(d)
-            repo.addJournal(d)
+            TraxyRepository.addJournal(d)
         }
 //        }
     }
 
     suspend fun signInWithEmailAndPassword(email: String, password: String): String? {
-        val userId = repo.firebaseSignInWithEmail(email, password)
-        remoteJournals = repo.journalCloudLiveData
+        val userId = TraxyRepository.firebaseSignInWithEmail(email, password)
+        remoteJournals = TraxyRepository.journalCloudLiveData
         return userId
     }
 
     suspend fun signUpWithEmailAndPassword(email: String, password: String):String? {
-        repo.firebaseSignUpWithEmail(email, password)
-        remoteJournals = repo.journalCloudLiveData
+        TraxyRepository.firebaseSignUpWithEmail(email, password)
+        remoteJournals = TraxyRepository.journalCloudLiveData
         return userId
     }
 
     fun signOut() {
-        repo.firebaseSignOut()
+        TraxyRepository.firebaseSignOut()
         userId = null
     }
 
     fun addJournal(z: Journal) = viewModelScope.launch(Dispatchers.IO) {
-        repo.addJournal(z)
+        TraxyRepository.addJournal(z)
     }
 
 

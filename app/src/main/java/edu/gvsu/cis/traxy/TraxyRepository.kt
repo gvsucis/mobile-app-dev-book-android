@@ -1,16 +1,25 @@
 package edu.gvsu.cis.traxy
 
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageMetadata
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
-class TraxyRepository() {
+object TraxyRepository {
     private val auth = Firebase.auth
     private val dbStore = Firebase.firestore
+    private val storageRef = Firebase.storage
     private var docRef: DocumentReference? = null
+    private var userMediaStore: StorageReference? = null
+
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")
@@ -22,6 +31,7 @@ class TraxyRepository() {
             val z = auth.signInWithEmailAndPassword(email, password).await()
             if (z.user != null) {
                 docRef = dbStore.document("user/${z.user!!.uid}")
+                userMediaStore = storageRef.getReference(z.user!!.uid)
             }
             return z.user?.uid
 
@@ -34,6 +44,7 @@ class TraxyRepository() {
         val z = auth.createUserWithEmailAndPassword(email, password).await()
         if (z.user != null) {
             docRef = dbStore.collection("user").document(z.user!!.uid)
+            userMediaStore = storageRef.getReference(z.user!!.uid)
             return z.user?.uid
         } else {
             return null
@@ -60,6 +71,39 @@ class TraxyRepository() {
                 }.addOnFailureListener {
                     Log.d("Traxy", "addJournal: can't add")
                 }
+        }
+    }
+
+    suspend fun uploadMediaFile(mediaUri: Uri, mediaFile:File): String? {
+        userMediaStore?.let {
+            val fileName = mediaUri.lastPathSegment
+            val ref = it.child("photos/")
+                .child(fileName!!)
+            val mediaTask = it.child("photos/" + mediaUri.lastPathSegment)
+                .putFile(mediaUri)
+            mediaTask.await()
+            mediaFile.delete()
+            return ref.downloadUrl.await().path
+        }
+        return null
+    }
+
+    fun addMediaEntry(key: String, m: JournalMedia) {
+        docRef?.let {
+            val mediaData = hashMapOf(
+                "type" to m.type.ordinal,
+                "caption" to m.caption,
+                "date" to m.date,
+                "url" to m.url,
+                "lat" to m.lat,
+                "lng" to m.lng
+            )
+            it
+                .collection("journals")
+                .document(key)
+                .collection("media")
+                .add(mediaData)
+
         }
     }
 }

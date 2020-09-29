@@ -58,6 +58,7 @@ dependencies {
     // Can't upgrade to fireestore-ktx 21.5.0 or 21.6.0
     // (Duplicate class jetified-protobuf-javalite-3.11.0 and jetified-protobuf-lite-3.0.1)
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'androidx.room:room-ktx:2.2.5'
     implementation 'com.github.kobakei:MaterialFabSpeedDial:2.0.0'

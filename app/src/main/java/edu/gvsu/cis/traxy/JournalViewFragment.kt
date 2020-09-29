@@ -40,6 +40,7 @@ class JournalViewFragment : Fragment() {
                     val capture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     capture.resolveActivity(requireActivity().packageManager)?.let {
                         val photoFile = createFileName("traxypic", ".jpg")
+                        mediaModel.mediaFile.value = photoFile
                         val photoUri = FileProvider.getUriForFile(requireContext(),
                             "${requireActivity().packageName}.provider", photoFile)
                         capture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
