@@ -7,27 +7,17 @@
     tools:context=".JournalViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/temporary_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="List of Media Entries Here"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/photo_view"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="TODO"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/media_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/temporary_text"
-        tools:srcCompat="@drawable/traxy_logo" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="5"
+        tools:listitem="@layout/media_item" />
 
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial
         android:id="@+id/media_fab"
@@ -38,6 +28,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </io.github.kobakei.materialfabspeeddial.FabSpeedDial>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

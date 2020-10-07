@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.api.LogDescriptor
+import com.google.firebase.firestore.Query
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -53,5 +54,9 @@ class MediaViewModel : ViewModel() {
 
         }
         TraxyRepository.addMediaEntry(journalKey.value ?: "NO-KEY", media)
+    }
+
+    fun mediaQuery() : Query {
+        return TraxyRepository.getMediaQuery(journalKey.value!!)
     }
 }

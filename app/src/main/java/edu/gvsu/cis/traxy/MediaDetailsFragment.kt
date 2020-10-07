@@ -68,7 +68,7 @@ class MediaDetailsFragment : Fragment() {
                 val mediaObj = JournalMedia(
                     caption = caption.text.toString(),
                     date = date_time.text.toString(),
-                    type = MediaType.PHOTO,
+                    type = MediaType.PHOTO.ordinal,
                     lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0,
                     lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)

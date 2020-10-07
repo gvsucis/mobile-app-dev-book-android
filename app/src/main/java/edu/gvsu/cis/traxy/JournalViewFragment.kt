@@ -11,7 +11,11 @@ import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_journal_view.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -23,6 +27,7 @@ class JournalViewFragment : Fragment() {
     val CAPTURE_PHOTO_REQUEST = 0xC001;
     val CAPTURE_VIDEO_REQUEST = 0xC002;
     val mediaModel by activityViewModels<MediaViewModel>()
+    private lateinit var adapter: FirestoreRecyclerAdapter<JournalMedia,JournalMediaViewHolder>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -69,6 +74,15 @@ class JournalViewFragment : Fragment() {
                 }
             }
         }
+        mediaModel.journalKey.observe(this.viewLifecycleOwner, Observer {
+            val option = FirestoreRecyclerOptions.Builder<JournalMedia>()
+                .setLifecycleOwner(viewLifecycleOwner)
+                .setQuery(mediaModel.mediaQuery(), JournalMedia::class.java)
+                .build()
+            adapter = JournalMediaAdapter(option)
+            media_list.adapter = adapter
+            media_list.layoutManager = LinearLayoutManager(requireContext())
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
