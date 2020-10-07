@@ -63,18 +63,27 @@ class MediaDetailsFragment : Fragment() {
         confirm_fab.setOnClickListener {
             mediaModel.mediaCaption.value = caption.text.toString()
             upload_progress.visibility = View.VISIBLE
+            upload_progress.visibility = View.INVISIBLE
             upload_progress.animate()
+            var mType = MediaType.TEXT
+            mediaUri?.lastPathSegment?.let {
+                when {
+                    it.endsWith(".mp4") -> mType = MediaType.VIDEO
+                    else -> mType = MediaType.PHOTO
+                }
+            }
             CoroutineScope(Dispatchers.IO).launch {
                 val mediaObj = JournalMedia(
                     caption = caption.text.toString(),
                     date = date_time.text.toString(),
-                    type = MediaType.PHOTO.ordinal,
+                    type = mType.ordinal,
                     lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0,
                     lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
-                upload_progress.visibility = View.INVISIBLE
-                Snackbar.make(confirm_fab, "Media uploaded...", Snackbar.LENGTH_LONG ).show()
-//                findNavController().popBackStack()
+                launch(Dispatchers.Main) {
+                    Snackbar.make(view, "Media uploaded...", Snackbar.LENGTH_LONG ).show()
+                    findNavController().popBackStack()
+                }
             }
         }
     }

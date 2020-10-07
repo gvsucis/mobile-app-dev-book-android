@@ -87,7 +87,7 @@ object TraxyRepository {
             val mediaTask = mediaRef.putFile(mediaUri)
             mediaTask.await()
             mediaFile.delete()
-            return mediaRef.downloadUrl.await().path
+            return mediaRef.downloadUrl.await().toString()
         }
         return null
     }
@@ -97,14 +97,14 @@ object TraxyRepository {
             val mediaRef =it.child(pathName)
             val mediaTask = mediaRef.putBytes(media)
             mediaTask.await()
-            return mediaRef.downloadUrl.await().path
+            return mediaRef.downloadUrl.await().toString()
         }
         return null
     }
 
     fun addMediaEntry(key: String, m: JournalMedia) {
         docRef?.let {
-            val mediaData = hashMapOf(
+            var mediaData = hashMapOf(
                 "type" to m.type,
                 "caption" to m.caption,
                 "date" to m.date,
@@ -112,12 +112,13 @@ object TraxyRepository {
                 "lat" to m.lat,
                 "lng" to m.lng
             )
+            if (m.type == MediaType.VIDEO.ordinal)
+                mediaData["thumbnailUrl"] = m.thumbnailUrl
             it
                 .collection("journals")
                 .document(key)
                 .collection("media")
                 .add(mediaData)
-
         }
     }
 
