@@ -18,13 +18,13 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         location = v.findViewById(R.id.location)
     }
 
-    public fun bindTo(d: Journal, listener: ((String,String) -> Unit)?) {
+    public fun bindTo(d: Journal, listener: ((Journal) -> Unit)?) {
         if (listener != null)
             parentView.setOnClickListener {
-                listener(d.key, d.name)
+                listener(d)
             }
         name.text = d.name;
-        location.text = d.location + " (" +
+        location.text = d.address + " (" +
                 d.startDate.substring(0,10) +
                 " to " +
                 d.endDate.substring(0,10) + ")"

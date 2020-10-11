@@ -3,19 +3,24 @@ package edu.gvsu.cis.traxy
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.api.model.Place
-import com.google.api.LogDescriptor
 import com.google.firebase.firestore.Query
+import com.squareup.okhttp.Dispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 
 //class MediaViewModel(app:Application): AndroidViewModel(app) {
 class MediaViewModel : ViewModel() {
 
-    val journalKey = MutableLiveData<String>()
+//    val journalKey = MutableLiveData<String>()
+    val selectedJournal= MutableLiveData<Journal>()
+    val selectedMedia = MutableLiveData<JournalMedia>()
+    //    val mediaKey = MutableLiveData<String>()
     val mediaUri = MutableLiveData<Uri>()
     val mediaFile = MutableLiveData<File>()
     val mediaDate = MutableLiveData<String>()
@@ -32,13 +37,12 @@ class MediaViewModel : ViewModel() {
                 // Get the first frame
                 val metadataRetriever = MediaMetadataRetriever()
                 metadataRetriever.setDataSource(it.absolutePath)
-                val thumbImg:Bitmap = metadataRetriever.getFrameAtTime(0)
+                val thumbImg: Bitmap = metadataRetriever.getFrameAtTime(0)
                 metadataRetriever.release()
 
                 // Specify the path to store it in the cloud
                 val thumbImgPath = "photos/" + it.name
                     .replace(".mp4", "-thumb.jpg")
-                Log.d("Hans-Traxy", "addMediaEntry: Uploading thumbnail as $thumbImgPath")
                 // Convert to byte array and upload
                 val byteOutputStream = ByteArrayOutputStream()
                 thumbImg.compress(Bitmap.CompressFormat.JPEG,
@@ -53,10 +57,25 @@ class MediaViewModel : ViewModel() {
             }
 
         }
-        TraxyRepository.addMediaEntry(journalKey.value ?: "NO-KEY", media)
+        TraxyRepository.addMediaEntry(selectedJournal.value?.key ?: "NO-KEY", media)
     }
 
-    fun mediaQuery() : Query {
-        return TraxyRepository.getMediaQuery(journalKey.value!!)
-    }
+    fun mediaQuery(): Query =
+        TraxyRepository.getMediaQuery(selectedJournal.value?.key ?: "NO-KEY")
+
+//    fun getJournalByKey(key:String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            TraxyRepository.getJournalData(key).also {
+//                selectedJournal.postValue(it)
+//            }
+//        }
+//    }
+//    fun getJournalMediaByKey(key: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            TraxyRepository.getMediaEntry(selectedJournal.value?.key ?: "NO-KEY", key)?.also {
+//                selectedMedia.postValue (it)
+//            }
+//        }
+//    }
+
 }

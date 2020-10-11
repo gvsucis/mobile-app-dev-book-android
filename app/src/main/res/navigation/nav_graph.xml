@@ -41,36 +41,44 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/journal_details"
-            app:destination="@id/journalViewActivity" />
-        <action
             android:id="@+id/action_new_journal"
             app:destination="@id/newJournalFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/journalDetailsFragment"
-        android:name="edu.gvsu.cis.traxy.JournalDetailsFragment"
-        android:label="journal_details_fragment"
-        tools:layout="@layout/journal_details_fragment">
-        <argument
-            android:name="JOURNAL_KEY"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_to_mediaList"
+            app:destination="@id/journalViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/newJournalFragment"
         android:name="edu.gvsu.cis.traxy.NewJournalFragment"
         android:label="fragment_new_journal"
         tools:layout="@layout/fragment_new_journal" />
-    <activity
-        android:id="@+id/journalViewActivity"
-        android:name="edu.gvsu.cis.traxy.JournalViewActivity"
-        android:label="activity_journal_view"
-        tools:layout="@layout/activity_journal_view" >
-        <argument
-            android:name="JOURNALKEY"
-            app:argType="string" />
-        <argument
-            android:name="JOURNALNAME"
-            app:argType="string" />
-    </activity>
+    <fragment
+        android:id="@+id/journalViewFragment"
+        android:name="edu.gvsu.cis.traxy.JournalViewFragment"
+        android:label="fragment_journal_view"
+        tools:layout="@layout/fragment_journal_view" >
+        <action
+            android:id="@+id/action_to_mediaDetails"
+            app:destination="@id/MediaDetailsFragment" />
+        <action
+            android:id="@+id/action_to_mediaEdit"
+            app:destination="@id/journalMediaEditFragment" />
+        <action
+            android:id="@+id/action_to_mediaView"
+            app:destination="@id/journalMediaViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MediaDetailsFragment"
+        android:name="edu.gvsu.cis.traxy.MediaDetailsFragment"
+        android:label="fragment_media_details_entry"
+        tools:layout="@layout/fragment_media_details_entry" />
+    <fragment
+        android:id="@+id/journalMediaEditFragment"
+        android:name="edu.gvsu.cis.traxy.JournalMediaEditFragment"
+        android:label="fragment_jourrnal_media_edit"
+        tools:layout="@layout/fragment_journal_media_edit" />
+    <fragment
+        android:id="@+id/journalMediaViewFragment"
+        android:name="edu.gvsu.cis.traxy.JournalMediaViewFragment"
+        android:label="JournalMediaViewFragment" />
 </navigation>

@@ -64,7 +64,10 @@ object TraxyRepository {
 //        dao.insertJournal(d)
         val jData = hashMapOf(
             "name" to d.name,
-            "location" to d.location,
+            "placeId" to d.placeId,
+            "lat" to d.lat,
+            "lng" to d.lng,
+            "address" to d.address,
             "startDate" to d.startDate,
             "endDate" to d.endDate
         )
@@ -78,7 +81,7 @@ object TraxyRepository {
         }
     }
 
-    suspend fun uploadMediaFile(mediaUri: Uri, mediaFile:File): String? {
+    suspend fun uploadMediaFile(mediaUri: Uri, mediaFile: File): String? {
         userMediaStore?.let {
             val fileName = mediaUri.lastPathSegment!!
             val dirName = if (fileName.endsWith(".mp4")) "videos/" else "photos/"
@@ -92,9 +95,9 @@ object TraxyRepository {
         return null
     }
 
-    suspend fun uploadMediaContent(media:ByteArray, pathName:String): String? {
+    suspend fun uploadMediaContent(media: ByteArray, pathName: String): String? {
         userMediaStore?.let {
-            val mediaRef =it.child(pathName)
+            val mediaRef = it.child(pathName)
             val mediaTask = mediaRef.putBytes(media)
             mediaTask.await()
             return mediaRef.downloadUrl.await().toString()
@@ -122,8 +125,25 @@ object TraxyRepository {
         }
     }
 
-    fun getMediaQuery(key:String): Query {
+    fun getMediaQuery(key: String): Query {
         val userId = auth.currentUser?.uid ?: "NONE"
         return dbStore.collection("user/$userId/journals/$key/media")
     }
+
+//    suspend fun getJournalData(journalKey: String): Journal? =
+//        docRef?.let {
+//            val tmp = it.collection("journals")
+//                .document(journalKey).get().await()
+//            return tmp.toObject(Journal::class.java)
+//        }
+
+//    suspend fun getMediaEntry(journalKey: String, mediaKey: String): JournalMedia? {
+//        return docRef?.let {
+//            val tmp = it.collection("journals")
+//                .document(journalKey)
+//                .collection("media")
+//                .document(mediaKey).get().await()
+//            return tmp.toObject(JournalMedia::class.java)
+//        }
+//    }
 }

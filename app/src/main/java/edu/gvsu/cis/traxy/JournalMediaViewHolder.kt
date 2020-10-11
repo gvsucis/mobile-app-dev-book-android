@@ -1,6 +1,7 @@
 package edu.gvsu.cis.traxy
 
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val dateTime: TextView
     val image: ImageView
     val playButton: ImageView
+    val editButton: ImageButton
     val view: View
 
     init {
@@ -19,9 +21,10 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         dateTime = v.findViewById(R.id.media_date_time)
         image = v.findViewById(R.id.media_image)
         playButton = v.findViewById(R.id.play_media)
+        editButton = v.findViewById(R.id.edit_button)
     }
 
-    public fun bindTo(m: JournalMedia) {
+    public fun bindTo(m: JournalMedia, listener: ((JournalMedia, String) -> Unit)?) {
         caption.text = m.caption
         dateTime.text = m.date
         when (m.type) {
@@ -34,6 +37,17 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 playButton.visibility = View.VISIBLE
             }
             else -> playButton.visibility = View.INVISIBLE
+        }
+        if (listener != null) {
+            editButton.setOnClickListener {
+                listener(m, "EDIT")
+            }
+            playButton.setOnClickListener {
+                listener(m, "VIEW")
+            }
+            image.setOnClickListener {
+                listener(m, "VIEW")
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,12 +75,19 @@ class JournalViewFragment : Fragment() {
                 }
             }
         }
-        mediaModel.journalKey.observe(this.viewLifecycleOwner, Observer {
+        mediaModel.selectedJournal.observe(this.viewLifecycleOwner, Observer {
             val option = FirestoreRecyclerOptions.Builder<JournalMedia>()
                 .setLifecycleOwner(viewLifecycleOwner)
                 .setQuery(mediaModel.mediaQuery(), JournalMedia::class.java)
                 .build()
-            adapter = JournalMediaAdapter(option)
+            adapter = JournalMediaAdapter(option) { media:JournalMedia, action:String ->
+                mediaModel.selectedMedia.value = media
+                val navAction = if (action == "EDIT")
+                    JournalViewFragmentDirections.actionToMediaEdit()
+                else
+                    JournalViewFragmentDirections.actionToMediaView()
+                findNavController().navigate(navAction)
+            }
             media_list.adapter = adapter
             media_list.layoutManager = LinearLayoutManager(requireContext())
         })

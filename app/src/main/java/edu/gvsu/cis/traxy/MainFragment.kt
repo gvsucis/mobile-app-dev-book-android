@@ -19,6 +19,7 @@ class MainFragment : Fragment() {
     // inside a constructor
 
     private val viewModel by activityViewModels<UserDataViewModel>()
+    private val mediaModel by activityViewModels<MediaViewModel>()
     private lateinit var adapter: JournalAdapter
     val args by navArgs<MainFragmentArgs>()
 
@@ -32,8 +33,9 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter { key,name ->
-            val action = MainFragmentDirections.journalDetails(key, name)
+        adapter = JournalAdapter {
+            mediaModel.selectedJournal.value = it
+            val action = MainFragmentDirections.actionToMediaList()
             findNavController().navigate(action)
         }
         with(view) {

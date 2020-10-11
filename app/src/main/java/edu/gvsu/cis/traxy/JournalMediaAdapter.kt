@@ -5,8 +5,12 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class JournalMediaAdapter(opt:FirestoreRecyclerOptions<JournalMedia>):
-    FirestoreRecyclerAdapter<JournalMedia,JournalMediaViewHolder>(opt) {
+class JournalMediaAdapter(
+    opt: FirestoreRecyclerOptions<JournalMedia>,
+    /* the second arg is either "EDIT" or "VIEW" */
+    val listener: (JournalMedia, String) -> Unit,
+) :
+    FirestoreRecyclerAdapter<JournalMedia, JournalMediaViewHolder>(opt) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalMediaViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -19,6 +23,6 @@ class JournalMediaAdapter(opt:FirestoreRecyclerOptions<JournalMedia>):
         position: Int,
         model: JournalMedia,
     ) {
-        holder.bindTo(model)
+        holder.bindTo(model, listener)
     }
 }
