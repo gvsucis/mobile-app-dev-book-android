@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.places.api.model.Place
@@ -30,12 +31,13 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
         val PLACE_REQUEST_CODE = 0xACE0
     }
 
+    val viewModel by activityViewModels<UserDataViewModel>()
     private var startDate:DateTime? = null
     private var endDate:DateTime? = null
     private var isChoosingStartDate = true
     private lateinit var inputFormatter: DateTimeFormatter
     private lateinit var outputFormatter: DateTimeFormatter
-    private lateinit var viewModel: UserDataViewModel
+//    private lateinit var viewModel: UserDataViewModel
 
     private fun dateRange(): String {
         if (startDate == null) return ""
@@ -108,19 +110,19 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
             trip_duration.text = dateRange()
         }
         add_button.setOnClickListener {
-            viewModel.addJournal(Journal("key-???",
-                trip_name.text.toString(),
-                trip_location.text.toString(),
-                startDate!!,
-                endDate!!))
+            val newData = Journal(name = trip_name.text.toString(),
+                address = trip_location.text.toString(),
+                startDate = startDate.toString(), endDate = endDate.toString()
+            )
+            viewModel.addJournal(newData)
             findNavController().popBackStack()
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProviders.of(requireActivity()).get(UserDataViewModel::class.java)
+//    }
 
     override fun onFocusChange(p0: View?, p1: Boolean) {
         add_button.isEnabled = trip_name.text.length > 0 &&

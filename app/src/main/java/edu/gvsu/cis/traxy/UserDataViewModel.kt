@@ -10,23 +10,6 @@ class UserDataViewModel : ViewModel() {
     lateinit var userId : MutableLiveData<String?>
     var _journals = MutableLiveData<MutableList<Journal>>()
     val repo = TraxyRepository()
-    init {
-        val dataGen = Faker()
-        val today = DateTime.now()
-        val rand = Random(System.currentTimeMillis())
-        repeat(100) {
-            val startOn = today.plusDays(rand.nextInt(-100, 100))
-            val randomName = generateSequence { dataGen.lorem.words() }
-                .take(7).joinToString(" ")
-            val d = Journal(
-                "Key-$it",
-                randomName,
-                dataGen.address.cityWithState(),
-                startOn, startOn.plusDays(rand.nextInt(10))
-            )
-            addJournal(d);
-        }
-    }
 
     val journals get() = _journals
 
@@ -52,7 +35,7 @@ class UserDataViewModel : ViewModel() {
     }
 
     fun addJournal(z: Journal) {
-        addJournals(listOf(z))
+        repo.firebaseAddJournal(z)
     }
 
     fun getJournalByKey(key: String): Journal? =

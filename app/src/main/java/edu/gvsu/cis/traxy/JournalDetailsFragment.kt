@@ -23,7 +23,7 @@ class JournalDetailsFragment : Fragment() {
         val jData = viewModel.getJournalByKey(journalKey)
         key_text.text = jData?.key
         name_text.text = jData?.name
-        location_text.text = jData?.location
+        location_text.text = jData?.address
         start_date_text.text = jData?.startDate.toString().substring(0,10)
         end_date_text.text = jData?.endDate.toString().substring(0,10)
     }

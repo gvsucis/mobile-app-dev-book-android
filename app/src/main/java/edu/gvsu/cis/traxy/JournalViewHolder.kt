@@ -24,10 +24,10 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 listener(d.key)
             }
         name.text = d.name;
-        location.text = d.location + " (" +
-                d.startDate.toLocalDate().toString() +
+        location.text = d.address + " (" +
+                d.startDate.substring(0, 10) +
                 " to " +
-                d.endDate.toLocalDate().toString() + ")"
+                d.endDate.substring(0,10) + ")"
     }
 }
 

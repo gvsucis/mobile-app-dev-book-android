@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.joda.time.DateTime
@@ -62,9 +60,10 @@ class MainFragment : Fragment() {
         viewModel.journals.observe(this.viewLifecycleOwner, Observer {
             val partitioned = it
                 .map {
+                    val now = DateTime.now().toString()
                     when {
-                        it.endDate.isBeforeNow -> "Past" to it
-                        it.startDate.isAfterNow -> "Future" to it
+                        it.endDate < now -> "Past" to it
+                        it.startDate > now -> "Future" to it
                         else -> "Current" to it
                     }
                 }.sortedBy { it.first }

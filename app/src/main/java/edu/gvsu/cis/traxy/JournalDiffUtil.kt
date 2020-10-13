@@ -16,7 +16,8 @@ class JournalDiffUtil : DiffUtil.ItemCallback<ListItem>() {
         if (oldItem is Journal && newItem is Journal)
             return oldItem.key == newItem.key &&
                     oldItem.name == newItem.name &&
-                    oldItem.location == newItem.location
+                    oldItem.placeId == newItem.placeId &&
+                    oldItem.address == newItem.address
         if (oldItem is Header && newItem is Header)
             return oldItem.title == newItem.title
         return false
