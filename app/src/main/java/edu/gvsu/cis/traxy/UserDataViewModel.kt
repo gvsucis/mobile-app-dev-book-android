@@ -2,6 +2,7 @@ package edu.gvsu.cis.traxy
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.libraries.places.api.model.Place
 import io.github.serpro69.kfaker.Faker
 import org.joda.time.DateTime
 import kotlin.random.Random
@@ -9,6 +10,9 @@ import kotlin.random.Random
 class UserDataViewModel : ViewModel() {
     lateinit var userId : MutableLiveData<String?>
     var _journals = MutableLiveData<MutableList<Journal>>()
+    val tripStart = MutableLiveData<DateTime>()
+    val tripEnd = MutableLiveData<DateTime>()
+    val tripPlace = MutableLiveData<Place>()
     val repo = TraxyRepository()
 
     val journals get() = _journals

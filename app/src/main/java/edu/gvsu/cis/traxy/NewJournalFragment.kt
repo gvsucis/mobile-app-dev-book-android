@@ -3,13 +3,11 @@ package edu.gvsu.cis.traxy
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
@@ -32,18 +30,15 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
     }
 
     val viewModel by activityViewModels<UserDataViewModel>()
-    private var startDate:DateTime? = null
-    private var endDate:DateTime? = null
     private var isChoosingStartDate = true
     private lateinit var inputFormatter: DateTimeFormatter
     private lateinit var outputFormatter: DateTimeFormatter
-//    private lateinit var viewModel: UserDataViewModel
 
     private fun dateRange(): String {
-        if (startDate == null) return ""
-        val s = startDate!!.toString(outputFormatter)
-        if (endDate == null) return "($s to ??)"
-        val e = endDate!!.toString(outputFormatter)
+        if (viewModel.tripStart.value == null) return ""
+        val s = viewModel.tripStart.value?.toString(outputFormatter)
+        if (viewModel.tripEnd.value == null) return "($s to ??)"
+        val e = viewModel.tripEnd.value?.toString(outputFormatter)
         return "($s to $e)"
     }
 
@@ -71,6 +66,7 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
         if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             data?.let {
                 val place = Autocomplete.getPlaceFromIntent(it)
+                viewModel.tripPlace.value = place
                 trip_location.text.clear();
                 trip_location.text.insert(0, place.name)
             }
@@ -86,7 +82,7 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
         trip_location.setOnClickListener {
             val placeIntent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
             )
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .build(requireActivity())
@@ -98,11 +94,11 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
             val d:DateTime = inputFormatter.parseDateTime("$yr/${mo + 1}/$dy")
             trip_calendar.date = d.toDate().time
             if (isChoosingStartDate) {
-                startDate = d
+                viewModel.tripStart.value = d
                 isChoosingStartDate = !isChoosingStartDate
             } else {
-                if (d.isAfter(startDate)) {
-                    endDate = d
+                if (d.isAfter(viewModel.tripStart.value)) {
+                    viewModel.tripEnd.value = d
                     isChoosingStartDate = !isChoosingStartDate
                 }
             }
@@ -112,7 +108,11 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
         add_button.setOnClickListener {
             val newData = Journal(name = trip_name.text.toString(),
                 address = trip_location.text.toString(),
-                startDate = startDate.toString(), endDate = endDate.toString()
+                startDate = viewModel.tripStart.value.toString(),
+                endDate = viewModel.tripEnd.value.toString(),
+                placeId = viewModel.tripPlace.value?.id ?: "NONE",
+                lat = viewModel.tripPlace.value?.latLng?.latitude ?: 0.0,
+                lng = viewModel.tripPlace.value?.latLng?.longitude ?: 0.0
             )
             viewModel.addJournal(newData)
             findNavController().popBackStack()
@@ -127,7 +127,7 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
     override fun onFocusChange(p0: View?, p1: Boolean) {
         add_button.isEnabled = trip_name.text.length > 0 &&
                 trip_location.text.length > 0 &&
-                startDate != null && endDate != null
+                viewModel.tripStart.value != null && viewModel.tripEnd.value != null
     }
 
 }
