@@ -1,21 +1,16 @@
 package edu.gvsu.cis.traxy
 
-import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.InputStream
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -27,7 +22,7 @@ object TraxyRepository {
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")
-        FirebaseJournalLiveData(coll)
+        JournalLiveData(coll)
     }
 
     suspend fun firebaseSignInWithEmail(email: String, password: String): String? {

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.EventListener
 
-class FirebaseJournalLiveData(val topRef: CollectionReference) : LiveData<List<Journal>>() {
+class JournalLiveData(val topRef: CollectionReference) : LiveData<List<Journal>>() {
 
     lateinit var listener: ListenerRegistration
     override fun onActive() {
@@ -38,7 +38,6 @@ class FirebaseJournalLiveData(val topRef: CollectionReference) : LiveData<List<J
             val all = ArrayList<Journal>()
             it.documentChanges.forEach {
                 val journal = it.document.toObject(Journal::class.java)
-                journal.key = it.document.id
                 all.add(journal)
             }
             postValue(all)

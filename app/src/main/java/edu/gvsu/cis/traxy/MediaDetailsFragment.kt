@@ -49,7 +49,7 @@ class MediaDetailsFragment : Fragment() {
         }
         datePickerDialog.version = DatePickerDialog.Version.VERSION_2
         date_time.setOnClickListener {
-            datePickerDialog.show(requireFragmentManager(), "datePick")
+            datePickerDialog.show(parentFragmentManager, "datePick")
         }
         location.setOnClickListener {
             val placeIntent = Autocomplete.IntentBuilder(
