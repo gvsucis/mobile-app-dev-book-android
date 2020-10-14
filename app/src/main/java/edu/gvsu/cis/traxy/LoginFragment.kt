@@ -29,11 +29,9 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.userId?.let {
-            if (it != null)
-                findNavController().navigate(R.id.action_login2main)
+            findNavController().navigate(R.id.action_login2main)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,11 +55,19 @@ class LoginFragment : Fragment() {
             when {
                 emailStr.length == 0 ->
                     Snackbar
-                        .make(email, getString(R.string.email_requirred), Snackbar.LENGTH_LONG)
+                        .make(
+                            email,
+                            getString(R.string.email_requirred),
+                            Snackbar.LENGTH_LONG
+                        )
                         .show()
                 !EMAIL_REGEX.matcher(emailStr).find() ->
                     Snackbar
-                        .make(email, getString(R.string.invalid_email), Snackbar.LENGTH_LONG)
+                        .make(
+                            email,
+                            getString(R.string.invalid_email),
+                            Snackbar.LENGTH_LONG
+                        )
                         .show()
 
                 else -> {
@@ -73,13 +79,14 @@ class LoginFragment : Fragment() {
                             launch(Dispatchers.Main) {
                                 signin.startAnimation(shake)
                             }
-
                         }
 
                     }
+
                 }
             }
         }
+
         register.setOnClickListener {
             findNavController().navigate(R.id.action_login2signup)
         }

@@ -24,8 +24,8 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 listener(d.key)
             }
         name.text = d.name;
-        location.text = d.location + " (" +
-                d.startDate.substring(0,10) +
+        location.text = d.address + " (" +
+                d.startDate.substring(0, 10) +
                 " to " +
                 d.endDate.substring(0,10) + ")"
     }

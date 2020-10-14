@@ -21,12 +21,13 @@ class JournalDetailsFragment : Fragment() {
         super.onResume()
         journalKey = arguments?.getString("JOURNAL_KEY","n/a")!!
         println("Key is $journalKey")
-        val jData = viewModel.getJournalByKey(journalKey)
-        key_text.text = jData?.key
-        name_text.text = jData?.name
-        location_text.text = jData?.location
-        start_date_text.text = jData?.startDate.toString().substring(0,10)
-        end_date_text.text = jData?.endDate.toString().substring(0,10)
+        viewModel.getJournalByKey(journalKey)?.let {
+            key_text.text = it.key
+            name_text.text = it.name
+            location_text.text = it.address
+            start_date_text.text = it.startDate.toString().substring(0, 10)
+            end_date_text.text = it.endDate.toString().substring(0, 10)
+        }
     }
 
 
