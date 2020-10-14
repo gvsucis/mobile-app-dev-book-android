@@ -7,6 +7,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class TraxyRepository {
     private val auth = FirebaseAuth.getInstance()
@@ -19,41 +20,40 @@ class TraxyRepository {
         JournalLiveData(coll)
     }
 
-    fun firebaseSignInWithEmail(email: String, password:String):MutableLiveData<String?> {
-        val uidResponse = MutableLiveData<String?>()
-        auth.signInWithEmailAndPassword(email,password).addOnCompleteListener {task ->
-            if (task.isSuccessful) {
-                auth.currentUser?.let {
-                    uidResponse.value = it.uid
-                    docRef = dbStore.collection("user").document(it.uid)
-                }
-            } else {
-                uidResponse.value = null
+    suspend fun firebaseSignInWithEmail(email: String, password: String): String? {
+        try {
+            val z = auth.signInWithEmailAndPassword(email, password).await()
+            return z.user?.uid.also {
+                docRef = dbStore.collection("user").document(it ?: "NONE")
             }
+        } catch (e: Exception) {
+            return null
         }
-        return uidResponse
     }
 
-    fun firebaseSignUpWithEmail(email: String, password:String):MutableLiveData<String?> {
-        val uidResponse = MutableLiveData<String?>()
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {task ->
-            if (task.isSuccessful) {
-                uidResponse.value = auth.currentUser?.uid
-            } else {
-                uidResponse.value = null
+    suspend fun firebaseSignUpWithEmail(email: String, password: String): String? {
+        try {
+            val z = auth.createUserWithEmailAndPassword(email, password).await()
+            return z.user?.uid.also {
+                docRef = dbStore.collection("user").document(it ?: "NONE")
+
             }
+        } catch (e: java.lang.Exception) {
+            return null
         }
-        return uidResponse
+
     }
 
     fun firebaseSignOut() {
         auth.signOut()
     }
 
-    fun firebaseAddJournal(d:Journal) {
-        val jData = hashMapOf("name" to d.name, "address" to d.address,
-        "placeId" to d.placeId, "lat" to d.lat, "lng" to d.lng,
-        "startDate" to d.startDate, "endDate" to d.endDate)
+    fun firebaseAddJournal(d: Journal) {
+        val jData = hashMapOf(
+            "name" to d.name, "address" to d.address,
+            "placeId" to d.placeId, "lat" to d.lat, "lng" to d.lng,
+            "startDate" to d.startDate, "endDate" to d.endDate
+        )
 
         docRef?.collection("journals")?.let {
             it.add(jData)

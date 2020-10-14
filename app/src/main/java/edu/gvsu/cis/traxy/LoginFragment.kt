@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
@@ -26,12 +29,10 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel?.isUserIdInitalized()) {
-            viewModel?.userId.value.let {
+        viewModel?.userId?.let {
                 findNavController().navigate(R.id.action_login2main)
             }
         }
-    }
 
 
     override fun onCreateView(
@@ -64,15 +65,17 @@ class LoginFragment : Fragment() {
                         .show()
 
                 else -> {
-                    viewModel.signInWithEmailAndPassword(emailStr, passStr)
-                    viewModel.userId.observe(viewLifecycleOwner) { uid ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val uid = viewModel.signInWithEmailAndPassword(emailStr, passStr)
                         if (uid != null) {
                             findNavController().navigate(R.id.action_login2main)
 
                         } else {
+                            launch(Dispatchers.Main) {
                             signin.startAnimation(shake)
-
                         }
+                    }
+
                     }
                 }
             }
