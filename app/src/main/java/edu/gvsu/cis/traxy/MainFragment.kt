@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
         fab_add.setOnClickListener {
-            val action = MainFragmentDirections.actionLogout()
+            val action = MainFragmentDirections.actionNewJournal()
             findNavController().navigate(action)
         }
     }

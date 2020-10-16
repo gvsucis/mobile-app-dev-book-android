@@ -17,19 +17,25 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import com.google.android.material.timepicker.MaterialTimePicker
+//import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.android.synthetic.main.fragment_media_details_entry.*
+import kotlinx.android.synthetic.main.media_item.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.joda.time.LocalDate
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import java.util.*
 
 
 class MediaDetailsFragment : Fragment() {
 
     val mediaModel by activityViewModels<MediaViewModel>()
-    lateinit var datePickerDialog: DatePickerDialog
+    val datePickerDialog = MaterialDatePicker.Builder.datePicker().build()
+    val timePickerDialog = MaterialTimePicker.Builder().build()
     private var mediaUri: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,12 +48,16 @@ class MediaDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        datePickerDialog = DatePickerDialog.newInstance { _, year, month, day ->
-            val eventDate = LocalDate.parse("%4d-%02d-%02d".format(year, month + 1, day))
-            date_time.text = eventDate.toString()
-            mediaModel.mediaDate.value = eventDate.toString()
+        datePickerDialog.addOnPositiveButtonClickListener {
+            mediaModel.mediaDate.value = DateTime(it, DateTimeZone.UTC)
+            timePickerDialog.show(parentFragmentManager, "timePick")
         }
-        datePickerDialog.version = DatePickerDialog.Version.VERSION_2
+        timePickerDialog.addOnPositiveButtonClickListener {
+            val updated = mediaModel.mediaDate.value?.run {
+                plusHours(timePickerDialog.hour).plusMinutes(timePickerDialog.minute)
+            }
+            mediaModel.mediaDate.value = updated
+        }
         date_time.setOnClickListener {
             datePickerDialog.show(parentFragmentManager, "datePick")
         }
@@ -110,6 +120,9 @@ class MediaDetailsFragment : Fragment() {
                 istream?.close()
             }
 
+        }
+        mediaModel.mediaDate.observe(viewLifecycleOwner) {
+            media_date_time.setText(it.toPrettyDateTime())
         }
     }
 

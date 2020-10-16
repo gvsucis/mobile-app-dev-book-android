@@ -100,7 +100,7 @@ object TraxyRepository {
         return null
     }
 
-    fun addMediaEntry(key: String, m: JournalMedia) {
+    fun addMediaEntry(journalKey: String, m: JournalMedia) {
         docRef?.let {
             var mediaData = hashMapOf(
                 "type" to m.type,
@@ -114,7 +114,7 @@ object TraxyRepository {
                 mediaData["thumbnailUrl"] = m.thumbnailUrl
             it
                 .collection("journals")
-                .document(key)
+                .document(journalKey)
                 .collection("media")
                 .add(mediaData)
         }
@@ -125,6 +125,24 @@ object TraxyRepository {
         return dbStore.collection("user/$userId/journals/$key/media")
     }
 
+    fun updateMediaEntry(journalKey: String, m: JournalMedia) {
+        docRef?.let {
+            var mediaData = hashMapOf(
+                "type" to m.type,
+                "caption" to m.caption,
+                "date" to m.date,
+                "url" to m.url,
+                "lat" to m.lat,
+                "lng" to m.lng
+            )
+            if (m.type == MediaType.VIDEO.ordinal)
+                mediaData["thumbnailUrl"] = m.thumbnailUrl
+            it
+                .collection("journals/$journalKey/media")
+                .document(m._key)
+                .set(mediaData)
+        }
+    }
 //    suspend fun getJournalData(journalKey: String): Journal? =
 //        docRef?.let {
 //            val tmp = it.collection("journals")

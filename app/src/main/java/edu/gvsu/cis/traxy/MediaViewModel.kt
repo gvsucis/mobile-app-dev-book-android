@@ -5,25 +5,20 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.api.model.Place
 import com.google.firebase.firestore.Query
-import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 import java.io.ByteArrayOutputStream
 import java.io.File
 
 //class MediaViewModel(app:Application): AndroidViewModel(app) {
 class MediaViewModel : ViewModel() {
 
-//    val journalKey = MutableLiveData<String>()
     val selectedJournal= MutableLiveData<Journal>()
     val selectedMedia = MutableLiveData<JournalMedia>()
-    //    val mediaKey = MutableLiveData<String>()
     val mediaUri = MutableLiveData<Uri>()
     val mediaFile = MutableLiveData<File>()
-    val mediaDate = MutableLiveData<String>()
+    val mediaDate = MutableLiveData<DateTime>()
     val mediaLocation = MutableLiveData<Place>()
     val mediaCaption = MutableLiveData<String>()
 
@@ -63,19 +58,9 @@ class MediaViewModel : ViewModel() {
     fun mediaQuery(): Query =
         TraxyRepository.getMediaQuery(selectedJournal.value?.key ?: "NO-KEY")
 
-//    fun getJournalByKey(key:String) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            TraxyRepository.getJournalData(key).also {
-//                selectedJournal.postValue(it)
-//            }
-//        }
-//    }
-//    fun getJournalMediaByKey(key: String) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            TraxyRepository.getMediaEntry(selectedJournal.value?.key ?: "NO-KEY", key)?.also {
-//                selectedMedia.postValue (it)
-//            }
-//        }
-//    }
-
+    fun updateJournalMedia(media: JournalMedia) {
+        selectedJournal.value?.let {
+            TraxyRepository.updateMediaEntry(it.key, media)
+        }
+    }
 }
