@@ -27,7 +27,7 @@ import org.joda.time.DateTimeZone
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class JournalMediaEditFragment : Fragment() {
+class MediaEditFragment : Fragment() {
 
     val mediaModel by activityViewModels<MediaViewModel>()
     val datePicker = MaterialDatePicker.Builder.datePicker().build()
@@ -81,13 +81,13 @@ class JournalMediaEditFragment : Fragment() {
         mediaModel.selectedMedia.observe(viewLifecycleOwner) {
             when (it.type) {
                 MediaType.PHOTO.ordinal -> {
-                    Glide.with(this@JournalMediaEditFragment)
+                    Glide.with(this@MediaEditFragment)
                         .load(it.url)
                         .into(media_image)
                     media_image.visibility = View.VISIBLE
                 }
                 MediaType.VIDEO.ordinal -> {
-                    Glide.with(this@JournalMediaEditFragment)
+                    Glide.with(this@MediaEditFragment)
                         .load(it.thumbnailUrl)
                         .into(media_image)
                     media_image.visibility = View.VISIBLE
