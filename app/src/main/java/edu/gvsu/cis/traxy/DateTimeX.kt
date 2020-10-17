@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
-val outputFormatter = DateTimeFormat.forPattern("yyyy-MMM-dd hh:mm")
+val outputFormatter = DateTimeFormat.forPattern("yyyy-MMM-dd hh:mm a")
 
 fun LocalDateTime.toPrettyDateTime(): String {
     return this.toString(outputFormatter)

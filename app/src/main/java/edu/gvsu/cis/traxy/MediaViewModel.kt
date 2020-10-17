@@ -16,6 +16,7 @@ class MediaViewModel : ViewModel() {
 
     val selectedJournal= MutableLiveData<Journal>()
     val selectedMedia = MutableLiveData<JournalMedia>()
+    var backupMedia: JournalMedia? = null
     val mediaUri = MutableLiveData<Uri>()
     val mediaFile = MutableLiveData<File>()
     val mediaDate = MutableLiveData<DateTime>()
@@ -58,9 +59,21 @@ class MediaViewModel : ViewModel() {
     fun mediaQuery(): Query =
         TraxyRepository.getMediaQuery(selectedJournal.value?.key ?: "NO-KEY")
 
-    fun updateJournalMedia(media: JournalMedia) {
+    suspend fun updateJournalMedia(media: JournalMedia) {
         selectedJournal.value?.let {
             TraxyRepository.updateMediaEntry(it.key, media)
+        }
+    }
+
+    fun saveMediaCopy() {
+        selectedMedia.value?.let {
+            backupMedia = it.copy()
+        }
+    }
+
+    fun restoreMediaCopy() {
+        backupMedia?.let {
+            selectedMedia.value = it.copy()
         }
     }
 }

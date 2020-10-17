@@ -12,9 +12,13 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.android.synthetic.main.fragment_journal_media_edit.*
-import kotlinx.android.synthetic.main.fragment_new_journal.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 
@@ -48,10 +52,11 @@ class JournalMediaEditFragment : Fragment() {
             timePicker.show(parentFragmentManager, "MediaTime")
         }
         timePicker.addOnPositiveButtonClickListener {
-            val updated = mediaModel.mediaDate.value?.run {
-                plusHours(timePicker.hour).plusMinutes(timePicker.minute)
+            with(mediaModel.mediaDate) {
+                value = value?.run {
+                    plusHours(timePicker.hour).plusMinutes(timePicker.minute)
+                }
             }
-            mediaModel.mediaDate.value = updated
         }
 
         media_date_time.setOnClickListener {
@@ -60,7 +65,10 @@ class JournalMediaEditFragment : Fragment() {
         media_location.setOnClickListener {
             val placeIntent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+                listOf<Place.Field>(Place.Field.ID,
+                    Place.Field.NAME,
+                    Place.Field.ADDRESS,
+                    Place.Field.LAT_LNG)
             )
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .build(requireActivity())
@@ -87,10 +95,15 @@ class JournalMediaEditFragment : Fragment() {
                 else -> media_image.visibility = View.GONE
             }
             media_caption.setText(it.caption)
-            media_date_time.setText(it.date)
+            try {
+                val m_date = DateTime(it.date, DateTimeZone.UTC)
+                mediaModel.mediaDate.value = m_date
+            } catch (e: Exception) {
+                mediaModel.mediaDate.value = DateTime.now()
+            }
         }
         mediaModel.selectedJournal.observe(viewLifecycleOwner) {
-            media_location.setText (it.address)
+            media_location.setText(it.address)
         }
         mediaModel.mediaDate.observe(viewLifecycleOwner) {
             media_date_time.setText(it.toPrettyDateTime())
@@ -106,16 +119,39 @@ class JournalMediaEditFragment : Fragment() {
         inflater.inflate(R.menu.menu_edit_media, menu)
     }
 
+//    fun undoSave() {
+//
+//    }
+
+    private fun undoSavedMedia() = with(mediaModel) {
+        restoreMediaCopy()
+        selectedMedia.value?.let {
+            CoroutineScope(Dispatchers.IO).launch {
+                updateJournalMedia(it)
+            }
+        }
+
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save_media) {
             mediaModel.mediaCaption.value = media_caption.text.toString()
+            mediaModel.saveMediaCopy()
             mediaModel.selectedMedia.value?.apply {
                 caption = media_caption.text.toString()
                 date = mediaModel.mediaDate.value.toString()
                 lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0
                 lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0
             }?.let {
-                mediaModel.updateJournalMedia(it)
+                CoroutineScope(Dispatchers.IO).launch {
+                    mediaModel.updateJournalMedia(it)
+                    withContext(Dispatchers.Main) {
+                        Snackbar.make(media_caption, "Updates saved", Snackbar.LENGTH_LONG)
+                            .setAction("Undo") { undoSavedMedia() }
+                            .show();
+                    }
+                }
             }
             return true
         }

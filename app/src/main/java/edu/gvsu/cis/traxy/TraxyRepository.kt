@@ -125,8 +125,8 @@ object TraxyRepository {
         return dbStore.collection("user/$userId/journals/$key/media")
     }
 
-    fun updateMediaEntry(journalKey: String, m: JournalMedia) {
-        docRef?.let {
+    suspend fun updateMediaEntry(journalKey: String, m: JournalMedia): Void? {
+        return docRef?.let {
             var mediaData = hashMapOf(
                 "type" to m.type,
                 "caption" to m.caption,
@@ -141,8 +141,12 @@ object TraxyRepository {
                 .collection("journals/$journalKey/media")
                 .document(m._key)
                 .set(mediaData)
+                .await()
+
         }
     }
+
+
 //    suspend fun getJournalData(journalKey: String): Journal? =
 //        docRef?.let {
 //            val tmp = it.collection("journals")
