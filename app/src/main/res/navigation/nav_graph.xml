@@ -76,9 +76,9 @@
         android:id="@+id/journalMediaEditFragment"
         android:name="edu.gvsu.cis.traxy.MediaEditFragment"
         android:label="fragment_jourrnal_media_edit"
-        tools:layout="@layout/fragment_journal_media_edit" />
+        tools:layout="@layout/fragment_media_edit" />
     <fragment
         android:id="@+id/journalMediaViewFragment"
-        android:name="edu.gvsu.cis.traxy.JournalMediaViewFragment"
+        android:name="edu.gvsu.cis.traxy.MediaViewFragment"
         android:label="JournalMediaViewFragment" />
 </navigation>
