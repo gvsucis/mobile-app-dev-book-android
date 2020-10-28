@@ -1,10 +1,9 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.model
 
 import com.google.firebase.firestore.DocumentId
 
 enum class MediaType {
     NONE, TEXT, PHOTO, AUDIO, VIDEO
-
 }
 
 data class JournalMedia(

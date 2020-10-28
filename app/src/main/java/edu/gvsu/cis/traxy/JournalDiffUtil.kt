@@ -1,6 +1,9 @@
 package edu.gvsu.cis.traxy
 
 import androidx.recyclerview.widget.DiffUtil
+import edu.gvsu.cis.traxy.model.Header
+import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.model.ListItem
 
 class JournalDiffUtil : DiffUtil.ItemCallback<ListItem>() {
     override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {

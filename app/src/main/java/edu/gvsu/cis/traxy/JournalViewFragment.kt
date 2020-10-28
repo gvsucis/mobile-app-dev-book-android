@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import edu.gvsu.cis.traxy.model.JournalMedia
 import kotlinx.android.synthetic.main.fragment_journal_view.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -28,7 +28,7 @@ class JournalViewFragment : Fragment() {
     val CAPTURE_PHOTO_REQUEST = 0xC001;
     val CAPTURE_VIDEO_REQUEST = 0xC002;
     val mediaModel by activityViewModels<MediaViewModel>()
-    private lateinit var adapter: FirestoreRecyclerAdapter<JournalMedia,JournalMediaViewHolder>
+    private lateinit var adapter: FirestoreRecyclerAdapter<JournalMedia, JournalMediaViewHolder>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -41,7 +41,16 @@ class JournalViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         media_fab.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
-                R.id.add_audio -> println("Add audio")
+                R.id.add_audio -> {
+                    println("Add audio")
+                    val audioFile = createFileName("traxyau", ".m4a")
+                    mediaModel.mediaFile.value = audioFile
+                    val audioUri = FileProvider.getUriForFile(requireContext(),
+                        "${requireActivity().packageName}.provider", audioFile)
+                    mediaModel.mediaUri.value = audioUri
+                    val action = JournalViewFragmentDirections.toAudioFragment()
+                    findNavController().navigate(action)
+                }
                 R.id.add_photo_from_camera -> {
                     val capture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     capture.resolveActivity(requireActivity().packageManager)?.let {
@@ -80,7 +89,7 @@ class JournalViewFragment : Fragment() {
                 .setLifecycleOwner(viewLifecycleOwner)
                 .setQuery(mediaModel.mediaQuery(), JournalMedia::class.java)
                 .build()
-            adapter = JournalMediaAdapter(option) { media:JournalMedia, action:String ->
+            adapter = JournalMediaAdapter(option) { media: JournalMedia, action: String ->
                 mediaModel.selectedMedia.value = media
                 val navAction = if (action == "EDIT")
                     JournalViewFragmentDirections.actionToMediaEdit()

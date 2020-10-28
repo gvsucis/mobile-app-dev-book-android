@@ -1,14 +1,10 @@
 package edu.gvsu.cis.traxy.behavior
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.View.ALPHA
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.jar.Attributes
 
 class SimpleHideWhenScrolling(val context: Context, attrs: AttributeSet) :
     CoordinatorLayout.Behavior<FloatingActionButton>(context, attrs) {

@@ -13,6 +13,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import edu.gvsu.cis.traxy.model.Journal
 import kotlinx.android.synthetic.main.fragment_new_journal.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat

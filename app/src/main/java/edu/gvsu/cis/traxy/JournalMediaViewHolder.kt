@@ -6,6 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import edu.gvsu.cis.traxy.model.JournalMedia
+import edu.gvsu.cis.traxy.model.MediaType
 
 class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val caption: TextView

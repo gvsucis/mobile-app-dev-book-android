@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_to_mediaView"
             app:destination="@id/journalMediaViewFragment" />
+        <action
+            android:id="@+id/to_audioFragment"
+            app:destination="@id/audioFragment" />
     </fragment>
     <fragment
         android:id="@+id/MediaDetailsFragment"
@@ -81,4 +84,9 @@
         android:id="@+id/journalMediaViewFragment"
         android:name="edu.gvsu.cis.traxy.MediaViewFragment"
         android:label="JournalMediaViewFragment" />
+    <fragment
+        android:id="@+id/audioFragment"
+        android:name="edu.gvsu.cis.traxy.AudioFragment"
+        android:label="fragment_audio"
+        tools:layout="@layout/fragment_audio" />
 </navigation>

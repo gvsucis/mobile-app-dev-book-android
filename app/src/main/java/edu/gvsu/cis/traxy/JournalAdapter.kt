@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import edu.gvsu.cis.traxy.model.Header
+import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.model.ListItem
 
 class JournalAdapter(val listener: ((Journal) -> Unit)? = null) :
     ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {

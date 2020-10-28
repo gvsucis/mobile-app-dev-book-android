@@ -47,8 +47,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Just for quicl test of the app
-        email.text.insert(0, "user@test.com")
-        password.text.insert(0, "traxy1")
+        email.text.insert(0, "hans.dulimarta@gmail.com")
+        password.text.insert(0, "burungbelibis")
 
         signin.setOnClickListener {
             val emailStr = email.text.toString()

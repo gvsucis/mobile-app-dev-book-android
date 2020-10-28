@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import edu.gvsu.cis.traxy.model.Journal
 import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

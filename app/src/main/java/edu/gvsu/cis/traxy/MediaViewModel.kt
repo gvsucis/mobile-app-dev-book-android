@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.libraries.places.api.model.Place
 import com.google.firebase.firestore.Query
+import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.model.JournalMedia
 import org.joda.time.DateTime
 import java.io.ByteArrayOutputStream
 import java.io.File

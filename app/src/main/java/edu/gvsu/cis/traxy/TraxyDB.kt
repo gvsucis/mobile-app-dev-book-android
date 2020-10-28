@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import edu.gvsu.cis.traxy.model.Journal
 
 
 @Database(entities = arrayOf(Journal::class), version = 1, exportSchema = false)

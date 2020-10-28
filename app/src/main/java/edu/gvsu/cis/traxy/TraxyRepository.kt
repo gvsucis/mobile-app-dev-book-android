@@ -9,6 +9,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.model.JournalMedia
+import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.coroutines.tasks.await
 import java.io.File
 

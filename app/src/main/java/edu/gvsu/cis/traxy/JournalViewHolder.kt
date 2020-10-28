@@ -4,6 +4,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import edu.gvsu.cis.traxy.model.Header
+import edu.gvsu.cis.traxy.model.Journal
 
 class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val photo: ImageView

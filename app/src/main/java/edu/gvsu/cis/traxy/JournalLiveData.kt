@@ -1,9 +1,11 @@
 package edu.gvsu.cis.traxy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
+import edu.gvsu.cis.traxy.model.Journal
 
 class JournalLiveData(val topRef: CollectionReference) : LiveData<List<Journal>>() {
 

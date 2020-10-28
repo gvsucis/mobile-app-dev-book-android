@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import edu.gvsu.cis.traxy.model.JournalMedia
 
 class JournalMediaAdapter(
     opt: FirestoreRecyclerOptions<JournalMedia>,
