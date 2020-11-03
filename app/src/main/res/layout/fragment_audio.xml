@@ -67,7 +67,7 @@
         android:layout_marginStart="16dp"
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
-        android:src="@drawable/ic_baseline_fast_rewind_24"
+        android:src="@drawable/ic_baseline_play_arrow_24"
         android:tint="@android:color/white"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/centerBtn"
