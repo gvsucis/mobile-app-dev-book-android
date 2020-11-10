@@ -20,13 +20,13 @@ import java.io.IOException
 
 private const val RECORD_AUDIO_PERM_REQUEST = 317
 
-fun Int.toHourMinuteSecond(): String {
+fun Int.toMinuteSecond(): String {
     var seconds = this
     val h = seconds / 3600
     seconds %= 3600
     val m = seconds / 60
     seconds %= 60
-    return String.format("%02d:%02d:%02d", h, m, seconds)
+    return String.format("%02d:%02d", m, seconds)
 }
 
 class AudioFragment : Fragment() {
@@ -51,7 +51,7 @@ class AudioFragment : Fragment() {
     private val myRunner: Runnable by lazy {
         Runnable {
             elapse_time++
-            time_marker.setText(elapse_time.toHourMinuteSecond())
+            time_marker.setText(elapse_time.toMinuteSecond())
             myHandler.postDelayed(myRunner, 1000)
         }
     }
@@ -112,7 +112,7 @@ class AudioFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        time_marker.setText("00:00:00")
+        time_marker.setText(0.toMinuteSecond())
     }
 
     override fun onPause() {

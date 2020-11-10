@@ -25,8 +25,9 @@ import java.io.File
 
 class JournalViewFragment : Fragment() {
 
-    val CAPTURE_PHOTO_REQUEST = 0xC001;
-    val CAPTURE_VIDEO_REQUEST = 0xC002;
+    val CAPTURE_PHOTO_REQUEST = 0xC001
+    val CAPTURE_VIDEO_REQUEST = 0xC002
+    val GALLERY_PHOTO_REQUEST = 0xC003
     val mediaModel by activityViewModels<MediaViewModel>()
     private lateinit var adapter: FirestoreRecyclerAdapter<JournalMedia, JournalMediaViewHolder>
     override fun onCreateView(
@@ -64,8 +65,10 @@ class JournalViewFragment : Fragment() {
                     }
                 }
                 R.id.add_photo_from_album -> {
-                    println("Add photo from album")
-//                    findNavController().navigate(R.id.action_to_mediaDetails)
+                    val photoGallery = Intent(Intent.ACTION_PICK)
+                    photoGallery.type = "image/*"
+                    startActivityForResult(Intent.createChooser(photoGallery, "Select Photo"),
+                        GALLERY_PHOTO_REQUEST)
                 }
 
                 R.id.add_video -> {
@@ -107,6 +110,15 @@ class JournalViewFragment : Fragment() {
             CAPTURE_PHOTO_REQUEST, CAPTURE_VIDEO_REQUEST -> {
                 if (resultCode == RESULT_OK) {
                     findNavController().navigate(R.id.action_to_mediaDetails)
+                }
+            }
+            GALLERY_PHOTO_REQUEST -> {
+                if (resultCode == RESULT_OK) {
+                    data?.clipData?.let {
+                        val photoUri = it.getItemAt(0).uri
+                        mediaModel.mediaUri.value = photoUri
+                        findNavController().navigate(R.id.action_to_mediaDetails)
+                    }
                 }
             }
             else -> {
