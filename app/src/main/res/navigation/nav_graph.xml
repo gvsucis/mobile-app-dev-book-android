@@ -55,8 +55,10 @@
     <fragment
         android:id="@+id/journalViewFragment"
         android:name="edu.gvsu.cis.traxy.JournalViewFragment"
-        android:label="fragment_journal_view"
+        android:label="{trip_title}"
         tools:layout="@layout/fragment_journal_view" >
+        <argument android:name="trip_title" app:argType="string"
+            />
         <action
             android:id="@+id/action_to_mediaDetails"
             app:destination="@id/MediaDetailsFragment" />

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@android:color/white"
     tools:context=".AudioFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,38 +14,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        tools:text="hh:mm:ss" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.33" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottom_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintTop_toBottomOf="@+id/audio_state"
+        tools:text="mm:ss" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/centerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/colorAccent"
+
         android:clickable="true"
         android:src="@drawable/ic_baseline_fiber_manual_record_24"
-        android:tint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottom_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/time_marker"
+        app:tint="@android:color/holo_red_dark" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/leftBtn"
@@ -54,11 +41,11 @@
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         android:src="@drawable/ic_baseline_fast_rewind_24"
-        android:tint="@android:color/white"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/centerBtn"
         app:layout_constraintEnd_toStartOf="@+id/centerBtn"
-        app:layout_constraintTop_toTopOf="@+id/centerBtn" />
+        app:layout_constraintTop_toTopOf="@+id/centerBtn"
+        app:tint="@android:color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/rightBtn"
@@ -68,21 +55,43 @@
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         android:src="@drawable/ic_baseline_play_arrow_24"
-        android:tint="@android:color/white"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/centerBtn"
         app:layout_constraintStart_toEndOf="@+id/centerBtn"
-        app:layout_constraintTop_toTopOf="@+id/centerBtn" />
+        app:layout_constraintTop_toTopOf="@+id/centerBtn"
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/audio_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/time_marker"
         app:layout_constraintEnd_toEndOf="@+id/time_marker"
-        app:layout_constraintStart_toStartOf="@+id/time_marker" />
+        app:layout_constraintStart_toStartOf="@+id/time_marker"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Audio State" />
+
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="edu.gvsu.cis.traxy.MediaMetaDataFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/centerBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

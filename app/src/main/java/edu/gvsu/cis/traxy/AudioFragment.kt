@@ -3,7 +3,6 @@ package edu.gvsu.cis.traxy
 import android.Manifest
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -13,12 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_audio.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -108,6 +104,10 @@ class AudioFragment : Fragment() {
                 }
             }
         }
+        saveBtn.setOnClickListener {
+//            mediaModel.mediaCaption.value = media_caption.text.toString()
+//            mediaModel.saveMediaCopy()
+        }
     }
 
     override fun onResume() {
@@ -186,6 +186,7 @@ class AudioFragment : Fragment() {
             setOnCompletionListener {
                 currentState = Status.PLAY_PAUSE
                 rightBtn.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                myHandler.removeCallbacks(myRunner)
             }
             mediaModel.mediaUri.value?.let {
                 setDataSource(requireContext(), it)

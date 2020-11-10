@@ -69,7 +69,9 @@ class LoginFragment : Fragment() {
                         val uid = viewModel.signInWithEmailAndPassword(emailStr, passStr)
                         if (uid != null) {
                             val action = LoginFragmentDirections.actionLogin2main(uid)
-                            findNavController().navigate(action)
+                            launch(Dispatchers.Main) {
+                                findNavController().navigate(action)
+                            }
                         } else {
                             launch(Dispatchers.Main) {
                                 signin.startAnimation(shake)

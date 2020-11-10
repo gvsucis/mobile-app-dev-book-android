@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MediaMetaDataFragment" >
+
+    <TextView
+        android:id="@+id/date_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableEnd="@drawable/ic_baseline_date_range_24"
+        android:ems="10"
+        android:hint="Select Data &amp; Time"
+        android:inputType="none"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/white"
+        android:drawableEnd="@drawable/ic_baseline_location_on_24"
+        android:ems="10"
+        android:hint="Select Location"
+        android:inputType="none"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:gravity="clip_vertical"
+        android:hint="Caption"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:padding="4dp"
+        android:textAlignment="inherit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+</LinearLayout>

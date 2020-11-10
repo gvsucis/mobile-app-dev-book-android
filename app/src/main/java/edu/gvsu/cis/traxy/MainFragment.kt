@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter {
             mediaModel.selectedJournal.value = it
-            val action = MainFragmentDirections.actionToMediaList()
+            val action = MainFragmentDirections.actionToMediaList(it.name)
             findNavController().navigate(action)
         }
         with(view) {
