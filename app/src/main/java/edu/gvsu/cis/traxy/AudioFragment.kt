@@ -14,7 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import edu.gvsu.cis.traxy.model.JournalMedia
+import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.android.synthetic.main.fragment_audio.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -105,6 +110,19 @@ class AudioFragment : Fragment() {
             }
         }
         saveBtn.setOnClickListener {
+            with(mediaModel) {
+                val mediaObj = JournalMedia(
+                    caption = mediaCaption.value ?: "None",
+                    date = mediaDate.value.toString(),
+                    type = MediaType.AUDIO.ordinal,
+                    lat = mediaLocation.value?.latLng?.latitude ?: 0.0,
+                    lng = mediaLocation.value?.latLng?.longitude ?: 0.0
+                )
+                CoroutineScope(Dispatchers.IO).launch {
+                    mediaModel.addMediaEntry(mediaObj, mediaUri.value!!)
+                }
+                findNavController().popBackStack()
+            }
 //            mediaModel.mediaCaption.value = media_caption.text.toString()
 //            mediaModel.saveMediaCopy()
         }

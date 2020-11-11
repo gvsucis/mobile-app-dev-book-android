@@ -45,6 +45,7 @@ class MediaDetailsFragment : Fragment() {
             mediaUri?.lastPathSegment?.let {
                 when {
                     it.endsWith(".mp4") -> mType = MediaType.VIDEO
+                    it.endsWith(".m4a") -> mType = MediaType.AUDIO
                     else -> mType = MediaType.PHOTO
                 }
             }
@@ -57,7 +58,7 @@ class MediaDetailsFragment : Fragment() {
                     lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
                 launch(Dispatchers.Main) {
-                    Snackbar.make(view, "Media uploaded...", Snackbar.LENGTH_LONG ).show()
+                    Snackbar.make(view, "Media uploaded...", Snackbar.LENGTH_LONG).show()
                     findNavController().popBackStack()
                 }
             }
@@ -70,26 +71,34 @@ class MediaDetailsFragment : Fragment() {
         mediaModel.mediaUri.observe(viewLifecycleOwner) {
             mediaUri = it
             confirm_fab.isEnabled = true
-            if (it.lastPathSegment!!.endsWith(".mp4")) {
-                video_view.setVideoURI(it)
-                video_view.start()
-                val mc = MediaController(requireContext())
-                video_view.setMediaController(mc)
-                video_view.visibility = View.VISIBLE
-                photo_view.visibility = View.INVISIBLE
-            } else {
-                val istream = requireContext().contentResolver.openInputStream(it)
-                val bmp = BitmapFactory.decodeStream(istream)
-                photo_view.setImageBitmap(bmp)
-                photo_view.visibility = View.VISIBLE
-                video_view.visibility = View.INVISIBLE
-                istream?.close()
-            }
+            it.lastPathSegment?.let { path ->
+                when {
+                    path.endsWith(".mp4") -> {
+                        video_view.setVideoURI(it)
+                        video_view.start()
+                        val mc = MediaController(requireContext())
+                        video_view.setMediaController(mc)
+                        video_view.visibility = View.VISIBLE
+                        photo_view.visibility = View.INVISIBLE
+                    }
+                    path.endsWith(".m4a") -> {
+                        video_view.visibility = View.INVISIBLE
+                        photo_view.visibility = View.INVISIBLE
+                    }
 
-        }
+                    else -> {
+                        val istream = requireContext().contentResolver.openInputStream(it)
+                        val bmp = BitmapFactory.decodeStream(istream)
+                        photo_view.setImageBitmap(bmp)
+                        photo_view.visibility = View.VISIBLE
+                        video_view.visibility = View.INVISIBLE
+                        istream?.close()
+                    }
+                }
+            }
 //        mediaModel.mediaDate.observe(viewLifecycleOwner) {
 //            date_time.setText(it.toPrettyDateTime())
 //        }
+        }
     }
-
 }

@@ -31,9 +31,6 @@ import org.joda.time.DateTimeZone
 class MediaEditFragment : Fragment() {
 
     val mediaModel by activityViewModels<MediaViewModel>()
-    val datePicker = MaterialDatePicker.Builder.datePicker().build()
-    val timePicker = MaterialTimePicker.Builder().build()
-    val PLACE_REQUEST_CODE = 0xACE0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -47,33 +44,6 @@ class MediaEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fab_cover_photo.setOnClickListener {
             fab_cover_photo.isSelected = !fab_cover_photo.isSelected
-        }
-        datePicker.addOnPositiveButtonClickListener {
-            mediaModel.mediaDate.value = DateTime(it, DateTimeZone.UTC)
-            timePicker.show(parentFragmentManager, "MediaTime")
-        }
-        timePicker.addOnPositiveButtonClickListener {
-            with(mediaModel.mediaDate) {
-                value = value?.run {
-                    plusHours(timePicker.hour).plusMinutes(timePicker.minute)
-                }
-            }
-        }
-
-        media_date_time.setOnClickListener {
-            datePicker.show(parentFragmentManager, "MediaDate")
-        }
-        media_location.setOnClickListener {
-            val placeIntent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID,
-                    Place.Field.NAME,
-                    Place.Field.ADDRESS,
-                    Place.Field.LAT_LNG)
-            )
-                .setTypeFilter(TypeFilter.ADDRESS)
-                .build(requireActivity())
-            startActivityForResult(placeIntent, PLACE_REQUEST_CODE)
         }
     }
 
@@ -93,24 +63,17 @@ class MediaEditFragment : Fragment() {
                         .into(media_image)
                     media_image.visibility = View.VISIBLE
                 }
+                MediaType.AUDIO.ordinal -> {
+                    media_image.visibility = View.INVISIBLE
+                }
                 else -> media_image.visibility = View.GONE
             }
-            media_caption.setText(it.caption)
             try {
                 val m_date = DateTime(it.date, DateTimeZone.UTC)
                 mediaModel.mediaDate.value = m_date
             } catch (e: Exception) {
                 mediaModel.mediaDate.value = DateTime.now()
             }
-        }
-        mediaModel.selectedJournal.observe(viewLifecycleOwner) {
-            media_location.setText(it.address)
-        }
-        mediaModel.mediaDate.observe(viewLifecycleOwner) {
-            media_date_time.setText(it.toPrettyDateTime())
-        }
-        mediaModel.mediaLocation.observe(viewLifecycleOwner) {
-            media_location.setText(it.address)
         }
     }
 
@@ -119,10 +82,6 @@ class MediaEditFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_edit_media, menu)
     }
-
-//    fun undoSave() {
-//
-//    }
 
     private fun undoSavedMedia() = with(mediaModel) {
         restoreMediaCopy()
@@ -137,10 +96,9 @@ class MediaEditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save_media) {
-            mediaModel.mediaCaption.value = media_caption.text.toString()
             mediaModel.saveMediaCopy()
             mediaModel.selectedMedia.value?.apply {
-                caption = media_caption.text.toString()
+                caption = mediaModel.mediaCaption.value ?: "None"
                 date = mediaModel.mediaDate.value.toString()
                 lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0
                 lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0
@@ -148,7 +106,7 @@ class MediaEditFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     mediaModel.updateJournalMedia(it)
                     withContext(Dispatchers.Main) {
-                        Snackbar.make(media_caption, "Updates saved", Snackbar.LENGTH_LONG)
+                        Snackbar.make(fab_cover_photo, "Updates saved", Snackbar.LENGTH_LONG)
                             .setAction("Undo") { undoSavedMedia() }
                             .show();
                     }
@@ -159,15 +117,4 @@ class MediaEditFragment : Fragment() {
         return false
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val place = Autocomplete.getPlaceFromIntent(it)
-                media_location.setText(place.name)
-                mediaModel.mediaLocation.value = place
-            }
-        } else
-            super.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 }

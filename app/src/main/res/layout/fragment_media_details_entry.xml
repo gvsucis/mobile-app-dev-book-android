@@ -67,6 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_fab" />
+        app:layout_constraintTop_toBottomOf="@+id/confirm_fab"
+        tools:layout="@layout/fragment_media_meta_data"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

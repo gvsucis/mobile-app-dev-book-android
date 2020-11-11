@@ -44,6 +44,5 @@
         android:inputType="textMultiLine"
         android:lines="5"
         android:padding="4dp"
-        android:textAlignment="inherit"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 </LinearLayout>

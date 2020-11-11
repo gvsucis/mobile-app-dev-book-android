@@ -38,6 +38,10 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 Glide.with(view).load(m.thumbnailUrl).into(image)
                 playButton.visibility = View.VISIBLE
             }
+            MediaType.AUDIO.ordinal -> {
+                playButton.visibility = View.VISIBLE
+                image.visibility = View.INVISIBLE
+            }
             else -> playButton.visibility = View.INVISIBLE
         }
         if (listener != null) {

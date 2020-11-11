@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.libraries.places.api.model.Place
@@ -25,10 +26,6 @@ class MediaMetaDataFragment : Fragment() {
     val mediaModel by activityViewModels<MediaViewModel>()
     val datePickerDialog = MaterialDatePicker.Builder.datePicker().build()
     val timePickerDialog = MaterialTimePicker.Builder().build()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,26 +59,11 @@ class MediaMetaDataFragment : Fragment() {
                 .build(requireActivity())
             startActivityForResult(placeIntent, NewJournalFragment.PLACE_REQUEST_CODE)
         }
-        caption.setOnFocusChangeListener { view, hasFocus ->
-            if(!hasFocus) {
-                mediaModel.mediaCaption.value = caption.text.toString()
-            }
+        caption.addTextChangedListener {
+            mediaModel.mediaCaption.value = caption.text.toString()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        mediaModel.mediaDate.observe(viewLifecycleOwner) {
-            date_time.setText(it.toPrettyDateTime())
-        }
-        mediaModel.mediaCaption.observe(viewLifecycleOwner) {
-            caption.setText(it.toString())
-        }
-        mediaModel.mediaLocation.observe(viewLifecycleOwner) {
-            location.setText(it.address)
-        }
-    }
-
+    
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == NewJournalFragment.PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             data?.let {

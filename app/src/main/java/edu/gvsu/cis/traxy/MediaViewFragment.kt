@@ -59,6 +59,10 @@ class MediaViewFragment : Fragment() {
                     exoPlayer.prepare()
                     exoPlayer.playWhenReady = true
                 }
+                MediaType.AUDIO.ordinal -> {
+                    photoView.visibility = View.INVISIBLE
+                    videoView.visibility = View.INVISIBLE
+                }
             }
         }
     }
