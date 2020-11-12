@@ -1,15 +1,15 @@
 package edu.gvsu.cis.traxy
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.media.MediaRecorder
+import android.media.*
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -39,9 +39,15 @@ class AudioFragment : Fragment() {
 
     private var audioRec: MediaRecorder? = null
     private var audioPlay: MediaPlayer? = null
+    private lateinit var audioMgr: AudioManager
+    private lateinit var audioFocusRequest: AudioFocusRequest
     private var currentState = Status.START
     private var recordPermissionGranted = false
+    private var playbackAuthorized = false
+//    private var playbackDelayed = false
+//    private var resumePlaybackAfterFocus = false
     private val mediaModel by activityViewModels<MediaViewModel>()
+    val focusLock = Any()
 
     val myHandler = Handler()
     var elapse_time = 0
@@ -123,9 +129,12 @@ class AudioFragment : Fragment() {
                 }
                 findNavController().popBackStack()
             }
-//            mediaModel.mediaCaption.value = media_caption.text.toString()
-//            mediaModel.saveMediaCopy()
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        audioMgr = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
     }
 
     override fun onResume() {
@@ -151,13 +160,6 @@ class AudioFragment : Fragment() {
         if (!recordPermissionGranted)
             findNavController().popBackStack()
     }
-
-//    private fun updateTimeMarker() = timerTask {
-//        lifecycleScope.launch(Dispatchers.Main) {
-//            elapse_time++
-//            time_marker.setText(elapse_time.toHourMinuteSecond())
-//        }
-//    }
 
     private fun startRecording() {
         audioRec = MediaRecorder()
@@ -194,17 +196,48 @@ class AudioFragment : Fragment() {
         audio_state.setText("Recorded")
     }
 
+    val afChangeListener = AudioManager.OnAudioFocusChangeListener {focusChange ->
+        when(focusChange) {
+            AudioManager.AUDIOFOCUS_GAIN -> startPlayback()
+            AudioManager.AUDIOFOCUS_LOSS -> pausePlayback()
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> pausePlayback()
+            else -> {}
+        }
+    }
     private fun initAudioPlayer() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
+                setAudioAttributes(AudioAttributes.Builder().run {
+                    setUsage(AudioAttributes.USAGE_MEDIA)
+                    setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    build()
+                })
+                setAcceptsDelayedFocusGain(false)
+                setOnAudioFocusChangeListener (afChangeListener)
+                build()
+
+            }
+            val result = audioMgr.requestAudioFocus(audioFocusRequest)
+            playbackAuthorized = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        } else {
+            val result = audioMgr.requestAudioFocus(afChangeListener,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN)
+            playbackAuthorized = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        }
         audioPlay = MediaPlayer().apply {
-            val audioAttr = AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
+            val audioAttr = AudioAttributes.Builder().run {
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                setUsage(AudioAttributes.USAGE_MEDIA)
+                build()
+            }
             setAudioAttributes(audioAttr)
             setOnCompletionListener {
                 currentState = Status.PLAY_PAUSE
                 rightBtn.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                 myHandler.removeCallbacks(myRunner)
+                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O)
+                    audioMgr.abandonAudioFocus (afChangeListener)
             }
             mediaModel.mediaUri.value?.let {
                 setDataSource(requireContext(), it)
@@ -217,8 +250,10 @@ class AudioFragment : Fragment() {
         try {
             if (audioPlay == null)
                 initAudioPlayer()
-            audioPlay?.start()
-            rightBtn.setImageResource(R.drawable.ic_baseline_pause_24)
+            if (playbackAuthorized) {
+                audioPlay?.start()
+                rightBtn.setImageResource(R.drawable.ic_baseline_pause_24)
+            }
         } catch (ioe: IOException) {
             // error handling
         }

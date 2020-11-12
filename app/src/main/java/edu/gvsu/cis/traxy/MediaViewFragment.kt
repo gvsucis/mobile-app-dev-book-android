@@ -54,14 +54,19 @@ class MediaViewFragment : Fragment() {
                         .load(it.url)
                         .into(photoView)
                 MediaType.VIDEO.ordinal -> {
+                    videoView.visibility = View.VISIBLE
                     val mediaContent = MediaItem.fromUri(it.url)
                     exoPlayer.setMediaItem(mediaContent)
                     exoPlayer.prepare()
                     exoPlayer.playWhenReady = true
                 }
                 MediaType.AUDIO.ordinal -> {
-                    photoView.visibility = View.INVISIBLE
-                    videoView.visibility = View.INVISIBLE
+                    photoView.visibility = View.GONE
+                    videoView.visibility = View.VISIBLE
+                    val mediaContent = MediaItem.fromUri(it.url)
+                    exoPlayer.setMediaItem(mediaContent)
+                    exoPlayer.prepare()
+                    exoPlayer.playWhenReady = true
                 }
             }
         }

@@ -43,7 +43,6 @@ class JournalViewFragment : Fragment() {
         media_fab.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
                 R.id.add_audio -> {
-                    println("Add audio")
                     val audioFile = createFileName("traxyau", ".m4a")
                     mediaModel.mediaFile.value = audioFile
                     val audioUri = FileProvider.getUriForFile(requireContext(),
