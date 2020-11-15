@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
+    implementation 'de.grundid.opendatalab:geojson-jackson:1.14'
     kapt 'androidx.room:room-compiler:2.2.5'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     testImplementation 'junit:junit:4.13.1'

@@ -2,6 +2,7 @@ package edu.gvsu.cis.traxy
 
 import android.net.Uri
 import android.util.Log
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -12,8 +13,17 @@ import com.google.firebase.storage.ktx.storage
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import org.geojson.Feature
+import org.geojson.FeatureCollection
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.*
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -21,7 +31,7 @@ object TraxyRepository {
     private val storageRef = Firebase.storage
     private var docRef: DocumentReference? = null
     private var userMediaStore: StorageReference? = null
-
+    private val fmt = DateTimeFormat.forPattern("YYYY-MM-dd'T'HH:mm:ssZZ")
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")
@@ -149,21 +159,43 @@ object TraxyRepository {
         }
     }
 
+    // https://api.weather.gov/points/45,-85
+    // https://api.weather.gov/stations/KILN/observations?start=2020-10-14T03:21:26-00:00&limit=3
+    private suspend fun getFromURL(url: String): String? = withContext(Dispatchers.IO) {
+        val url = URL(url)
+        val conn = url.openConnection() as HttpURLConnection
+        conn.requestMethod = "GET"
+        conn.connect()
+        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+            val scanner = Scanner(conn.inputStream)
+            val jsonString = StringBuilder()
+            while (scanner.hasNextLine())
+                jsonString.append(scanner.nextLine())
+            println("Got it!")
+            return@withContext jsonString.toString()
+        } else {
+            println("Open Weather Map Error ${conn.responseCode} ${conn.responseMessage}")
+            return@withContext null
+        }
 
-//    suspend fun getJournalData(journalKey: String): Journal? =
-//        docRef?.let {
-//            val tmp = it.collection("journals")
-//                .document(journalKey).get().await()
-//            return tmp.toObject(Journal::class.java)
-//        }
+    }
 
-//    suspend fun getMediaEntry(journalKey: String, mediaKey: String): JournalMedia? {
-//        return docRef?.let {
-//            val tmp = it.collection("journals")
-//                .document(journalKey)
-//                .collection("media")
-//                .document(mediaKey).get().await()
-//            return tmp.toObject(JournalMedia::class.java)
-//        }
-//    }
+    suspend fun getWeatherData(lat: Double, lng: Double, atTime: DateTime) {
+//        val parser = Json { ignoreUnknownKeys = true }
+        val s1 = getFromURL("https://api.weather.gov/points/$lat,$lng")
+        s1?.run {
+            val t1 = ObjectMapper().readValue(this, Feature::class.java)
+            val station = t1.properties.get("radarStation") ?: "None"
+            val timestamp = fmt.print(atTime).replace("+00:00","-00:00")
+            getFromURL("https://api.weather.gov/stations/$station/observations?" +
+                    "start=$timestamp&limit=2")
+//            println("Observation is $z")
+
+        }?.run {
+            val t2 = ObjectMapper().readValue(this, FeatureCollection::class.java)
+            val z = t2.features[0].properties.getValue("temperature")
+            println("Temperatur is $z")
+        }
+        println("Here???")
+    }
 }

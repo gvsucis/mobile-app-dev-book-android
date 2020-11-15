@@ -53,7 +53,8 @@ class MediaMetaDataFragment : Fragment() {
         location.setOnClickListener {
             val placeIntent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,
+                    Place.Field.LAT_LNG)
             )
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .build(requireActivity())
