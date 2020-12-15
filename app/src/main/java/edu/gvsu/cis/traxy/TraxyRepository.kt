@@ -2,7 +2,6 @@ package edu.gvsu.cis.traxy
 
 import android.net.Uri
 import android.util.Log
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -10,20 +9,22 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import org.geojson.Feature
-import org.geojson.FeatureCollection
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import org.json.JSONObject
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import kotlin.io.use as use
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -32,6 +33,7 @@ object TraxyRepository {
     private var docRef: DocumentReference? = null
     private var userMediaStore: StorageReference? = null
     private val fmt = DateTimeFormat.forPattern("YYYY-MM-dd'T'HH:mm:ssZZ")
+    private val httpClient = OkHttpClient()
     val journalCloudLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")
@@ -121,7 +123,9 @@ object TraxyRepository {
                 "date" to m.date,
                 "url" to m.url,
                 "lat" to m.lat,
-                "lng" to m.lng
+                "lng" to m.lng,
+                "temperature" to m.temperature,
+                "weatherIcon" to m.weatherIcon
             )
             if (m.type == MediaType.VIDEO.ordinal)
                 mediaData["thumbnailUrl"] = m.thumbnailUrl
@@ -162,40 +166,46 @@ object TraxyRepository {
     // https://api.weather.gov/points/45,-85
     // https://api.weather.gov/stations/KILN/observations?start=2020-10-14T03:21:26-00:00&limit=3
     private suspend fun getFromURL(url: String): String? = withContext(Dispatchers.IO) {
-        val url = URL(url)
-        val conn = url.openConnection() as HttpURLConnection
-        conn.requestMethod = "GET"
-        conn.connect()
-        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-            val scanner = Scanner(conn.inputStream)
-            val jsonString = StringBuilder()
-            while (scanner.hasNextLine())
-                jsonString.append(scanner.nextLine())
-            println("Got it!")
-            return@withContext jsonString.toString()
-        } else {
-            println("Open Weather Map Error ${conn.responseCode} ${conn.responseMessage}")
-            return@withContext null
+//        val url = URL(url)
+//        val conn = url.openConnection() as HttpURLConnection
+//        conn.requestMethod = "GET"
+//        conn.connect()
+//        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
+//            val scanner = Scanner(conn.inputStream)
+//            val jsonString = StringBuilder()
+//            while (scanner.hasNextLine())
+//                jsonString.append(scanner.nextLine())
+//            println("Got it!")
+//            return@withContext jsonString.toString()
+//        } else {
+//            println("Open Weather Map Error ${conn.responseCode} ${conn.responseMessage}")
+//            return@withContext null
+//        }
+        val request = Request.Builder()
+            .url(url).build()
+        httpClient.newCall(request).execute().run {
+            if (!isSuccessful)
+                return@withContext null
+            return@withContext body()!!.string()
         }
-
+        return@withContext null
     }
 
-    suspend fun getWeatherData(lat: Double, lng: Double, atTime: DateTime) {
-//        val parser = Json { ignoreUnknownKeys = true }
-        val s1 = getFromURL("https://api.weather.gov/points/$lat,$lng")
-        s1?.run {
-            val t1 = ObjectMapper().readValue(this, Feature::class.java)
-            val station = t1.properties.get("radarStation") ?: "None"
-            val timestamp = fmt.print(atTime).replace("+00:00","-00:00")
-            getFromURL("https://api.weather.gov/stations/$station/observations?" +
-                    "start=$timestamp&limit=2")
-//            println("Observation is $z")
+    suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
+        val tmp = getFromURL("https://api.openweathermap.org/data/2.5/weather?" +
+                "lat=$lat&lon=$lng&appid=${BuildConfig.OWM_API_KEY}")
+        tmp?.let {
+            with(JSONObject(it)) {
+                val icon = getJSONArray("weather")
+                    .getJSONObject(0)
+                    .getString("icon");
 
-        }?.run {
-            val t2 = ObjectMapper().readValue(this, FeatureCollection::class.java)
-            val z = t2.features[0].properties.getValue("temperature")
-            println("Temperatur is $z")
+                val temp = getJSONObject("main").getDouble("temp").toFahrenheit()
+                return Pair(temp, icon)
+            }
         }
-        println("Here???")
+        return null
     }
 }
+
+fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32

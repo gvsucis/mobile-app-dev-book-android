@@ -8,6 +8,6 @@ class TraxyApp: Application() {
     override fun onCreate() {
         super.onCreate()
         JodaTimeAndroid.init(this)
-        Places.initialize(this, BuildConfig.MY_API_KEY);
+        Places.initialize(this, BuildConfig.GOOGLE_API_KEY);
     }
 }

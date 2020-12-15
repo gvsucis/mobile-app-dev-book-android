@@ -30,8 +30,5 @@ class JournalMediaAdapter(
         model: JournalMedia,
     ) {
         holder.bindTo(model, listener)
-        GlobalScope.launch(Dispatchers.IO) {
-            TraxyRepository.getWeatherData(model.lat, model.lng, DateTime.parse(model.date))
-        }
     }
 }

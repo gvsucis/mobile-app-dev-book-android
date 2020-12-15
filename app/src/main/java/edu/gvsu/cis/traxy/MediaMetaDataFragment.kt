@@ -16,6 +16,9 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.android.synthetic.main.fragment_media_meta_data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 
@@ -46,6 +49,7 @@ class MediaMetaDataFragment : Fragment() {
                 plusHours(timePickerDialog.hour).plusMinutes(timePickerDialog.minute)
             }
             mediaModel.mediaDate.value = updated
+            date_time.text = updated?.toPrettyDateTime()
         }
         date_time.setOnClickListener {
             datePickerDialog.show(parentFragmentManager, "datePick")
@@ -69,6 +73,13 @@ class MediaMetaDataFragment : Fragment() {
         if (requestCode == NewJournalFragment.PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             data?.let {
                 val place = Autocomplete.getPlaceFromIntent(it)
+                place.latLng?.run {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val weatherData = TraxyRepository.getWeatherData(latitude, longitude)
+                        mediaModel.weatherTemperature.postValue(weatherData?.first)
+                        mediaModel.weatherConditionIcon.postValue(weatherData?.second)
+                    }
+                }
                 mediaModel.mediaLocation.value = place
                 location.text = place.name
             }

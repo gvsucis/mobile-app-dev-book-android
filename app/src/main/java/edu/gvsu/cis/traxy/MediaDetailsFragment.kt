@@ -56,6 +56,12 @@ class MediaDetailsFragment : Fragment() {
                     type = mType.ordinal,
                     lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0,
                     lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
+                mediaModel.weatherTemperature.value?.let {
+                    mediaObj.temperature = it
+                }
+                mediaModel.weatherConditionIcon.value?.let {
+                    mediaObj.weatherIcon = it
+                }
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
                 launch(Dispatchers.Main) {
                     Snackbar.make(view, "Media uploaded...", Snackbar.LENGTH_LONG).show()

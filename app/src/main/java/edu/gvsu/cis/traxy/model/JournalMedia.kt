@@ -17,4 +17,6 @@ data class JournalMedia(
     var type: Int = 0,
     var url: String = "",
     var thumbnailUrl: String = "",
+    var temperature: Double? = null,
+    var weatherIcon: String? = null
 )
