@@ -64,7 +64,7 @@ class MediaDetailsFragment : Fragment() {
                 }
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
                 launch(Dispatchers.Main) {
-                    Snackbar.make(view, "Media uploaded...", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(confirm_fab, "Media uploaded...", Snackbar.LENGTH_LONG).show()
                     findNavController().popBackStack()
                 }
             }

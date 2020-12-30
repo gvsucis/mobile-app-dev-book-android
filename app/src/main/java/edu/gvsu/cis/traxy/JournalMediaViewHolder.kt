@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val caption: TextView
@@ -15,7 +17,10 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val image: ImageView
     val playButton: ImageView
     val editButton: ImageButton
+    val weather_temp: TextView
+    val weather_icon: ImageView
     val view: View
+    val decimalFormat = DecimalFormat("#.##F")
 
     init {
         view = v
@@ -24,6 +29,9 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         image = v.findViewById(R.id.media_image)
         playButton = v.findViewById(R.id.play_media)
         editButton = v.findViewById(R.id.edit_button)
+        weather_temp = v.findViewById(R.id.temperature)
+        weather_icon = v.findViewById(R.id.weather_icon)
+        decimalFormat.roundingMode = RoundingMode.UP
     }
 
     public fun bindTo(m: JournalMedia, listener: ((JournalMedia, String) -> Unit)?) {
@@ -44,6 +52,17 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
             }
             else -> playButton.visibility = View.INVISIBLE
         }
+        if (m.temperature != null) {
+            weather_temp.visibility = View.VISIBLE
+            weather_temp.text = decimalFormat.format(m.temperature)
+        } else
+            weather_temp.visibility = View.GONE
+        if (m.weatherIcon != null) {
+            val iconUrl = "http://openweathermap.org/img/wn/${m.weatherIcon}@2x.png"
+            Glide.with(view).load(iconUrl).into(weather_icon)
+            weather_icon.visibility = View.VISIBLE
+        } else
+            weather_icon.visibility = View.GONE
         if (listener != null) {
             editButton.setOnClickListener {
                 listener(m, "EDIT")

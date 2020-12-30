@@ -43,24 +43,50 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         tools:text="Caption Here" />
 
-    <TextView
-        android:id="@+id/media_date_time"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_button"
-        tools:text="Date &amp; time" />
-
-    <ImageButton
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="TODO"
+        android:background="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/media_caption"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/media_caption">
+
+        <TextView
+            android:id="@+id/media_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            tools:text="Date &amp; time" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            tools:text="temperature" />
+
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/quantum_ic_cloud_off_vd_theme_24" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/ic_baseline_edit_24" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

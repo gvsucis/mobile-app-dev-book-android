@@ -17,14 +17,10 @@ import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.json.JSONObject
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
-import kotlin.io.use as use
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -152,6 +148,10 @@ object TraxyRepository {
                 "lat" to m.lat,
                 "lng" to m.lng
             )
+            if (m.temperature != null)
+                mediaData.put("temperature", m.temperature!!)
+            if (m.weatherIcon != null)
+                mediaData.put("weatherIcon", m.weatherIcon!!)
             if (m.type == MediaType.VIDEO.ordinal)
                 mediaData["thumbnailUrl"] = m.thumbnailUrl
             it
@@ -165,34 +165,19 @@ object TraxyRepository {
 
     // https://api.weather.gov/points/45,-85
     // https://api.weather.gov/stations/KILN/observations?start=2020-10-14T03:21:26-00:00&limit=3
-    private suspend fun getFromURL(url: String): String? = withContext(Dispatchers.IO) {
-//        val url = URL(url)
-//        val conn = url.openConnection() as HttpURLConnection
-//        conn.requestMethod = "GET"
-//        conn.connect()
-//        if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-//            val scanner = Scanner(conn.inputStream)
-//            val jsonString = StringBuilder()
-//            while (scanner.hasNextLine())
-//                jsonString.append(scanner.nextLine())
-//            println("Got it!")
-//            return@withContext jsonString.toString()
-//        } else {
-//            println("Open Weather Map Error ${conn.responseCode} ${conn.responseMessage}")
-//            return@withContext null
-//        }
+    private suspend fun getDataFromURL(url: String): String? = withContext(Dispatchers.IO) {
         val request = Request.Builder()
             .url(url).build()
         httpClient.newCall(request).execute().run {
             if (!isSuccessful)
                 return@withContext null
-            return@withContext body()!!.string()
+            else
+                return@withContext body()!!.string()
         }
-        return@withContext null
     }
 
     suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
-        val tmp = getFromURL("https://api.openweathermap.org/data/2.5/weather?" +
+        val tmp = getDataFromURL("https://api.openweathermap.org/data/2.5/weather?" +
                 "lat=$lat&lon=$lng&appid=${BuildConfig.OWM_API_KEY}")
         tmp?.let {
             with(JSONObject(it)) {
