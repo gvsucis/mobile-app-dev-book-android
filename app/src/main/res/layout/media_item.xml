@@ -75,6 +75,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/quantum_ic_cloud_off_vd_theme_24" />
 
         <Space

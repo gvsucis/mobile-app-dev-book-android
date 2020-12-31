@@ -14,11 +14,11 @@ import com.squareup.okhttp.Request
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import edu.gvsu.cis.traxy.webservice.OpenWeatherMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.joda.time.format.DateTimeFormat
-import org.json.JSONObject
 import java.io.File
 import java.util.*
 
@@ -177,20 +177,17 @@ object TraxyRepository {
     }
 
     suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
-        val tmp = getDataFromURL("https://api.openweathermap.org/data/2.5/weather?" +
-                "lat=$lat&lon=$lng&appid=${BuildConfig.OWM_API_KEY}")
-        tmp?.let {
-            with(JSONObject(it)) {
-                val icon = getJSONArray("weather")
-                    .getJSONObject(0)
-                    .getString("icon");
-
-                val temp = getJSONObject("main").getDouble("temp").toFahrenheit()
-                return Pair(temp, icon)
-            }
+        return try {
+            val w = OpenWeatherMap.apiService.getWeatherAt(lat,lng/*, BuildConfig.OWM_API_KEY*/)
+            println("Got here " + w.main)
+            Pair(w.main.temp.toFahrenheit(), w.weather.get(0).icon)
+        } catch(e:Throwable) {
+            null
         }
-        return null
     }
+
+
 }
 
+// Convert from Kelvin to Fahrenheit
 fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32

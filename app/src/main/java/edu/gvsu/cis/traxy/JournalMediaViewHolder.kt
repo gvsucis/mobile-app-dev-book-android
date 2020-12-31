@@ -58,7 +58,7 @@ class JournalMediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         } else
             weather_temp.visibility = View.GONE
         if (m.weatherIcon != null) {
-            val iconUrl = "http://openweathermap.org/img/wn/${m.weatherIcon}@2x.png"
+            val iconUrl = "https://openweathermap.org/img/wn/${m.weatherIcon}@2x.png"
             Glide.with(view).load(iconUrl).into(weather_icon)
             weather_icon.visibility = View.VISIBLE
         } else
