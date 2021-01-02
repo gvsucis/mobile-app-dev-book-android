@@ -6,11 +6,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class TraxyRepository(private val dao: TraxyDao) {
+class TraxyRepository() {
     private val auth = Firebase.auth
     private val dbStore = Firebase.firestore
     private var docRef: DocumentReference? = null
-    val journalLocalLiveData = dao.getAllJournals()
     val journalLiveData by lazy {
         val userId = auth.currentUser?.uid ?: "NONE"
         val coll = dbStore.collection("user/$userId/journals")
@@ -34,7 +33,6 @@ class TraxyRepository(private val dao: TraxyDao) {
             val z = auth.createUserWithEmailAndPassword(email, password).await()
             return z.user?.uid.also {
                 docRef = dbStore.collection("user").document(it ?: "NONE")
-
             }
         } catch (e: java.lang.Exception) {
             return null
@@ -42,13 +40,11 @@ class TraxyRepository(private val dao: TraxyDao) {
 
     }
 
-
     fun firebaseSignOut() {
         auth.signOut()
     }
 
     fun firebaseAddJournal(d: Journal) {
-//        dao.insertJournal(d)
         val jData = hashMapOf(
             "name" to d.name, "address" to d.address,
             "placeId" to d.placeId, "lat" to d.lat, "lng" to d.lng,

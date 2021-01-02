@@ -1,14 +1,10 @@
 package edu.gvsu.cis.traxy
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.firebase.firestore.DocumentId
 
 open class ListItem() {}
 
-@Entity
 data class Journal(
-    @PrimaryKey
     @DocumentId
     val key: String = "",
     val name: String = "",

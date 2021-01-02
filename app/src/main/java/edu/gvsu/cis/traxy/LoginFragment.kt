@@ -26,13 +26,6 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.userId?.let {
-            findNavController().navigate(R.id.action_login2main)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,10 +37,13 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Just for quicl test of the app
+        // Just for quick test of the app
         email.text.insert(0, "user@test.com")
         password.text.insert(0, "traxy1")
 
+        viewModel.userId.observe(viewLifecycleOwner, {
+            findNavController().navigate(R.id.action_login2main)
+        })
         signin.setOnClickListener {
             val emailStr = email.text.toString()
             val passStr = password.text.toString()

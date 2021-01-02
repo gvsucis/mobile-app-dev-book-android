@@ -57,8 +57,11 @@ class SignUpFragment : Fragment() {
                 else -> {
                     CoroutineScope(Dispatchers.IO).launch {
                         val uid = viewModel.signUpWithEmailAndPassword(emailStr, pass1)
-                        if (uid != null)
-                            findNavController().navigate(R.id.action_signup2main)
+                        if (uid != null) {
+                            // back to the login screen and then the login screen will
+                            // transition to main screen
+                            findNavController().popBackStack()
+                        }
                         else launch(Dispatchers.Main) {
                             Snackbar
                                 .make(

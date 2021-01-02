@@ -8,35 +8,36 @@ import com.google.android.libraries.places.api.model.Place
 import org.joda.time.DateTime
 
 class UserDataViewModel(app: Application) : AndroidViewModel(app) {
-    var userId: String? = null
+    var userId = MutableLiveData<String>()
     val tripStart = MutableLiveData<DateTime>()
     val tripEnd = MutableLiveData<DateTime>()
     val tripPlace = MutableLiveData<Place>()
     lateinit var journals: LiveData<List<Journal>>
     val repo : TraxyRepository
-    val localJournals: LiveData<List<Journal>>
 
     init {
-        val dao = TraxyDB.getInstance(app).traxyDao()
-        repo = TraxyRepository(dao)
-        localJournals = repo.journalLocalLiveData
+        repo = TraxyRepository()
     }
 
     suspend fun signInWithEmailAndPassword(email: String, password: String): String? {
-        val userId = repo.firebaseSignInWithEmail(email, password)
+        val u = repo.firebaseSignInWithEmail(email, password)
+        if (u != null)
+            userId.postValue(u)
         journals = repo.journalLiveData
-        return userId
+        return u
     }
 
     suspend fun signUpWithEmailAndPassword(email: String, password: String):String? {
-        repo.firebaseSignUpWithEmail(email, password)
+        val u = repo.firebaseSignUpWithEmail(email, password)
+        if (u != null)
+            userId.postValue(u)
         journals = repo.journalLiveData
-        return userId
+        return u
     }
 
     fun signOut() {
         repo.firebaseSignOut()
-        userId = null
+        userId.value = null
     }
 
     fun addJournal(z: Journal) {
