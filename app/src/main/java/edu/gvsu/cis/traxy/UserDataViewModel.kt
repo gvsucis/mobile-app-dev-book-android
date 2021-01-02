@@ -8,7 +8,7 @@ import com.google.android.libraries.places.api.model.Place
 import org.joda.time.DateTime
 
 class UserDataViewModel(app: Application) : AndroidViewModel(app) {
-    var userId = MutableLiveData<String>()
+    var userId = MutableLiveData<String?>()
     val tripStart = MutableLiveData<DateTime>()
     val tripEnd = MutableLiveData<DateTime>()
     val tripPlace = MutableLiveData<Place>()
@@ -21,16 +21,14 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
 
     suspend fun signInWithEmailAndPassword(email: String, password: String): String? {
         val u = repo.firebaseSignInWithEmail(email, password)
-        if (u != null)
-            userId.postValue(u)
+        userId.postValue(u)
         journals = repo.journalLiveData
         return u
     }
 
     suspend fun signUpWithEmailAndPassword(email: String, password: String):String? {
         val u = repo.firebaseSignUpWithEmail(email, password)
-        if (u != null)
-            userId.postValue(u)
+        userId.postValue(u)
         journals = repo.journalLiveData
         return u
     }
