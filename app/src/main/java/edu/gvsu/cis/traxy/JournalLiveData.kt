@@ -1,6 +1,5 @@
 package edu.gvsu.cis.traxy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.EventListener

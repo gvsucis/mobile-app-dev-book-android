@@ -1,16 +1,10 @@
 package edu.gvsu.cis.traxy
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.firebase.firestore.DocumentId
-import org.joda.time.DateTime
-import java.util.*
 
 open class ListItem() {}
 
-@Entity
 data class Journal(
-    @PrimaryKey
     @DocumentId
     var key: String = "",
     val name: String = "",
