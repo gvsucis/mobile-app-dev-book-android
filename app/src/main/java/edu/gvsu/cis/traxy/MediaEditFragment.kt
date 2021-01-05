@@ -1,19 +1,11 @@
 package edu.gvsu.cis.traxy
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.timepicker.MaterialTimePicker
 import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.android.synthetic.main.fragment_media_edit.*
 import kotlinx.coroutines.CoroutineScope
