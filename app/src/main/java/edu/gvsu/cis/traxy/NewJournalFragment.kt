@@ -82,14 +82,14 @@ class NewJournalFragment : Fragment(), View.OnFocusChangeListener {
         trip_location.setOnFocusChangeListener(this)
 
         trip_location.setOnClickListener {
-            val placeIntent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
-            )
-                .setTypeFilter(TypeFilter.ADDRESS)
-                .build(requireActivity())
-            startActivityForResult(placeIntent, PLACE_REQUEST_CODE)
-
+//            val placeIntent = Autocomplete.IntentBuilder(
+//                AutocompleteActivityMode.FULLSCREEN,
+//                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+//            )
+//                .setTypeFilter(TypeFilter.ADDRESS)
+//                .build(requireActivity())
+//            startActivityForResult(placeIntent, PLACE_REQUEST_CODE)
+            println("TODO: complete this in a later chapter")
         }
 
         trip_calendar.setOnDateChangeListener { _, yr, mo, dy ->

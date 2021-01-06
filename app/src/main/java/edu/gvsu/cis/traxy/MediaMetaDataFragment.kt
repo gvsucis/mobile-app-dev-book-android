@@ -51,13 +51,14 @@ class MediaMetaDataFragment : Fragment() {
             datePickerDialog.show(parentFragmentManager, "datePick")
         }
         location.setOnClickListener {
-            val placeIntent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
-            )
-                .setTypeFilter(TypeFilter.ADDRESS)
-                .build(requireActivity())
-            startActivityForResult(placeIntent, NewJournalFragment.PLACE_REQUEST_CODE)
+//            val placeIntent = Autocomplete.IntentBuilder(
+//                AutocompleteActivityMode.FULLSCREEN,
+//                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+//            )
+//                .setTypeFilter(TypeFilter.ADDRESS)
+//                .build(requireActivity())
+//            startActivityForResult(placeIntent, NewJournalFragment.PLACE_REQUEST_CODE)
+            println("TODO: complete this in a later chapter")
         }
         caption.addTextChangedListener {
             mediaModel.mediaCaption.value = caption.text.toString()
