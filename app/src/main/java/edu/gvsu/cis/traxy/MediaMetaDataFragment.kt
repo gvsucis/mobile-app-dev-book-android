@@ -54,37 +54,39 @@ class MediaMetaDataFragment : Fragment() {
         date_time.setOnClickListener {
             datePickerDialog.show(parentFragmentManager, "datePick")
         }
+
         location.setOnClickListener {
-            val placeIntent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN,
-                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,
-                    Place.Field.LAT_LNG)
-            )
-                .setTypeFilter(TypeFilter.ADDRESS)
-                .build(requireActivity())
-            startActivityForResult(placeIntent, NewJournalFragment.PLACE_REQUEST_CODE)
+//            val placeIntent = Autocomplete.IntentBuilder(
+//                AutocompleteActivityMode.FULLSCREEN,
+//                listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,
+//                    Place.Field.LAT_LNG)
+//            )
+//                .setTypeFilter(TypeFilter.ADDRESS)
+//                .build(requireActivity())
+//            startActivityForResult(placeIntent, NewJournalFragment.PLACE_REQUEST_CODE)
+            println("TODO: will be completed in a later chapter")
         }
         caption.addTextChangedListener {
             mediaModel.mediaCaption.value = caption.text.toString()
         }
     }
     
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == NewJournalFragment.PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val place = Autocomplete.getPlaceFromIntent(it)
-                place.latLng?.run {
-                    GlobalScope.launch(Dispatchers.IO) {
-                        val weatherData = TraxyRepository.getWeatherData(latitude, longitude)
-                        mediaModel.weatherTemperature.postValue(weatherData?.first)
-                        mediaModel.weatherConditionIcon.postValue(weatherData?.second)
-                    }
-                }
-                mediaModel.mediaLocation.value = place
-                location.text = place.name
-            }
-        } else
-            super.onActivityResult(requestCode, resultCode, data)
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if (requestCode == NewJournalFragment.PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            data?.let {
+//                val place = Autocomplete.getPlaceFromIntent(it)
+//                place.latLng?.run {
+//                    GlobalScope.launch(Dispatchers.IO) {
+//                        val weatherData = TraxyRepository.getWeatherData(latitude, longitude)
+//                        mediaModel.weatherTemperature.postValue(weatherData?.first)
+//                        mediaModel.weatherConditionIcon.postValue(weatherData?.second)
+//                    }
+//                }
+//                mediaModel.mediaLocation.value = place
+//                location.text = place.name
+//            }
+//        } else
+//            super.onActivityResult(requestCode, resultCode, data)
+//    }
 
 }

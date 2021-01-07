@@ -82,7 +82,7 @@ class JournalViewFragment : Fragment() {
                         startActivityForResult(capture, CAPTURE_VIDEO_REQUEST)
                     }
                 }
-                R.id.add_text -> {
+                else -> {
                 }
             }
         }

@@ -24,7 +24,9 @@ object OpenWeatherMap {
     val apiKeyInjector = Interceptor {
         it.request().run {
             val newUrl = url.newBuilder()
-                .addQueryParameter("appid", BuildConfig.OWM_API_KEY).build()
+                .addQueryParameter("appid", BuildConfig.OWM_API_KEY)
+                .addQueryParameter("units", "imperial")
+                .build()
             val newRequest = newBuilder().url(newUrl).build()
             it.proceed(newRequest)
         }

@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Just for quicl test of the app
+        // Just for quick test of the app
         email.text.insert(0, "hans.dulimarta@gmail.com")
         password.text.insert(0, "burungbelibis")
 
