@@ -10,8 +10,7 @@ class JournalPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         when (position) {
             0 -> return MainFragment()
             1 -> return MonthlyFragment()
-
+            else -> TODO()
         }
-        TODO ()
     }
 }
