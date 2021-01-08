@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter(R.layout.journal_card_tall) {
             mediaModel.selectedJournal.value = it
-            val action = MainFragmentDirections.actionToMediaList(it.name)
+            val action = JournalPagerFragmentDirections.actionToMediaList(it.name)
             findNavController().navigate(action)
         }
         with(view) {
@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
         fab_add.setOnClickListener {
-            val action = MainFragmentDirections.actionNewJournal()
+            val action = JournalPagerFragmentDirections.actionNewJournal()
             findNavController().navigate(action)
         }
     }

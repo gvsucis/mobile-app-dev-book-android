@@ -41,7 +41,7 @@ class MonthlyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter(R.layout.journal_card_mini) {
             mediaModel.selectedJournal.value = it
-            val action = MainFragmentDirections.actionToMediaList(it.name)
+            val action = JournalPagerFragmentDirections.actionToMediaList(it.name)
             findNavController().navigate(action)
         }
         with(view) {
