@@ -100,10 +100,8 @@ class MediaEditFragment : Fragment() {
             mediaModel.selectedMedia.value?.apply {
                 caption = mediaModel.mediaCaption.value ?: "None"
                 date = mediaModel.mediaDate.value.toString()
-                lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0
-                lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0
-                temperature = mediaModel.weatherTemperature.value ?: null
-                weatherIcon = mediaModel.weatherConditionIcon.value ?: null
+                lat = mediaModel.selectedJournal.value?.lat ?: 0.0
+                lng = mediaModel.selectedJournal.value?.lng ?: 0.0
             }?.let {
                 CoroutineScope(Dispatchers.IO).launch {
                     mediaModel.updateJournalMedia(it)

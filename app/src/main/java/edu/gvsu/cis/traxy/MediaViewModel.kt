@@ -24,8 +24,6 @@ class MediaViewModel : ViewModel() {
     val mediaDate = MutableLiveData<DateTime>()
     val mediaLocation = MutableLiveData<Place>()
     val mediaCaption = MutableLiveData<String>()
-    val weatherTemperature = MutableLiveData<Double>()
-    val weatherConditionIcon = MutableLiveData<String>()
 
     suspend fun addMediaEntry(media: JournalMedia, mediaUri: Uri) {
         mediaFile.value?.let {

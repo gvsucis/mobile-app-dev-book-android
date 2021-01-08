@@ -163,24 +163,10 @@ object TraxyRepository {
         }
     }
 
-    // https://api.weather.gov/points/45,-85
-    // https://api.weather.gov/stations/KILN/observations?start=2020-10-14T03:21:26-00:00&limit=3
-    private suspend fun getDataFromURL(url: String): String? = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url(url).build()
-        httpClient.newCall(request).execute().run {
-            if (!isSuccessful)
-                return@withContext null
-            else
-                return@withContext body()!!.string()
-        }
-    }
-
     suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
         return try {
             val w = OpenWeatherMap.apiService.getWeatherAt(lat,lng/*, BuildConfig.OWM_API_KEY*/)
-            println("Got here " + w.main)
-            Pair(w.main.temp.toFahrenheit(), w.weather.get(0).icon)
+            Pair(w.main.temp, w.weather.get(0).icon)
         } catch(e:Throwable) {
             null
         }
@@ -190,4 +176,4 @@ object TraxyRepository {
 }
 
 // Convert from Kelvin to Fahrenheit
-fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32
+//fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32

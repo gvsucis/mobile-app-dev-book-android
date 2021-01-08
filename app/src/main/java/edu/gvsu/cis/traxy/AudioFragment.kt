@@ -9,7 +9,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -27,7 +26,7 @@ private const val RECORD_AUDIO_PERM_REQUEST = 317
 
 fun Int.toMinuteSecond(): String {
     var seconds = this
-    val h = seconds / 3600
+//    val h = seconds / 3600
     seconds %= 3600
     val m = seconds / 60
     seconds %= 60
@@ -99,6 +98,7 @@ class AudioFragment : Fragment() {
                 }
                 Status.RECORD_STOP, Status.PLAY_PAUSE ->
                     findNavController().popBackStack()
+                else -> {}
             }
         }
         rightBtn.setOnClickListener {

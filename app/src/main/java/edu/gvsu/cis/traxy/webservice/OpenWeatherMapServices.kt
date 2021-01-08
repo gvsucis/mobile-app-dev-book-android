@@ -13,7 +13,6 @@ interface OpenWeatherMapServices {
     suspend fun getWeatherAt(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-//        @Query("appid") apiKey: String,
     ): OWMWeather
 }
 
@@ -24,7 +23,9 @@ object OpenWeatherMap {
     val apiKeyInjector = Interceptor {
         it.request().run {
             val newUrl = url.newBuilder()
-                .addQueryParameter("appid", BuildConfig.OWM_API_KEY).build()
+                .addQueryParameter("appid", BuildConfig.OWM_API_KEY)
+                .addQueryParameter("units", "imperial")
+                .build()
             val newRequest = newBuilder().url(newUrl).build()
             it.proceed(newRequest)
         }

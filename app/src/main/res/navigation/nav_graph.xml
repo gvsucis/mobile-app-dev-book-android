@@ -13,7 +13,7 @@
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_login2main"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/pagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signup2main"
-            app:destination="@id/mainFragment"
+            app:destination="@id/pagerFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="false" />
     </fragment>
@@ -84,4 +84,9 @@
         android:id="@+id/audioFragment"
         android:name="edu.gvsu.cis.traxy.AudioFragment"
         tools:layout="@layout/fragment_audio" />
+    <fragment
+        android:id="@+id/pagerFragment"
+        android:name="edu.gvsu.cis.traxy.JournalPagerFragment"
+        android:label="fragment_pager"
+        tools:layout="@layout/fragment_pager" />
 </navigation>
