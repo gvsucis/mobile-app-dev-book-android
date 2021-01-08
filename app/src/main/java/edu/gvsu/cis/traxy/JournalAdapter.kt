@@ -2,23 +2,25 @@ package edu.gvsu.cis.traxy
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.ListItem
 
-class JournalAdapter(val listener: ((Journal) -> Unit)? = null) :
+class JournalAdapter(@LayoutRes val layoutId: Int, val listener: ((Journal) -> Unit)? = null) :
     ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
 
     private val JOURNAL_TYPE = 1
     private val HEADER_TYPE = 2
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         when (viewType) {
             JOURNAL_TYPE -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.journal_row, parent, false)
+                    .inflate(layoutId, parent, false)
                 return JournalViewHolder(view)
 
             }

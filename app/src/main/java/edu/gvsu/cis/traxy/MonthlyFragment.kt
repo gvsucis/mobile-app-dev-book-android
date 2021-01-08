@@ -5,11 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import edu.gvsu.cis.traxy.model.Header
+import kotlinx.android.synthetic.main.content_main.view.*
+import org.joda.time.DateTime
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -18,16 +24,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class MonthlyFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val viewModel by activityViewModels<UserDataViewModel>()
+    private val mediaModel by activityViewModels<MediaViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var adapter: JournalAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +37,38 @@ class MonthlyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_monthly, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MonthlyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MonthlyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter = JournalAdapter(R.layout.journal_card_mini) {
+            mediaModel.selectedJournal.value = it
+            val action = MainFragmentDirections.actionToMediaList(it.name)
+            findNavController().navigate(action)
+        }
+        with(view) {
+            journal_list.adapter = adapter
+            val layoutMgr = LinearLayoutManager(context)
+            journal_list.layoutManager = layoutMgr
+            journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
+        }
+    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.remoteJournals.observe(this.viewLifecycleOwner, Observer {
+            val partitioned = it
+                .map {
+                    val now = DateTime.now().toString()
+                    when {
+                        it.endDate < now -> "Past" to it
+                        it.startDate > now -> "Future" to it
+                        else -> "Current" to it
+                    }
+                }.sortedBy { it.first }
+                .groupBy({ it.first }, { it.second })
+                .flatMap {
+                    listOf(Header(it.key)) + it.value.sortedBy { it.startDate }
                 }
-            }
+            adapter.submitList(partitioned)
+        })
+
     }
 }

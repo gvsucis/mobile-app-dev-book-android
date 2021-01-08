@@ -11,6 +11,7 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val photo: ImageView
     val name: TextView
     val location: TextView
+    val date: TextView
     val parentView: View
 
     init {
@@ -18,6 +19,7 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         photo = v.findViewById(R.id.photo)
         name = v.findViewById(R.id.name)
         location = v.findViewById(R.id.location)
+        date = v.findViewById(R.id.date)
     }
 
     public fun bindTo(d: Journal, listener: ((Journal) -> Unit)?) {
@@ -26,10 +28,10 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
                 listener(d)
             }
         name.text = d.name;
-        location.text = d.address + " (" +
-                d.startDate.substring(0,10) +
-                " to " +
-                d.endDate.substring(0,10) + ")"
+        location.text = d.address
+        date.text = parentView.context.getString(R.string.date_range,
+            d.startDate.substring(0, 10),
+            d.endDate.substring(0, 10))
     }
 }
 

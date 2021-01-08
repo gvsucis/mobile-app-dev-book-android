@@ -29,4 +29,5 @@
     <string name="camera_icon">Camera</string>
     <string name="photo_icon">Photo</string>
     <string name="edit_icon">Text</string>
+    <string name="date_range">%1$s  s/d %2$s</string>
 </resources>

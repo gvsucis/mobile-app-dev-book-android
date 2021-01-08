@@ -21,7 +21,7 @@ class MainFragment : Fragment() {
     private val viewModel by activityViewModels<UserDataViewModel>()
     private val mediaModel by activityViewModels<MediaViewModel>()
     private lateinit var adapter: JournalAdapter
-    val args by navArgs<MainFragmentArgs>()
+//    val args by navArgs<MainFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter {
+        adapter = JournalAdapter(R.layout.journal_card_tall) {
             mediaModel.selectedJournal.value = it
             val action = MainFragmentDirections.actionToMediaList(it.name)
             findNavController().navigate(action)
@@ -68,16 +68,6 @@ class MainFragment : Fragment() {
                 }
             adapter.submitList(partitioned)
         })
-
-//        val today = DateTime.now()
-//        val rand = Random(0)
-//
-//        val journalData = List(50) {
-//            val startOn = today.plusDays(rand.nextInt(-100, 100))
-//            val endOn = startOn.plusDays(1 + rand.nextInt(7))
-//            Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
-//        }
-//        viewModel.addJournals(journalData)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
