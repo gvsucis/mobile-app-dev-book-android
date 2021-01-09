@@ -9,7 +9,7 @@ import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.ListItem
 
-class JournalAdapter(@LayoutRes val layoutId: Int, val listener: ((Journal) -> Unit)? = null) :
+class JournalAdapter(@LayoutRes val layoutId: Int, val listener: ((Journal, String) -> Unit)? = null) :
     ListAdapter<ListItem, RecyclerView.ViewHolder>(JournalDiffUtil()) {
 
     private val JOURNAL_TYPE = 1

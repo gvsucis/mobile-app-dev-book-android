@@ -62,10 +62,13 @@
     <fragment
         android:id="@+id/MediaDetailsFragment"
         android:name="edu.gvsu.cis.traxy.MediaDetailsFragment"
-        tools:layout="@layout/fragment_media_details_entry" />
+        tools:layout="@layout/fragment_media_details_entry">
+        <argument android:name="media_title" app:argType="string"/>
+    </fragment>
     <fragment
         android:id="@+id/journalMediaEditFragment"
         android:name="edu.gvsu.cis.traxy.MediaEditFragment"
+        android:label="Edit Media"
         tools:layout="@layout/fragment_media_edit" />
     <fragment
         android:id="@+id/journalMediaViewFragment"
@@ -73,11 +76,12 @@
     <fragment
         android:id="@+id/audioFragment"
         android:name="edu.gvsu.cis.traxy.AudioFragment"
+        android:label="Audio"
         tools:layout="@layout/fragment_audio" />
     <fragment
         android:id="@+id/pagerFragment"
         android:name="edu.gvsu.cis.traxy.JournalPagerFragment"
-        android:label="fragment_pager"
+        android:label="Traxy"
         tools:layout="@layout/fragment_pager">
         <action
             android:id="@+id/action_new_journal"
@@ -90,6 +94,14 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_edit_journal"
+            app:destination="@id/journalEditFragment" />
 
     </fragment>
+    <fragment
+        android:id="@+id/journalEditFragment"
+        android:name="edu.gvsu.cis.traxy.JournalEditFragment"
+        android:label="Edit Journal"
+        tools:layout="@layout/fragment_journal_edit" />
 </navigation>

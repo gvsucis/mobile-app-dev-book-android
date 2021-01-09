@@ -33,9 +33,12 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter(R.layout.journal_card_tall) {
-            mediaModel.selectedJournal.value = it
-            val action = JournalPagerFragmentDirections.actionToMediaList(it.name)
+        adapter = JournalAdapter(R.layout.journal_card_tall) { jdata, action ->
+            mediaModel.selectedJournal.value = jdata
+            val action = if (action == "VIEW")
+                JournalPagerFragmentDirections.actionToMediaList(jdata.name)
+            else
+                JournalPagerFragmentDirections.actionEditJournal()
             findNavController().navigate(action)
         }
         with(view) {

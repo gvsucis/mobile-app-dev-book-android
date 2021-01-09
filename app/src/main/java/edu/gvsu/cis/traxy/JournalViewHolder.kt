@@ -1,6 +1,7 @@
 package edu.gvsu.cis.traxy
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val location: TextView
     val date: TextView
     val parentView: View
+    val editBtn: Button
 
     init {
         parentView = v
@@ -20,13 +22,18 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         name = v.findViewById(R.id.name)
         location = v.findViewById(R.id.location)
         date = v.findViewById(R.id.date)
+        editBtn = v.findViewById(R.id.edit_button)
     }
 
-    public fun bindTo(d: Journal, listener: ((Journal) -> Unit)?) {
-        if (listener != null)
+    public fun bindTo(d: Journal, listener: ((Journal, String) -> Unit)?) {
+        if (listener != null) {
             parentView.setOnClickListener {
-                listener(d)
+                listener(d, "VIEW")
             }
+            editBtn.setOnClickListener {
+                listener(d, "EDIT")
+            }
+        }
         name.text = d.name;
         location.text = d.address
         date.text = parentView.context.getString(R.string.date_range,
