@@ -10,9 +10,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import edu.gvsu.cis.traxy.model.Header
+import edu.gvsu.cis.traxy.model.Journal
 import kotlinx.android.synthetic.main.content_main.view.*
+import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime
+import org.joda.time.Interval
+import java.time.Month
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +43,28 @@ class MonthlyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_monthly, container, false)
     }
 
+    val monthChangeListener = OnCalendarPageChangeListener {
+        viewModel.remoteJournals.value?.let {
+            filterByCurrentMonth(it)
+        }
+    }
+
+    private fun filterByCurrentMonth(input: List<Journal>) {
+        // Step 1: get the current month
+        val thisMonth = DateTime(calendar.currentPageDate)
+        // Step 2: create the date interval representing the current month
+        val d1 = thisMonth.dayOfMonth().dateTime
+        val d2 = thisMonth.plusMonths(1).dayOfMonth().dateTime
+        val range = Interval(d1, d2)
+        // Step 3: filter the input based of its date range
+        val filtered = input.filter {
+            val jStart = DateTime(it.startDate)
+            val jEnd = DateTime(it.endDate)
+            jStart.isBefore(jEnd) && Interval(jStart, jEnd).overlaps(range)
+        }
+        adapter.submitList(filtered)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter(R.layout.journal_card_mini) {
@@ -44,6 +72,8 @@ class MonthlyFragment : Fragment() {
             val action = JournalPagerFragmentDirections.actionToMediaList(it.name)
             findNavController().navigate(action)
         }
+        calendar.setOnForwardPageChangeListener(monthChangeListener)
+        calendar.setOnPreviousPageChangeListener(monthChangeListener)
         with(view) {
             journal_list.adapter = adapter
             val layoutMgr = LinearLayoutManager(context)
@@ -51,23 +81,11 @@ class MonthlyFragment : Fragment() {
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.remoteJournals.observe(this.viewLifecycleOwner, Observer {
-            val partitioned = it
-                .map {
-                    val now = DateTime.now().toString()
-                    when {
-                        it.endDate < now -> "Past" to it
-                        it.startDate > now -> "Future" to it
-                        else -> "Current" to it
-                    }
-                }.sortedBy { it.first }
-                .groupBy({ it.first }, { it.second })
-                .flatMap {
-                    listOf(Header(it.key)) + it.value.sortedBy { it.startDate }
-                }
-            adapter.submitList(partitioned)
+            filterByCurrentMonth(it)
         })
 
     }
