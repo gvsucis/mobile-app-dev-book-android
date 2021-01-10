@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="edu.gvsu.cis.traxy.LoginFragment"
-        tools:layout="@layout/fragment_login"
-        app:startDestination="@id/action_login2main">
+        app:startDestination="@id/action_login2main"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login2signup"
             app:destination="@id/signUpFragment" />
@@ -35,9 +35,14 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/newJournalFragment"
-        android:name="edu.gvsu.cis.traxy.NewJournalFragment"
-        tools:layout="@layout/fragment_new_journal" />
+        android:id="@+id/journalEditFragment"
+        android:name="edu.gvsu.cis.traxy.JournalEditFragment"
+        android:label="{fragment_title}"
+        tools:layout="@layout/fragment_edit_journal">
+        <argument
+            android:name="fragment_title"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/journalViewFragment"
         android:name="edu.gvsu.cis.traxy.JournalViewFragment"
@@ -63,7 +68,9 @@
         android:id="@+id/MediaDetailsFragment"
         android:name="edu.gvsu.cis.traxy.MediaDetailsFragment"
         tools:layout="@layout/fragment_media_details_entry">
-        <argument android:name="media_title" app:argType="string"/>
+        <argument
+            android:name="media_title"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/journalMediaEditFragment"
@@ -84,8 +91,8 @@
         android:label="Traxy"
         tools:layout="@layout/fragment_pager">
         <action
-            android:id="@+id/action_new_journal"
-            app:destination="@id/newJournalFragment" />
+            android:id="@+id/action_edit_journal"
+            app:destination="@id/journalEditFragment" />
         <action
             android:id="@+id/action_to_mediaList"
             app:destination="@id/journalViewFragment" />
@@ -94,14 +101,6 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_edit_journal"
-            app:destination="@id/journalEditFragment" />
 
     </fragment>
-    <fragment
-        android:id="@+id/journalEditFragment"
-        android:name="edu.gvsu.cis.traxy.JournalEditFragment"
-        android:label="Edit Journal"
-        tools:layout="@layout/fragment_journal_edit" />
 </navigation>

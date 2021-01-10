@@ -45,11 +45,11 @@ class MonthlyFragment : Fragment() {
 
     val monthChangeListener = OnCalendarPageChangeListener {
         viewModel.remoteJournals.value?.let {
-            filterByCurrentMonth(it)
+            adapter.submitList(filteredByCurrentMonth(it))
         }
     }
 
-    private fun filterByCurrentMonth(input: List<Journal>) {
+    private fun filteredByCurrentMonth(input: List<Journal>): List<Journal> {
         // Step 1: get the current month
         val thisMonth = DateTime(calendar.currentPageDate)
         // Step 2: create the date interval representing the current month
@@ -57,12 +57,11 @@ class MonthlyFragment : Fragment() {
         val d2 = thisMonth.plusMonths(1).dayOfMonth().dateTime
         val range = Interval(d1, d2)
         // Step 3: filter the input based of its date range
-        val filtered = input.filter {
+        return input.filter {
             val jStart = DateTime(it.startDate)
             val jEnd = DateTime(it.endDate)
             jStart.isBefore(jEnd) && Interval(jStart, jEnd).overlaps(range)
         }
-        adapter.submitList(filtered)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +71,7 @@ class MonthlyFragment : Fragment() {
             val action = if (action == "VIEW")
                 JournalPagerFragmentDirections.actionToMediaList(journal.name)
             else
-                JournalPagerFragmentDirections.actionEditJournal()
+                JournalPagerFragmentDirections.actionEditJournal(journal.name)
             findNavController().navigate(action)
         }
         calendar.setOnForwardPageChangeListener(monthChangeListener)
@@ -88,7 +87,7 @@ class MonthlyFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.remoteJournals.observe(this.viewLifecycleOwner, Observer {
-            filterByCurrentMonth(it)
+            adapter.submitList(filteredByCurrentMonth(it))
         })
 
     }
