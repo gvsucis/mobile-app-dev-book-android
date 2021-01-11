@@ -1,23 +1,21 @@
 package edu.gvsu.cis.traxy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
-import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.model.Journal
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime
 import org.joda.time.Interval
-import java.time.Month
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match

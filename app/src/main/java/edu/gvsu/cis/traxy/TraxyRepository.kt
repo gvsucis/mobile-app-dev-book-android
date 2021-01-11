@@ -10,17 +10,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
 import edu.gvsu.cis.traxy.webservice.OpenWeatherMap
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.joda.time.format.DateTimeFormat
 import java.io.File
-import java.util.*
 
 object TraxyRepository {
     private val auth = Firebase.auth

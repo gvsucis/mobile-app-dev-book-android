@@ -43,21 +43,43 @@
         app:layout_constraintStart_toStartOf="@+id/trip_name"
         app:layout_constraintTop_toBottomOf="@+id/trip_name" />
 
-    <com.applandeo.materialcalendarview.CalendarView
-        android:id="@+id/trip_calendar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/white"
-        app:headerColor="@color/colorAccent"
-        app:headerLabelColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/add_button"
         app:layout_constraintTop_toBottomOf="@+id/trip_location"
-        app:selectionColor="@color/colorPrimaryDark"
-        app:type="range_picker" />
+        tools:layout_editor_absoluteX="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.applandeo.materialcalendarview.CalendarView
+                android:id="@+id/trip_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/white"
+                app:headerColor="@color/colorAccent"
+                app:headerLabelColor="#000000"
+                app:selectionColor="@color/colorPrimaryDark"
+                app:type="range_picker">
+
+            </com.applandeo.materialcalendarview.CalendarView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photo_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/add_button"

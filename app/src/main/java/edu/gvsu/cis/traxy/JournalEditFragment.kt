@@ -3,20 +3,22 @@ package edu.gvsu.cis.traxy
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.model.JournalMedia
+import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.android.synthetic.main.fragment_edit_journal.*
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime
@@ -118,6 +120,15 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 endDate?.toString()!!))
             findNavController().popBackStack()
         }
+        photo_list.layoutManager = GridLayoutManager(requireContext(), 3)
+        mediaModel.selectedJournal.observe(viewLifecycleOwner, Observer {
+            val photoQuery = mediaModel.mediaQuery().whereEqualTo("type", MediaType.PHOTO.ordinal)
+            val option = FirestoreRecyclerOptions.Builder<JournalMedia>()
+                .setLifecycleOwner(viewLifecycleOwner)
+                .setQuery(photoQuery, JournalMedia::class.java)
+                .build()
+            photo_list.adapter = PhotoAdapter(option)
+        })
     }
 
     override fun onFocusChange(p0: View?, p1: Boolean) {
