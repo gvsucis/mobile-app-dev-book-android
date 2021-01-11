@@ -61,6 +61,9 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
         TraxyRepository.addJournal(z)
     }
 
+    fun updateJournal(z: Journal) = viewModelScope.launch(Dispatchers.IO) {
+        TraxyRepository.updateJournal(z)
+    }
 
     fun getJournalByKey(key: String): Journal? =
         remoteJournals.value?.firstOrNull {

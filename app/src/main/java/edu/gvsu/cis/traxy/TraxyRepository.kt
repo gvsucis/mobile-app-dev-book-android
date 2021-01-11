@@ -63,7 +63,6 @@ object TraxyRepository {
     }
 
     fun addJournal(d: Journal) {
-//        dao.insertJournal(d)
         val jData = hashMapOf(
             "name" to d.name,
             "placeId" to d.placeId,
@@ -73,8 +72,31 @@ object TraxyRepository {
             "startDate" to d.startDate,
             "endDate" to d.endDate
         )
-        docRef?.collection("journals")?.let {
-            it.add(jData)
+        docRef?.collection("journals")?.apply {
+            add(jData)
+                .addOnSuccessListener {
+                    Log.d("Traxy", "addJournal: Added")
+                }.addOnFailureListener {
+                    Log.d("Traxy", "addJournal: can't add")
+                }
+        }
+    }
+
+    fun updateJournal(d: Journal) {
+        var jData = hashMapOf(
+            "name" to d.name,
+            "placeId" to d.placeId,
+            "lat" to d.lat,
+            "lng" to d.lng,
+            "address" to d.address,
+            "startDate" to d.startDate,
+            "endDate" to d.endDate
+        )
+        d.coverPhotoUrl?.let {
+            jData["coverPhotoUrl"] = it
+        }
+        docRef?.collection("journals")?.document(d.key)?.apply {
+            set(jData)
                 .addOnSuccessListener {
                     Log.d("Traxy", "addJournal: Added")
                 }.addOnFailureListener {
@@ -159,11 +181,11 @@ object TraxyRepository {
         }
     }
 
-    suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
+    suspend fun getWeatherData(lat: Double, lng: Double): Pair<Double, String>? {
         return try {
-            val w = OpenWeatherMap.apiService.getWeatherAt(lat,lng/*, BuildConfig.OWM_API_KEY*/)
+            val w = OpenWeatherMap.apiService.getWeatherAt(lat, lng/*, BuildConfig.OWM_API_KEY*/)
             Pair(w.main.temp, w.weather.get(0).icon)
-        } catch(e:Throwable) {
+        } catch (e: Throwable) {
             null
         }
     }

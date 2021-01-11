@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.applandeo.materialcalendarview.CalendarUtils
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
@@ -38,6 +39,7 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
 
     private var startDate: DateTime? = null
     private var endDate: DateTime? = null
+    private var isEditing = false
     private lateinit var inputFormatter: DateTimeFormatter
     private lateinit var outputFormatter: DateTimeFormatter
     private val viewModel: UserDataViewModel by activityViewModels<UserDataViewModel>()
@@ -51,13 +53,22 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
 
     override fun onResume() {
         super.onResume()
-        val d = DateTime.now()
         if (mediaModel.selectedJournal.value == null) {
-            println("Adding a new journal")
+            isEditing = false
+            photo_list.visibility = View.GONE
         }
         else {
-            println("Edit an existing journal")
-
+            isEditing = true
+            mediaModel.selectedJournal.value?.let {
+                trip_name.setText(it.name)
+                trip_location.setText(it.address)
+                val start = DateTime(it.startDate).minusDays(1).toGregorianCalendar()
+                val end = DateTime(it.endDate).plusDays(1).toGregorianCalendar()
+                val dateRange = CalendarUtils.getDatesRange(start, end)
+                trip_calendar.setDate(start)
+                trip_calendar.setSelectedDates(dateRange)
+            }
+            photo_list.visibility = View.VISIBLE
         }
     }
 
@@ -113,11 +124,18 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
         }
 
         add_button.setOnClickListener {
-            viewModel.addJournal(Journal("key-???",
-                trip_name.text.toString(),
-                trip_location.text.toString(),
-                startDate?.toString()!!,
-                endDate?.toString()!!))
+            if (isEditing) {
+                mediaModel.selectedJournal.value?.let {
+                    viewModel.updateJournal(it)
+                }
+            }
+            else {
+                viewModel.addJournal(Journal("key-???",
+                    trip_name.text.toString(),
+                    trip_location.text.toString(),
+                    startDate?.toString()!!,
+                    endDate?.toString()!!))
+            }
             findNavController().popBackStack()
         }
         photo_list.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -128,7 +146,9 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 .setQuery(photoQuery, JournalMedia::class.java)
                 .build()
             photo_list.adapter = PhotoAdapter(option) {
-
+                mediaModel.selectedJournal.value?.apply {
+                    coverPhotoUrl = it.url
+                }
             }
         })
     }
