@@ -127,7 +127,9 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 .setLifecycleOwner(viewLifecycleOwner)
                 .setQuery(photoQuery, JournalMedia::class.java)
                 .build()
-            photo_list.adapter = PhotoAdapter(option)
+            photo_list.adapter = PhotoAdapter(option) {
+
+            }
         })
     }
 
