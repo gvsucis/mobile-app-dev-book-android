@@ -66,7 +66,7 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 val end = DateTime(it.endDate).plusDays(1).toGregorianCalendar()
                 val dateRange = CalendarUtils.getDatesRange(start, end)
                 trip_calendar.setDate(start)
-                trip_calendar.setSelectedDates(dateRange)
+                trip_calendar.selectedDates = dateRange
             }
             photo_list.visibility = View.VISIBLE
         }

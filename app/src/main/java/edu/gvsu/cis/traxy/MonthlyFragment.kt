@@ -1,6 +1,9 @@
 package edu.gvsu.cis.traxy
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +13,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
+import com.applandeo.materialcalendarview.utils.EventDayUtils
 import edu.gvsu.cis.traxy.model.Journal
 import kotlinx.android.synthetic.main.content_main.view.*
+import kotlinx.android.synthetic.main.fragment_edit_journal.*
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime
+import org.joda.time.Duration
 import org.joda.time.Interval
 import java.util.*
 
@@ -43,7 +50,22 @@ class MonthlyFragment : Fragment() {
 
     val monthChangeListener = OnCalendarPageChangeListener {
         viewModel.remoteJournals.value?.let {
-            adapter.submitList(filteredByCurrentMonth(it))
+            val trips = filteredByCurrentMonth(it)
+            adapter.submitList(trips)
+            val markers =  trips.flatMap {
+                var curr = DateTime(it.startDate).withTimeAtStartOfDay()
+                val end = DateTime(it.endDate).withTimeAtStartOfDay()
+                val events: MutableSet<EventDay> = mutableSetOf()
+
+                while (!curr.isAfter(end)) {
+                    val cal = curr.toCalendar(Locale.getDefault())
+                    val evt = EventDay(cal, R.drawable.event_icon)
+                    events.add(evt)
+                    curr = curr.plusDays(1)
+                }
+                events
+            }
+            calendar.setEvents(markers)
         }
     }
 
