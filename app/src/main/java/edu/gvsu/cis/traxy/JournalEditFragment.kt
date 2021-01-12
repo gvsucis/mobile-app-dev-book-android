@@ -99,7 +99,7 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 AutocompleteActivityMode.FULLSCREEN,
                 listOf<Place.Field>(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
             )
-                .setTypeFilter(TypeFilter.ADDRESS)
+                .setTypeFilter(TypeFilter.CITIES)
                 .build(requireActivity())
             startActivityForResult(placeIntent, PLACE_REQUEST_CODE)
 
@@ -130,11 +130,11 @@ class JournalEditFragment : Fragment(), View.OnFocusChangeListener {
                 }
             }
             else {
-                viewModel.addJournal(Journal("key-???",
-                    trip_name.text.toString(),
-                    trip_location.text.toString(),
-                    startDate?.toString()!!,
-                    endDate?.toString()!!))
+                viewModel.addJournal(Journal(key = "key-???",
+                    name = trip_name.text.toString(),
+                    address = trip_location.text.toString(),
+                    startDate = startDate?.toString()!!,
+                    endDate = endDate?.toString()!!))
             }
             findNavController().popBackStack()
         }

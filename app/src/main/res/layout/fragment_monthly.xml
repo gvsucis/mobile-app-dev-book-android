@@ -12,7 +12,10 @@
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:headerColor="@color/colorAccent"
+        app:headerLabelColor="@color/colorPrimaryDark" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/journal_list"

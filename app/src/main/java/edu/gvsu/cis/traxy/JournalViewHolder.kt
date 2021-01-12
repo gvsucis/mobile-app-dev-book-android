@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.model.Journal
 
@@ -39,6 +40,12 @@ class JournalViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         date.text = parentView.context.getString(R.string.date_range,
             d.startDate.substring(0, 10),
             d.endDate.substring(0, 10))
+        
+        d.coverPhotoUrl?.let {
+            Glide.with(parentView).load(it).into(photo)
+        }
+
+
     }
 }
 

@@ -1,24 +1,29 @@
 package edu.gvsu.cis.traxy
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.android.synthetic.main.fragment_media_meta_data.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 class MediaMetaDataFragment : Fragment() {
     val mediaModel by activityViewModels<MediaViewModel>()
-    val datePickerDialog = MaterialDatePicker.Builder.datePicker().build()
+    private lateinit var datePickerDialog: MaterialDatePicker<Long>
     val timePickerDialog = MaterialTimePicker.Builder().build()
 
     override fun onCreateView(
@@ -31,6 +36,21 @@ class MediaMetaDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
+        var constraint: CalendarConstraints? = null
+        mediaModel.selectedJournal.value?.let {
+            val dateConstraints = CalendarConstraints.Builder()
+            val start = DateTime(it.startDate)
+            val end = DateTime(it.endDate)
+            dateConstraints.setStart(start.millis)
+            dateConstraints.setEnd(end.millis)
+            constraint = dateConstraints.build()
+        }
+
+        if (constraint != null)
+            datePickerDialog = datePickerBuilder.setCalendarConstraints(constraint).build()
+        else
+            datePickerDialog = datePickerBuilder.build()
         datePickerDialog.addOnPositiveButtonClickListener {
             mediaModel.mediaDate.value = DateTime(it, DateTimeZone.UTC)
             timePickerDialog.show(parentFragmentManager, "timePick")
@@ -60,7 +80,7 @@ class MediaMetaDataFragment : Fragment() {
             mediaModel.mediaCaption.value = caption.text.toString()
         }
     }
-    
+
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        if (requestCode == NewJournalFragment.PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 //            data?.let {

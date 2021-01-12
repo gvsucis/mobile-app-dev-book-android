@@ -54,6 +54,7 @@ class MediaDetailsFragment : Fragment() {
                     caption = mediaModel.mediaCaption.value ?: "None",
                     date = mediaModel.mediaDate.value?.toString() ?: "None",
                     type = mType.ordinal,
+                    url = mediaModel.mediaUri.value?.toString() ?: "",
                     lat = mediaModel.selectedJournal.value?.lat ?: 0.0,
                     lng = mediaModel.selectedJournal.value?.lng ?: 0.0)
                 if (mediaObj.lat != 0.0 && mediaObj.lng != 0.0) {

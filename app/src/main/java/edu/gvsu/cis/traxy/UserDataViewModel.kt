@@ -28,11 +28,11 @@ class UserDataViewModel(app: Application) : AndroidViewModel(app) {
                 .take(7)
                 .joinToString(" ")
             val d = Journal(
-                "key-$it",
-                randomName,
-                dataGen.address.cityWithState(),
-                startOn.toString(),
-                startOn.plusDays(rand.nextInt(10)).toString()
+                key = "key-$it",
+                name = randomName,
+                address = dataGen.address.cityWithState(),
+                startDate = startOn.toString(),
+                endDate = startOn.plusDays(rand.nextInt(10)).toString()
             )
 //                dao.insertJournal(d)
             TraxyRepository.addJournal(d)
