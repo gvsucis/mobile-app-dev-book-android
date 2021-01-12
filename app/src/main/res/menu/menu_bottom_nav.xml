@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/all_journals"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="Journals" />
+    <item
+        android:id="@+id/monthly_journals"
+        android:icon="@drawable/ic_baseline_date_range_24"
+        android:title="Calendar" />
+</menu>
