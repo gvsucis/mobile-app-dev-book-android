@@ -10,17 +10,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
 import edu.gvsu.cis.traxy.webservice.OpenWeatherMap
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.joda.time.format.DateTimeFormat
 import java.io.File
-import java.util.*
 
 object TraxyRepository {
     private val auth = Firebase.auth
@@ -67,7 +63,6 @@ object TraxyRepository {
     }
 
     fun addJournal(d: Journal) {
-//        dao.insertJournal(d)
         val jData = hashMapOf(
             "name" to d.name,
             "placeId" to d.placeId,
@@ -77,8 +72,31 @@ object TraxyRepository {
             "startDate" to d.startDate,
             "endDate" to d.endDate
         )
-        docRef?.collection("journals")?.let {
-            it.add(jData)
+        docRef?.collection("journals")?.apply {
+            add(jData)
+                .addOnSuccessListener {
+                    Log.d("Traxy", "addJournal: Added")
+                }.addOnFailureListener {
+                    Log.d("Traxy", "addJournal: can't add")
+                }
+        }
+    }
+
+    fun updateJournal(d: Journal) {
+        var jData = hashMapOf(
+            "name" to d.name,
+            "placeId" to d.placeId,
+            "lat" to d.lat,
+            "lng" to d.lng,
+            "address" to d.address,
+            "startDate" to d.startDate,
+            "endDate" to d.endDate
+        )
+        d.coverPhotoUrl?.let {
+            jData["coverPhotoUrl"] = it
+        }
+        docRef?.collection("journals")?.document(d.key)?.apply {
+            set(jData)
                 .addOnSuccessListener {
                     Log.d("Traxy", "addJournal: Added")
                 }.addOnFailureListener {
@@ -163,25 +181,11 @@ object TraxyRepository {
         }
     }
 
-    // https://api.weather.gov/points/45,-85
-    // https://api.weather.gov/stations/KILN/observations?start=2020-10-14T03:21:26-00:00&limit=3
-    private suspend fun getDataFromURL(url: String): String? = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url(url).build()
-        httpClient.newCall(request).execute().run {
-            if (!isSuccessful)
-                return@withContext null
-            else
-                return@withContext body()!!.string()
-        }
-    }
-
-    suspend fun getWeatherData(lat: Double, lng: Double):Pair<Double,String>? {
+    suspend fun getWeatherData(lat: Double, lng: Double): Pair<Double, String>? {
         return try {
-            val w = OpenWeatherMap.apiService.getWeatherAt(lat,lng/*, BuildConfig.OWM_API_KEY*/)
-            println("Got here " + w.main)
-            Pair(w.main.temp.toFahrenheit(), w.weather.get(0).icon)
-        } catch(e:Throwable) {
+            val w = OpenWeatherMap.apiService.getWeatherAt(lat, lng/*, BuildConfig.OWM_API_KEY*/)
+            Pair(w.main.temp, w.weather.get(0).icon)
+        } catch (e: Throwable) {
             null
         }
     }
@@ -190,4 +194,4 @@ object TraxyRepository {
 }
 
 // Convert from Kelvin to Fahrenheit
-fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32
+//fun Double.toFahrenheit(): Double = (this - 273.15) * 9/5 + 32

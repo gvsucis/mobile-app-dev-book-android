@@ -7,13 +7,14 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="edu.gvsu.cis.traxy.LoginFragment"
+        app:startDestination="@id/action_login2main"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login2signup"
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_login2main"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/pagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -21,7 +22,7 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signup2main"
-            app:destination="@id/mainFragment"
+            app:destination="@id/pagerFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="false" />
     </fragment>
@@ -32,29 +33,24 @@
         <argument
             android:name="userEmail"
             app:argType="string" />
-        <action
-            android:id="@+id/action_logout"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_new_journal"
-            app:destination="@id/newJournalFragment" />
-        <action
-            android:id="@+id/action_to_mediaList"
-            app:destination="@id/journalViewFragment" />
     </fragment>
     <fragment
-        android:id="@+id/newJournalFragment"
-        android:name="edu.gvsu.cis.traxy.NewJournalFragment"
-        tools:layout="@layout/fragment_new_journal" />
+        android:id="@+id/journalEditFragment"
+        android:name="edu.gvsu.cis.traxy.JournalEditFragment"
+        android:label="{fragment_title}"
+        tools:layout="@layout/fragment_edit_journal">
+        <argument
+            android:name="fragment_title"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/journalViewFragment"
         android:name="edu.gvsu.cis.traxy.JournalViewFragment"
         android:label="{trip_title}"
-        tools:layout="@layout/fragment_journal_view" >
-        <argument android:name="trip_title" app:argType="string"
-            />
+        tools:layout="@layout/fragment_journal_view">
+        <argument
+            android:name="trip_title"
+            app:argType="string" />
         <action
             android:id="@+id/action_to_mediaDetails"
             app:destination="@id/MediaDetailsFragment" />
@@ -71,17 +67,40 @@
     <fragment
         android:id="@+id/MediaDetailsFragment"
         android:name="edu.gvsu.cis.traxy.MediaDetailsFragment"
-        tools:layout="@layout/fragment_media_details_entry" />
+        tools:layout="@layout/fragment_media_details_entry">
+        <argument
+            android:name="media_title"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/journalMediaEditFragment"
         android:name="edu.gvsu.cis.traxy.MediaEditFragment"
+        android:label="Edit Media"
         tools:layout="@layout/fragment_media_edit" />
     <fragment
         android:id="@+id/journalMediaViewFragment"
-        android:name="edu.gvsu.cis.traxy.MediaViewFragment"
-         />
+        android:name="edu.gvsu.cis.traxy.MediaViewFragment" />
     <fragment
         android:id="@+id/audioFragment"
         android:name="edu.gvsu.cis.traxy.AudioFragment"
+        android:label="Audio"
         tools:layout="@layout/fragment_audio" />
+    <fragment
+        android:id="@+id/pagerFragment"
+        android:name="edu.gvsu.cis.traxy.JournalPagerFragment"
+        android:label="Traxy"
+        tools:layout="@layout/fragment_pager">
+        <action
+            android:id="@+id/action_edit_journal"
+            app:destination="@id/journalEditFragment" />
+        <action
+            android:id="@+id/action_to_mediaList"
+            app:destination="@id/journalViewFragment" />
+        <action
+            android:id="@+id/action_logout"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 </navigation>

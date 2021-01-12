@@ -1,19 +1,11 @@
 package edu.gvsu.cis.traxy
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.timepicker.MaterialTimePicker
 import edu.gvsu.cis.traxy.model.MediaType
 import kotlinx.android.synthetic.main.fragment_media_edit.*
 import kotlinx.coroutines.CoroutineScope
@@ -93,17 +85,14 @@ class MediaEditFragment : Fragment() {
 
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save_media) {
             mediaModel.saveMediaCopy()
             mediaModel.selectedMedia.value?.apply {
                 caption = mediaModel.mediaCaption.value ?: "None"
                 date = mediaModel.mediaDate.value.toString()
-                lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0
-                lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0
-                temperature = mediaModel.weatherTemperature.value ?: null
-                weatherIcon = mediaModel.weatherConditionIcon.value ?: null
+                lat = mediaModel.selectedJournal.value?.lat ?: 0.0
+                lng = mediaModel.selectedJournal.value?.lng ?: 0.0
             }?.let {
                 CoroutineScope(Dispatchers.IO).launch {
                     mediaModel.updateJournalMedia(it)

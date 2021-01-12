@@ -54,13 +54,13 @@ class MediaDetailsFragment : Fragment() {
                     caption = mediaModel.mediaCaption.value ?: "None",
                     date = mediaModel.mediaDate.value?.toString() ?: "None",
                     type = mType.ordinal,
-                    lat = mediaModel.mediaLocation.value?.latLng?.latitude ?: 0.0,
-                    lng = mediaModel.mediaLocation.value?.latLng?.longitude ?: 0.0)
-                mediaModel.weatherTemperature.value?.let {
-                    mediaObj.temperature = it
-                }
-                mediaModel.weatherConditionIcon.value?.let {
-                    mediaObj.weatherIcon = it
+                    url = mediaModel.mediaUri.value?.toString() ?: "",
+                    lat = mediaModel.selectedJournal.value?.lat ?: 0.0,
+                    lng = mediaModel.selectedJournal.value?.lng ?: 0.0)
+                if (mediaObj.lat != 0.0 && mediaObj.lng != 0.0) {
+                    val weatherData = TraxyRepository.getWeatherData(mediaObj.lat, mediaObj.lng)
+                    mediaObj.temperature = weatherData?.first
+                    mediaObj.weatherIcon = weatherData?.second
                 }
                 mediaModel.addMediaEntry(mediaObj, mediaUri!!)
                 launch(Dispatchers.Main) {

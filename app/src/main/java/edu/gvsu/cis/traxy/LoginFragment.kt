@@ -29,7 +29,7 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.userId?.let {
-            val action = LoginFragmentDirections.actionLogin2main("")
+            val action = LoginFragmentDirections.actionLogin2main()
             findNavController().navigate(action)
         }
     }
@@ -45,10 +45,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Just for quicl test of the app
-        email.text.insert(0, "hans.dulimarta@gmail.com")
-        password.text.insert(0, "burungbelibis")
 
         signin.setOnClickListener {
             val emailStr = email.text.toString()
@@ -68,7 +64,7 @@ class LoginFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val uid = viewModel.signInWithEmailAndPassword(emailStr, passStr)
                         if (uid != null) {
-                            val action = LoginFragmentDirections.actionLogin2main(uid)
+                            val action = LoginFragmentDirections.actionLogin2main()
                             launch(Dispatchers.Main) {
                                 findNavController().navigate(action)
                             }

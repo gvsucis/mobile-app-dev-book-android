@@ -116,6 +116,7 @@ class JournalViewFragment : Fragment() {
                     data?.clipData?.let {
                         val photoUri = it.getItemAt(0).uri
                         mediaModel.mediaUri.value = photoUri
+                        mediaModel.mediaFile.value = File(photoUri.path)
                         findNavController().navigate(R.id.action_to_mediaDetails)
                     }
                 }

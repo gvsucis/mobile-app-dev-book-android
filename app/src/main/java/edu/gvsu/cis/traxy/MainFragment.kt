@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.gvsu.cis.traxy.model.Header
@@ -21,7 +20,7 @@ class MainFragment : Fragment() {
     private val viewModel by activityViewModels<UserDataViewModel>()
     private val mediaModel by activityViewModels<MediaViewModel>()
     private lateinit var adapter: JournalAdapter
-    val args by navArgs<MainFragmentArgs>()
+//    val args by navArgs<MainFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +32,13 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = JournalAdapter {
-            mediaModel.selectedJournal.value = it
-            val action = MainFragmentDirections.actionToMediaList(it.name)
-            findNavController().navigate(action)
+        adapter = JournalAdapter(R.layout.journal_card_tall) { jdata, action ->
+            mediaModel.selectedJournal.value = jdata
+            val destination = if (action == "VIEW")
+                JournalPagerFragmentDirections.actionToMediaList(jdata.name)
+            else
+                JournalPagerFragmentDirections.actionEditJournal(jdata.name)
+            findNavController().navigate(destination)
         }
         with(view) {
             journal_list.adapter = adapter
@@ -45,7 +47,10 @@ class MainFragment : Fragment() {
             journal_list.addItemDecoration(DividerItemDecoration(context, layoutMgr.orientation))
         }
         fab_add.setOnClickListener {
-            val action = MainFragmentDirections.actionNewJournal()
+            // Reset selectedJournal to null to the target fragment knows that we are
+            // inserting a new journal
+            mediaModel.selectedJournal.value = null
+            val action = JournalPagerFragmentDirections.actionEditJournal("New Journal")
             findNavController().navigate(action)
         }
     }
@@ -68,16 +73,6 @@ class MainFragment : Fragment() {
                 }
             adapter.submitList(partitioned)
         })
-
-//        val today = DateTime.now()
-//        val rand = Random(0)
-//
-//        val journalData = List(50) {
-//            val startOn = today.plusDays(rand.nextInt(-100, 100))
-//            val endOn = startOn.plusDays(1 + rand.nextInt(7))
-//            Journal("key-$it", "Name $it", "Location $it", startOn, endOn)
-//        }
-//        viewModel.addJournals(journalData)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
