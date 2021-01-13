@@ -48,6 +48,7 @@ class JournalPagerFragment : Fragment() {
             when(pos) {
                 0 -> tab.text = "Journals"
                 1 -> tab.text = "Calendar"
+                2 -> tab.text = "Maps"
             }
         }.attach()
     }

@@ -23,12 +23,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'GOOGLE_API_KEY', secretProp["API_KEY"]
         buildConfigField 'String', 'OWM_API_KEY', secretProp["OWM_API_KEY"]
+        resValue 'string', 'google_maps_key', secretProp["API_KEY"]
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField 'String', 'USER_NAME', secretProp["TEST_USER"]
+            buildConfigField 'String', 'PASSWORD', secretProp["TEST_PASSWORD"]
         }
     }
     compileOptions {
@@ -80,6 +85,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 //    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 //    implementation 'de.grundid.opendatalab:geojson-jackson:1.14'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'

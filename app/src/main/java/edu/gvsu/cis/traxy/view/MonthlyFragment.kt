@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import edu.gvsu.cis.traxy.adapter.JournalAdapter
-import edu.gvsu.cis.traxy.JournalPagerFragmentDirections
 import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.viewmodel.MediaViewModel

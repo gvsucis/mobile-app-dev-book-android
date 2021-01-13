@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.gvsu.cis.traxy.adapter.JournalAdapter
-import edu.gvsu.cis.traxy.JournalPagerFragmentDirections
 import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.viewmodel.MediaViewModel

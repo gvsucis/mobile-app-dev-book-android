@@ -82,12 +82,12 @@
         android:name="edu.gvsu.cis.traxy.view.MediaViewFragment" />
     <fragment
         android:id="@+id/audioFragment"
-        android:name="edu.gvsu.cis.traxy.AudioFragment"
+        android:name="edu.gvsu.cis.traxy.view.AudioFragment"
         android:label="Audio"
         tools:layout="@layout/fragment_audio" />
     <fragment
         android:id="@+id/pagerFragment"
-        android:name="edu.gvsu.cis.traxy.JournalPagerFragment"
+        android:name="edu.gvsu.cis.traxy.view.JournalPagerFragment"
         android:label="Traxy"
         tools:layout="@layout/fragment_pager">
         <action

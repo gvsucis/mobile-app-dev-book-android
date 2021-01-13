@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import edu.gvsu.cis.traxy.BuildConfig
 import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.viewmodel.UserDataViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -47,6 +48,10 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (BuildConfig.DEBUG) {
+            email.setText(BuildConfig.USER_NAME)
+            password.setText(BuildConfig.PASSWORD)
+        }
         signin.setOnClickListener {
             val emailStr = email.text.toString()
             val passStr = password.text.toString()
