@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,6 +39,11 @@ class TripMapsFragment : Fragment() {
         }
         if (allMarkers.size > 0)
             refreshMarkers(gMap!!, allMarkers)
+        gMap!!.setOnInfoWindowClickListener {
+            val action1 = JournalPagerFragmentDirections.actionEditJournal(it.title)
+            val ctrl = Navigation.findNavController(requireView())
+            ctrl.navigate(action1)
+        }
     }
 
     override fun onCreateView(
