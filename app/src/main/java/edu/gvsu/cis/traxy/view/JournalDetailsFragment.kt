@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import edu.gvsu.cis.traxy.R
+import edu.gvsu.cis.traxy.viewmodel.UserDataViewModel
 import kotlinx.android.synthetic.main.journal_details_fragment.*
 
 class JournalDetailsFragment : Fragment() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MediaDetailsFragment">
+    tools:context=".view.MediaDetailsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="edu.gvsu.cis.traxy.MediaMetaDataFragment"
+        android:name="edu.gvsu.cis.traxy.view.MediaMetaDataFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"

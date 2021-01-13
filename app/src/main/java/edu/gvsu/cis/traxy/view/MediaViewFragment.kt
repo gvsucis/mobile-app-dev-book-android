@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player.EventListener
 import com.google.android.exoplayer2.SimpleExoPlayer
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.MediaType
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.fragment_media_view.*
 
 class MediaViewFragment : Fragment() {

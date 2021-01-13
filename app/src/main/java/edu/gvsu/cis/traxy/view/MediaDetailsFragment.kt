@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,8 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import edu.gvsu.cis.traxy.R
+import edu.gvsu.cis.traxy.viewmodel.TraxyRepository
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.fragment_media_details_entry.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

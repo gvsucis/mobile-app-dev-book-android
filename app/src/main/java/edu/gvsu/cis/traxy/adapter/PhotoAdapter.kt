@@ -1,10 +1,11 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.JournalMedia
 
 class PhotoAdapter(

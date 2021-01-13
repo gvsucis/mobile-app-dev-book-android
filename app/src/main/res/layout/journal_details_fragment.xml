@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
-    tools:context=".JournalDetailsFragment">
+    tools:context=".view.JournalDetailsFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.Manifest
 import android.content.Context
@@ -15,12 +15,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.fragment_audio.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
-
+import edu.gvsu.cis.traxy.R
 
 private const val RECORD_AUDIO_PERM_REQUEST = 317
 

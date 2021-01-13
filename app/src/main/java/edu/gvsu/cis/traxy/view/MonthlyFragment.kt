@@ -1,9 +1,6 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +12,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
-import com.applandeo.materialcalendarview.utils.EventDayUtils
+import edu.gvsu.cis.traxy.adapter.JournalAdapter
+import edu.gvsu.cis.traxy.JournalPagerFragmentDirections
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.Journal
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
+import edu.gvsu.cis.traxy.viewmodel.UserDataViewModel
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_edit_journal.*
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime
-import org.joda.time.Duration
 import org.joda.time.Interval
 import java.util.*
 
@@ -88,11 +88,11 @@ class MonthlyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = JournalAdapter(R.layout.journal_card_mini) { journal, action ->
             mediaModel.selectedJournal.value = journal
-            val action = if (action == "VIEW")
+            val destination = if (action == "VIEW")
                 JournalPagerFragmentDirections.actionToMediaList(journal.name)
             else
                 JournalPagerFragmentDirections.actionEditJournal(journal.name)
-            findNavController().navigate(action)
+            findNavController().navigate(destination)
         }
         calendar.setOnForwardPageChangeListener(monthChangeListener)
         calendar.setOnPreviousPageChangeListener(monthChangeListener)

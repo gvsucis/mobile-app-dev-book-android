@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.CollectionReference

@@ -1,12 +1,14 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
+import edu.gvsu.cis.traxy.adapter.JournalPagerAdapter
 import kotlinx.android.synthetic.main.fragment_pager.*
+import edu.gvsu.cis.traxy.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,30 +41,15 @@ class JournalPagerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_pager, container, false)
     }
 
-    val pageChangeCallback  =  object:ViewPager2.OnPageChangeCallback(){
-        override fun onPageSelected(position: Int) {
-            val m = bottom_nav.menu.getItem(position)
-            m.setChecked(true)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pager.adapter = JournalPagerAdapter(this)
-        pager.registerOnPageChangeCallback(pageChangeCallback)
-        bottom_nav.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.all_journals -> pager.setCurrentItem(0, true)
-                R.id.monthly_journals -> pager.setCurrentItem(1, true)
+
+        TabLayoutMediator(tabs, pager) { tab, pos ->
+            when(pos) {
+                0 -> tab.text = "Journals"
+                1 -> tab.text = "Calendar"
             }
-            true
-        }
-//
-//        TabLayoutMediator(tabs, pager) { tab, pos ->
-//            when(pos) {
-//                0 -> tab.text = "Journals"
-//                1 -> tab.text = "Calendar"
-//            }
-//        }.attach()
+        }.attach()
     }
     companion object {
         /**

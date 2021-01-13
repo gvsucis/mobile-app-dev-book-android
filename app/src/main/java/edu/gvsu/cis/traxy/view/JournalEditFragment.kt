@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.app.Activity
 import android.content.Intent
@@ -17,9 +17,13 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import edu.gvsu.cis.traxy.adapter.PhotoAdapter
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.JournalMedia
 import edu.gvsu.cis.traxy.model.MediaType
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
+import edu.gvsu.cis.traxy.viewmodel.UserDataViewModel
 import kotlinx.android.synthetic.main.fragment_edit_journal.*
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.joda.time.DateTime

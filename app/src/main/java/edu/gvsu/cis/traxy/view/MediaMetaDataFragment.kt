@@ -1,22 +1,21 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
+import edu.gvsu.cis.traxy.R
+import edu.gvsu.cis.traxy.toPrettyDateTime
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.fragment_media_meta_data.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

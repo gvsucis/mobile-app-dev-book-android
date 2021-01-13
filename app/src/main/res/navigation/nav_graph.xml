@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="edu.gvsu.cis.traxy.LoginFragment"
+        android:name="edu.gvsu.cis.traxy.view.LoginFragment"
         app:startDestination="@id/action_login2main"
         tools:layout="@layout/fragment_login">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="edu.gvsu.cis.traxy.SignUpFragment"
+        android:name="edu.gvsu.cis.traxy.view.SignUpFragment"
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signup2main"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="edu.gvsu.cis.traxy.MainFragment"
+        android:name="edu.gvsu.cis.traxy.view.MainFragment"
         tools:layout="@layout/fragment_main">
         <argument
             android:name="userEmail"
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/journalEditFragment"
-        android:name="edu.gvsu.cis.traxy.JournalEditFragment"
+        android:name="edu.gvsu.cis.traxy.view.JournalEditFragment"
         android:label="{fragment_title}"
         tools:layout="@layout/fragment_edit_journal">
         <argument
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/journalViewFragment"
-        android:name="edu.gvsu.cis.traxy.JournalViewFragment"
+        android:name="edu.gvsu.cis.traxy.view.JournalViewFragment"
         android:label="{trip_title}"
         tools:layout="@layout/fragment_journal_view">
         <argument
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/MediaDetailsFragment"
-        android:name="edu.gvsu.cis.traxy.MediaDetailsFragment"
+        android:name="edu.gvsu.cis.traxy.view.MediaDetailsFragment"
         tools:layout="@layout/fragment_media_details_entry">
         <argument
             android:name="media_title"
@@ -74,12 +74,12 @@
     </fragment>
     <fragment
         android:id="@+id/journalMediaEditFragment"
-        android:name="edu.gvsu.cis.traxy.MediaEditFragment"
+        android:name="edu.gvsu.cis.traxy.view.MediaEditFragment"
         android:label="Edit Media"
         tools:layout="@layout/fragment_media_edit" />
     <fragment
         android:id="@+id/journalMediaViewFragment"
-        android:name="edu.gvsu.cis.traxy.MediaViewFragment" />
+        android:name="edu.gvsu.cis.traxy.view.MediaViewFragment" />
     <fragment
         android:id="@+id/audioFragment"
         android:name="edu.gvsu.cis.traxy.AudioFragment"

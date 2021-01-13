@@ -1,10 +1,14 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import edu.gvsu.cis.traxy.JournalDiffUtil
+import edu.gvsu.cis.traxy.JournalViewHolder
+import edu.gvsu.cis.traxy.R
+import edu.gvsu.cis.traxy.TitleViewHolder
 import edu.gvsu.cis.traxy.model.Header
 import edu.gvsu.cis.traxy.model.Journal
 import edu.gvsu.cis.traxy.model.ListItem

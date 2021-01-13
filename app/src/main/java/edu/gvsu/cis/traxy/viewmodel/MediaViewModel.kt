@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.viewmodel
 
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever

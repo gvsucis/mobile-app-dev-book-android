@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.os.Bundle
 import android.view.*
@@ -8,7 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import edu.gvsu.cis.traxy.adapter.JournalAdapter
+import edu.gvsu.cis.traxy.JournalPagerFragmentDirections
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.Header
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
+import edu.gvsu.cis.traxy.viewmodel.UserDataViewModel
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.joda.time.DateTime

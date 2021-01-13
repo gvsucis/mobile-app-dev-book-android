@@ -1,4 +1,4 @@
-package edu.gvsu.cis.traxy
+package edu.gvsu.cis.traxy.view
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -16,7 +16,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import edu.gvsu.cis.traxy.adapter.JournalMediaAdapter
+import edu.gvsu.cis.traxy.adapter.JournalMediaViewHolder
+import edu.gvsu.cis.traxy.R
 import edu.gvsu.cis.traxy.model.JournalMedia
+import edu.gvsu.cis.traxy.viewmodel.MediaViewModel
 import kotlinx.android.synthetic.main.fragment_journal_view.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -116,7 +120,7 @@ class JournalViewFragment : Fragment() {
                     data?.clipData?.let {
                         val photoUri = it.getItemAt(0).uri
                         mediaModel.mediaUri.value = photoUri
-                        mediaModel.mediaFile.value = File(photoUri.path)
+                        mediaModel.mediaFile.value = File(photoUri.path!!)
                         findNavController().navigate(R.id.action_to_mediaDetails)
                     }
                 }
