@@ -3,9 +3,9 @@ package edu.gvsu.cis.traxy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
@@ -15,10 +15,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         val email = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
+        val signin = findViewById<Button>(R.id.signin)
         signin.setOnClickListener { v ->
             val emailStr = email.text.toString()
             val passStr = password.text.toString()

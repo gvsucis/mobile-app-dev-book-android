@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Traxy"
 include(":app")
+include(":app")

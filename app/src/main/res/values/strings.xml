@@ -1,11 +1,11 @@
 <resources>
-  <string name="app_name">Traxy</string>
+    <string name="app_name">Traxy</string>
     <string name="welcome_to">Welcome to</string>
-  <string name="enter_email">Enter email</string>
-  <string name="traxy_logo">Traxy Logo</string>
-  <string name="enter_password">Enter password</string>
-  <string name="sign_in">Sign In</string>
-  <string name="email_requirred">Email requierd</string>
-  <string name="invalid_email">Invalid Email</string>
-  <string name="login_verified">Login Verified</string>
+    <string name="enter_email">Enter email</string>
+    <string name="traxy_logo">Traxy Logo</string>
+    <string name="enter_password">Enter password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_requirred">Email requierd</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="login_verified">Login Verified</string>
 </resources>
